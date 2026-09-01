@@ -17,5 +17,11 @@
       "sizes": "512x512",
       "type": "image/png"
     }
+  ],
+  "id": "./",
+  "scope": "./",
+  "lang": "en-GB",
+  "categories": [
+    "education"
   ]
 }
