@@ -1,5 +1,5 @@
-const CACHE='ph-english-v3-20260901-live-audit';
-const ASSETS=['./','./index.html','./styles.css?v=20260901-3','./app.js?v=20260901-3','./manifest.webmanifest','./icon-192.png','./icon-512.png','./apple-touch-icon.png'];
+const CACHE='ph-english-v4-20260901-full-audit';
+const ASSETS=['./','./index.html','./styles.css?v=20260901-4','./app.js?v=20260901-4','./manifest.webmanifest','./icon-192.png','./icon-512.png','./apple-touch-icon.png'];
 
 self.addEventListener('install',event=>{
   event.waitUntil(caches.open(CACHE).then(cache=>cache.addAll(ASSETS)).then(()=>self.skipWaiting()));

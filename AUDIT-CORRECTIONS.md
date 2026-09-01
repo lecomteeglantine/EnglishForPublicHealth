@@ -1,98 +1,156 @@
-# Live deployment audit — 1 September 2026
+# English for Public Health — V4 audit and corrections
 
-The public GitHub Pages site and the repository were checked after deployment. The repository currently contains the original V1 files rather than the previous corrected package: Group Activity is absent, the service-worker cache is still `ph-english-v1`, and the earlier V1 interaction/accessibility issues are therefore still present.
+Audit date: **1 September 2026**  
+Build: **2026-09-01-v4-full-audit**
 
-This V3 package re-applies the full correction set and uses a new build/cache identifier so the deployment can be verified after upload.
+## Deployment checked
 
-# English for Public Health — audit and corrections
+The current repository source was checked after the V3 upload. The repository contains the V3 build, including the top-level **Group Activity** navigation entry and the V3 service-worker cache. The V4 package in this ZIP starts from that corrected build and adds the fixes found during the new audit.
 
-Revision: 1 September 2026
+## Critical / functional fixes in V4
 
-## Added: Group Activity
+### 1. Public Health Gap could produce questions with no gap
 
-A new top-level **Group Activity** tab has been added. It contains a complete collaborative **Public Health Action Room** for teams of 3–4 students:
+The V3 game used an exact string replacement. Seventeen examples either used an inflected form, a plural, a hyphenated variant, or a different grammatical form. Examples included:
 
-- 6 public-health missions;
-- random mission selection;
-- automatic role draw for teams of 3 or 4;
-- Evidence, Equity, Communication and Policy roles;
-- fictional teaching data clearly labelled as fictional;
-- a five-step workflow;
-- a 90-second evidence-based briefing;
-- a peer-challenge stage;
-- useful language for evidence, priorities, challenge and recommendations;
-- a model briefing that can be revealed after discussion;
-- local tracking of missions explored.
+- `cost-effectiveness` → example contained `cost-effective`;
+- `health inequality` → example contained `health inequalities`;
+- `to suggest` → example contained `suggest`;
+- `to account for` → example contained `accounted for`;
+- `to be associated with` → example contained `was associated with`;
+- singular terms whose examples used plurals such as `stakeholder`, `policy-maker` and `vulnerable population`.
 
-The six missions cover heat and health equity, measles surveillance, screening inequalities, nutrition and health promotion, air pollution near schools, and vaccination communication.
+This could leave the sentence unchanged or produce awkward forms such as `_____s`.
 
-## Functional bugs fixed
+**Fix:** the affected examples were rewritten so the target expression occurs naturally and exactly. The question engine also now has a defensive fallback if a future example no longer contains the target expression.
 
-1. **Flashcard sessions could continue indefinitely.** Sessions now end correctly and display a final summary.
-2. **Flashcard progress was one step behind.** The first card now shows the correct progress and completed sessions reach 100%.
-3. **Practice progress was one step behind.** A five-question session now begins at 20%, then progresses correctly.
-4. **Practice answers remained interactive after a response.** Answer buttons are now disabled after answering, preventing accidental repeated interaction.
-5. **Pronunciation counters did not update.** Rated and review/tricky counters now update immediately.
-6. **Pronunciation ratings could unintentionally add a word to My Vocabulary.** Pronunciation ratings are now stored separately from saved vocabulary.
-7. **Pronunciation review omitted words marked “Tricky”.** Review now includes both “Review” and “Tricky” pronunciation items.
-8. **Saving/removing a word from Dictionary did not immediately refresh its card state.** The visible dictionary results now refresh correctly.
-9. **Some controls relied on browser-created global variables from element IDs.** Explicit DOM references are now used instead, improving cross-browser reliability.
-10. **Case and Communication workspace close buttons relied on implicit globals.** They now use explicit, robust event handlers.
-11. **Browser Back/Forward navigation could leave the wrong section visible.** Hash changes now update the active page correctly.
-12. **The learning recommendation could stop progressing after Cases.** It now accounts for Communication Lab, Group Activity, Check-up and Pronunciation.
-13. **Old locally stored progress could have an incomplete activity schema.** Stored data are now normalised safely when the site evolves.
-14. **Local-storage write failures could interrupt interactions.** Storage writes are now safely handled.
-15. **The CSV export object URL could be revoked too early on some browsers.** Revocation is now delayed safely.
+**QA result:** all **100 vocabulary terms** now generate a valid gap question, with one usable blank and no stray alphabetical suffix attached to the blank.
 
-## Accessibility and UX bugs fixed
+### 2. Practice final statistics were stale
 
-1. **Accessibility preferences were not persistent**, despite the site explaining that preferences are stored locally. Dark mode, high contrast, simplified layout and reduced motion are now remembered on the device.
-2. Accessibility toggle buttons now expose their state with `aria-pressed`.
-3. Flashcards can now be revealed with **Enter or Space**, and expose button-like keyboard semantics.
-4. Hidden workspaces now use an explicit global `[hidden]` CSS rule for reliable behaviour.
-5. The parent navigation menu now remains visually active when one of its child sections is open.
-6. **Mobile horizontal overflow** was fixed for Lexicon, Flashcards and Group Activity. The complete site was checked at 320 px, 375 px, 768 px and 1440 px widths with no page-level horizontal overflow.
+After the final answer in a Practice session, the score card was correct but the statistics bar could still display the values from the previous question.
 
-## Offline / PWA bugs fixed
+**Fix:** the completion branch now updates correct, missed, streak, progress text and the 100% progress bar before displaying the final score.
 
-1. The service-worker cache has been versioned again so an old GitHub Pages cache is less likely to keep a previous build visible.
-2. The new service worker uses `skipWaiting()` and `clients.claim()` so updates take control more reliably.
-3. Old application caches are removed on activation.
-4. The offline fallback is now restricted to navigation requests instead of returning the HTML home page for arbitrary missing assets.
-5. The initial Online/Offline label now checks the browser's actual connection state instead of always starting as “Online”.
-6. The manifest now includes an app `id`, `scope`, `lang: en-GB` and education category.
+**QA result:** every tested 5-question mode finishes with `correct + missed = 5` and displays `Session complete · 5 questions`.
 
-## Content/data integrity checks
+### 3. Flashcard progress could be counted twice
 
-- 100 vocabulary terms loaded.
-- 10 chapters loaded.
-- 9 Public Health Cases loaded.
-- 8 Communication Lab tasks loaded.
-- 6 Group Activity missions loaded.
-- No duplicate vocabulary entries detected.
-- No missing required fields detected in the 100 vocabulary entries.
-- All vocabulary chapter references resolve to an existing chapter.
-- All vocabulary terms requested by the case activities exist in the lexicon.
-- No empty case or Communication Lab records detected.
-- All mission statistics in Group Activity are explicitly identified as **fictional classroom data**.
+A student could rate a card, use **Previous**, then rate the same card again. V3 added another rating to progress, inflating the flashcard activity count and the session statistics.
 
-## Browser/interaction QA
+**Fix:** each word now has one current rating per flashcard session. Re-rating a previous card updates the old rating instead of adding a second activity count.
 
-A final Chromium DOM/interactivity test confirmed:
+The **Again** helper text was also changed from “Bring it back soon” to **“Keep for review”**, which accurately describes the behaviour: difficult words are stored in the review deck rather than silently lengthening the current session.
 
-- all 12 site sections can be activated;
-- no JavaScript page errors or console errors in the tested flows;
-- the Group Activity mission selector contains 6 missions plus the placeholder;
-- a mission renders its three evidence cards;
-- the role draw returns exactly three roles for a team of three;
-- completing a group mission updates progress;
-- a 10-card flashcard session finishes at 10/10;
-- a five-question Practice session begins at 20% and locks answer choices after a response;
-- a pronunciation rating updates the pronunciation counter without changing the saved-word count;
-- accessibility toggle handlers update their pressed states;
-- hash navigation responds correctly;
-- no horizontal overflow was detected at 320, 375, 768 or 1440 px across all 12 pages.
+### 4. Case / Communication support mode could become visually inconsistent
 
-## Deployment
+If a Case or Communication task was already open, changing the support level could leave the old workspace visible. A student could therefore select **Challenge** while still looking at content generated under **Guided**.
 
-Replace the files at the **root of the GitHub repository** with the files in this ZIP. Keep `index.html` at repository root. The ZIP is intentionally structured without an extra enclosing folder.
+**Fix:** changing the area/skill or support mode closes the existing workspace. The student then opens a fresh task with the selected mode.
+
+### 5. Random task defensive guards
+
+Random Case and Communication actions now check that data exist before attempting to open an item. This prevents a JavaScript exception if a future edit accidentally removes those datasets.
+
+## Accessibility / responsive fixes in V4
+
+### 6. Dark Mode Word of the Day contrast
+
+V3 used a translucent white Word-of-the-Day panel while Dark Mode changed the text to near-white. This could create very light text on a very light panel.
+
+**Fix:** Dark Mode now uses the theme surface colour for the Word-of-the-Day panel.
+
+### 7. High Contrast Mode was not consistently high contrast
+
+The hero retained its pastel gradient and primary buttons used white text on cyan. Those combinations did not provide the intended high-contrast experience.
+
+**Fixes:** High Contrast now uses a black hero/header, black text on cyan action buttons, and a black Word-of-the-Day panel with white text. Correct/wrong answer states also receive explicit high-contrast borders.
+
+### 8. Secondary accent contrast
+
+The coral accent (`#e27d60`) with white text did not provide sufficient contrast for normal-size text.
+
+**Fix:** coral action buttons now use dark text, while coral used as foreground text is replaced by a darker accessible coral in the light theme. Dark and High Contrast themes have their own readable variants.
+
+### 9. 150% text-size overflow on mobile
+
+At 150% text size, V3 could overflow horizontally on narrow screens in Lexicon, Flashcards, Communication Lab, My Vocabulary and Dictionary.
+
+**Fixes:** inputs and selects can shrink within their grids; page-title text containers can wrap; mobile page headings use a robust two-column grid; controls are capped to their container width.
+
+**QA result:** no page-level horizontal overflow detected across all 12 sections at **320, 375, 620, 768, 1024 and 1440 px**, with the site text scale set to **150%**.
+
+### 10. Reduced Motion did not fully stop smooth scrolling
+
+The toggle disabled CSS transitions/animations but programmatic `scrollTo()` and `scrollIntoView()` calls still requested smooth motion.
+
+**Fix:** all programmatic scrolling now chooses `auto` when the site Reduced Motion setting is enabled or when the operating system requests `prefers-reduced-motion: reduce`. Button hover movement is also disabled in reduced-motion mode.
+
+### 11. Simple Layout decorative bubbles
+
+The CSS attempted to hide `.hero-bubble`, but the actual decorative elements are `.bubble-one` and `.bubble-two`.
+
+**Fix:** Simple Layout now hides the real decorative bubble elements.
+
+## Pronunciation improvement
+
+V3 set the utterance language to `en-GB`, but did not explicitly prefer an installed British English voice.
+
+**Fix:** the speech function now looks for an installed `en-GB` voice and selects it when available, while retaining `u.lang = 'en-GB'` as the fallback. Pronunciation remains dependent on voices installed by the device/browser.
+
+## Data and structural checks
+
+Verified in V4:
+
+- **100** vocabulary terms;
+- **10** chapters, with 10 terms per chapter;
+- **41** topic sections;
+- **9** Public Health Cases;
+- **8** Communication Lab tasks;
+- **6** Group Activity missions;
+- no duplicate vocabulary words;
+- no missing required vocabulary fields;
+- no duplicate HTML IDs;
+- all 12 application page sections are present;
+- all local stylesheet/script/manifest references resolve to files included in the package;
+- PWA icon files have the declared dimensions: 192×192, 512×512 and 180×180 Apple touch icon;
+- `manifest.webmanifest` parses as valid JSON;
+- `app.js` and `sw.js` pass JavaScript syntax checks.
+
+## Interaction QA
+
+Chromium DOM/interactivity tests confirmed:
+
+- all 12 sections activate correctly;
+- Lexicon filtering works, including zero-result states;
+- Dictionary search renders matching term cards;
+- saving a word updates My Vocabulary;
+- a 10-card flashcard session reaches **10 / 10** and displays the completion screen;
+- going back and changing a flashcard rating does not increment the activity count twice;
+- Definition, French → English, Public Health Gap, Listen & Spot, Collocation Match and Mix It Up all run as finite Practice sessions;
+- Practice answer options are unique in the tested sessions;
+- final Practice statistics include the last answer;
+- Case and Communication workspaces open and close correctly;
+- changing their support mode closes stale workspaces;
+- Group Activity role draw returns exactly 3 assignments for a team of 3 and 4 assignments for a team of 4;
+- marking a Group Activity mission updates group progress;
+- Pronunciation completes a five-word workout and updates counters;
+- the 24-question Check-up completes and displays a score;
+- no JavaScript page errors occurred in the tested core flows.
+
+## PWA / cache
+
+The service worker has been bumped to:
+
+`ph-english-v4-20260901-full-audit`
+
+The HTML now loads:
+
+- `styles.css?v=20260901-4`
+- `app.js?v=20260901-4`
+
+This prevents V3 CSS/JavaScript from remaining attached to the new HTML after the GitHub Pages update.
+
+## Upload instructions
+
+Upload **all files from this ZIP to the repository root**, replacing the corresponding existing files. Do not upload the enclosing local folder. `index.html` must remain at the repository root.
