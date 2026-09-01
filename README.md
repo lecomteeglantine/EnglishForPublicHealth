@@ -37,3 +37,9 @@ These identifiers make it possible to distinguish V4 from earlier cached builds.
 The site still stores student learning data locally in the browser and does not require an account or remote learning database.
 
 See `AUDIT-CORRECTIONS.md` for the detailed audit.
+
+
+## Session 1 update (2026-09-01)
+- Rebuilt **Group Activity** as a true **Session 1** simulation: **Who Gets the Medicine?**
+- Added fixed, deterministic choices so that the **same answers always produce the same consequences and scores on every device**.
+- Added clearer student instructions, role cards, illustrated scenario overview and a 90-second group briefing task.
