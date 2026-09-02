@@ -21,3 +21,13 @@ Main files:
 Session 1 is deterministic. The six decision screens use fixed A–E options and fixed scoring rules. Scores are rebuilt from the decision code rather than trusted from saved local values. Therefore two devices using Ruleset **S1-R10** and the same six choices receive the same scores and final profile.
 
 See `AUDIT-CORRECTIONS.md` for the full audit.
+
+
+## V11 final Group Activity audit
+- Keeps scoring rules unchanged at **Ruleset S1-R10**.
+- Fixes session-card HTML semantics and dark/high-contrast CTA readability.
+- Persists team size (3 or 4) across reloads.
+- Adds Not started / In progress / Completed status to Session 1 in the library.
+- Adds direct Back to sessions controls during the simulation.
+- Improves decision progress semantics and accessibility.
+- App/cache version bumped to V11.
