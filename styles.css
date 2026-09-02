@@ -132,3 +132,18 @@ input,select,textarea{max-width:100%;min-width:0}
 .session-card-meta{display:flex;gap:.45rem;flex-wrap:wrap;margin:.55rem 0}.session-card-meta span{background:var(--surface);border:1px solid var(--border);border-radius:999px;padding:.3rem .55rem;font-size:.86rem;font-weight:700}
 .session-open-cta{display:inline-block;margin-top:.35rem;background:var(--accent);color:#fff;padding:.55rem .8rem;border-radius:10px;font-weight:900}
 @media(max-width:700px){.session-launch-card{grid-template-columns:1fr}.session-launch-visual{min-height:105px}.session-card-meta{display:grid;grid-template-columns:1fr}.session-card-meta span{border-radius:10px}}
+
+
+/* V8 Group Activity: clean session library + detail view */
+.session-detail[hidden],.group-session-library[hidden]{display:none!important}
+.session-detail-toolbar{display:flex;justify-content:space-between;align-items:center;gap:.75rem;margin:0 0 .85rem}
+.session-detail-toolbar button{font-weight:800}
+.group-session-library{margin-bottom:1rem}
+.group-session-library .session-launch-card{margin-bottom:0}
+.group-consistency-note{border-left:4px solid var(--accent2);padding:.65rem .8rem;background:var(--surface);border-radius:8px}
+.group-choice-card:focus-visible,.session-launch-card:focus-visible,#backToGroupSessions:focus-visible{outline:3px solid var(--accent);outline-offset:3px}
+.group-choice-card[aria-pressed="true"]{border-color:var(--accent);box-shadow:0 0 0 3px rgba(15,117,122,.16)}
+.group-impact-pill.positive{color:#0d5e35}.group-impact-pill.negative{color:#842b33}
+[data-theme="dark"] .group-impact-pill.positive,[data-contrast="high"] .group-impact-pill.positive{color:#8ff0b5}
+[data-theme="dark"] .group-impact-pill.negative,[data-contrast="high"] .group-impact-pill.negative{color:#ffb5bb}
+@media(max-width:620px){.session-detail-toolbar{align-items:stretch;flex-direction:column}.session-detail-toolbar button{width:100%}.group-step-actions>*{width:100%}}

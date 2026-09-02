@@ -43,3 +43,7 @@ See `AUDIT-CORRECTIONS.md` for the detailed audit.
 - Rebuilt **Group Activity** as a true **Session 1** simulation: **Who Gets the Medicine?**
 - Added fixed, deterministic choices so that the **same answers always produce the same consequences and scores on every device**.
 - Added clearer student instructions, role cards, illustrated scenario overview and a 90-second group briefing task.
+
+
+## V8 — Group Activity audit
+Group Activity now behaves as a real session library: Session 1 content stays hidden until the student clicks its card. Session 1 scoring was rebalanced and versioned so that the same six choices always produce the same scores on every device, including after migration from older saved sessions.
