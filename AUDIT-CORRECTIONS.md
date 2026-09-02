@@ -1,25 +1,30 @@
-# EnglishForPublicHealth – Session 1 Group Activity update
+# EnglishForPublicHealth — Live/Session 1 Audit V6
 
-## What was added
-- A new **Session 1** inside **Group Activity**: **Who Gets the Medicine? – The Global Access Challenge**.
-- Clear student instructions in English.
-- Role cards for teams of 3–4.
-- An illustrated scenario overview (medicine, licence, equity, supply, country cards).
-- A deterministic 6-step simulation aligned with Session 1 course content (WHO / access to medicines / patents / licences / royalties / generic production / global inequalities).
-- A fixed final scoring system with 4 dimensions: Access, Equity, Innovation, Sustainability.
-- A final 90-second briefing task with required vocabulary.
+## Main corrections
+- Removed the obsolete pre-Session-1 **Group Activity** engine and its six old missions from `app.js`.
+- Kept a single Session 1 simulation engine: **Who Gets the Medicine?**
+- Added migration of old local progress so obsolete numeric group-mission IDs cannot inflate the Group Activity progress counter.
+- Made team-role assignment fixed rather than random, so the Group Activity behaves consistently on different devices from the very beginning.
+- The six decision steps remain fully deterministic: the same decision code always gives the same score changes, final scores and profile.
+- Updated application/cache versions to V6 to force browsers/PWA installs to fetch the corrected files.
+- Improved keyboard focus visibility for decision cards.
+- Improved mobile stacking of simulation action buttons.
+- Strengthened contrast treatment for positive/negative score-impact pills.
 
-## Important technical guarantee
-The simulation contains **no scoring randomness**.
-If two students or two groups make the **same sequence of choices**, they will obtain:
-- the same options,
-- the same consequences,
-- the same decision code,
-- the same points,
-- the same final profile,
-on any device.
+## Determinism guarantee
+No `Math.random()` or shuffle operation is used in Session 1 decisions, scoring, consequences or profiles.
+The choices are fixed A–E at each of the six steps. Therefore the same sequence (for example `C-B-B-E-C-D`) always yields the same:
+- available choices,
+- consequence text,
+- score deltas,
+- final Access / Equity / Innovation / Sustainability scores,
+- decision code,
+- final profile.
 
-## Cache/version update
-- CSS version: **20260901-5**
-- JS version: **20260901-5**
-- Service worker cache: **ph-english-v5-20260901-session1**
+## Version identifiers
+- Application: `2026-09-01-v6-session1-audit`
+- CSS/JS query version: `20260901-6`
+- PWA cache: `ph-english-v6-20260901-session1-audit`
+
+## Upload note
+The ZIP contains the site files directly at the archive root. Upload/replace these files at the repository root; do not create an extra folder in the GitHub repository.

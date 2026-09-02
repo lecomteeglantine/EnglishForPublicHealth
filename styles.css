@@ -114,3 +114,10 @@ input,select,textarea{max-width:100%;min-width:0}
 .group-vocab-badges .badge{font-weight:700}
 @media(max-width:1024px){.group-session-board,.group-sim-intro{grid-template-columns:1fr}.group-illustration-strip,.scenario-mini-grid{grid-template-columns:1fr 1fr}.group-choice-grid,.group-briefing-grid,.group-summary-grid{grid-template-columns:1fr}.session-country-grid{grid-template-columns:1fr 1fr}}
 @media(max-width:620px){.session-country-grid,.group-illustration-strip,.scenario-mini-grid{grid-template-columns:1fr}.group-step-meta{align-items:flex-start}.group-score-row{grid-template-columns:1fr}.group-score-value{text-align:left}.group-choice-card{padding:.85rem}}
+
+/* V6 Group Activity audit fixes */
+.group-impact-pill.positive{background:color-mix(in srgb,#1f8f53 12%,var(--surface));}
+.group-impact-pill.negative{background:color-mix(in srgb,#a53a43 12%,var(--surface));}
+html[data-contrast="high"] .group-impact-pill.positive,html[data-contrast="high"] .group-impact-pill.negative{background:var(--surface);color:var(--text);border-width:2px;}
+.group-choice-card:focus-visible{outline:3px solid var(--accent);outline-offset:3px;}
+@media(max-width:620px){.session-launch-actions,.group-step-actions{display:grid;grid-template-columns:1fr}.session-launch-actions button,.group-step-actions button{width:100%;}}
