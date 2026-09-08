@@ -1,5 +1,5 @@
-const CACHE='ph-english-v16-20260908-session2-postcode-lottery';
-const ASSETS=['./','./index.html','./styles.css?v=20260908-14','./group-sessions.css?v=20260908-16','./app.js?v=20260908-14','./group-sessions.js?v=20260908-16','./manifest.webmanifest','./icon-192.png','./icon-512.png','./apple-touch-icon.png'];
+const CACHE='ph-english-v17-20260908-session2-realistic-visuals';
+const ASSETS=['./','./index.html','./styles.css?v=20260908-14','./group-sessions.css?v=20260908-17','./app.js?v=20260908-14','./group-sessions.js?v=20260908-17','./manifest.webmanifest','./icon-192.png','./icon-512.png','./apple-touch-icon.png','./s2-maya.webp','./s2-luca.webp','./s2-aisha.webp','./s2-noah.webp'];
 
 self.addEventListener('install',event=>{
   event.waitUntil(caches.open(CACHE).then(cache=>cache.addAll(ASSETS)).then(()=>self.skipWaiting()));

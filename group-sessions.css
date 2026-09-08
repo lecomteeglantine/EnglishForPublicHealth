@@ -99,7 +99,7 @@
 @media(max-width:700px){.group-session-library .session-launch-grid .session-launch-card{grid-template-columns:1fr}.extra-session-card .session-launch-visual{grid-template-columns:repeat(4,1fr);min-height:auto}.extra-session-overview-grid,.extra-final-grid{grid-template-columns:1fr}.extra-choice-grid,.extra-pitch-parts{grid-template-columns:1fr}.extra-score-grid{grid-template-columns:1fr}.extra-timer{align-items:stretch;flex-direction:column}.extra-timer-controls{justify-content:flex-start}.extra-language-strip{grid-template-columns:1fr}}
 @media(max-width:480px){.extra-session-card .session-launch-visual{grid-template-columns:repeat(2,1fr)}.extra-role-grid,.extra-mission-map{grid-template-columns:1fr}.extra-decision-visual{grid-template-columns:auto 1fr}.extra-code{grid-column:1/-1;white-space:normal}.extra-step-actions>*{width:100%}}
 
-/* Session 2 · The Postcode Lottery · V16 */
+/* Session 2 · The Postcode Lottery · V17 realistic visual edition */
 .s2-postcode-detail{--s2-line:color-mix(in srgb,var(--accent) 28%,var(--border))}
 .s2-version-badge{font-size:.72rem;letter-spacing:.04em}
 .s2-session-hero{background:linear-gradient(135deg,var(--surface),color-mix(in srgb,var(--accent) 12%,var(--surface2)))}
@@ -159,3 +159,26 @@
 @media(max-width:760px){.s2-case-head{grid-template-columns:1fr}.s2-letter{min-width:0;max-width:240px}.s2-postcode-detail .extra-score-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.s2-people-impact{grid-template-columns:1fr}.s2-strip-title{display:block}.s2-strip-title span{display:block;margin-top:.2rem}.s2-hero-faces{grid-template-columns:repeat(4,minmax(54px,1fr))}}
 @media(max-width:560px){.s2-character-grid,.s2-how-to{grid-template-columns:1fr}.s2-character-grid.compact{grid-template-columns:repeat(2,minmax(0,1fr))}.s2-character-grid.compact .s2-character-card{grid-template-columns:44px 1fr}.s2-postcode-detail .extra-score-grid{grid-template-columns:1fr}.s2-mini-map i{display:none}.s2-pitch-heading{display:block}.s2-ready-count{display:inline-block;margin-bottom:.4rem}}
 @media(prefers-reduced-motion:reduce){.s2-alert-card,.s2-final .group-profile-banner:after{animation:none!important}}
+
+/* Session 2 · V17 realistic visual edition */
+.s2-portrait-photo{display:block;width:100%;height:100%;object-fit:cover;object-position:center 34%;background:var(--surface2);transition:transform .25s ease,filter .2s ease}
+.s2-character-card:not(.compact){display:flex;flex-direction:column;gap:0;padding:0;overflow:hidden;align-items:stretch}
+.s2-character-card:not(.compact) .s2-character-portrait{width:100%;height:190px;overflow:hidden;border-bottom:1px solid var(--border);background:var(--surface2)}
+.s2-character-card:not(.compact) .s2-character-copy{padding:.75rem .8rem .8rem}
+.s2-character-card:not(.compact):hover .s2-portrait-photo{transform:scale(1.018)}
+.s2-character-card[data-character="maya"] .s2-portrait-photo{object-position:center 30%}
+.s2-character-card[data-character="luca"] .s2-portrait-photo{object-position:center 32%}
+.s2-character-card[data-character="aisha"] .s2-portrait-photo{object-position:center 30%}
+.s2-character-card[data-character="noah"] .s2-portrait-photo{object-position:center 30%}
+.s2-character-grid.compact .s2-character-card{display:grid;grid-template-columns:64px 1fr;gap:.55rem;overflow:hidden}
+.s2-character-grid.compact .s2-character-portrait{width:64px;height:64px;border-radius:12px;overflow:hidden;background:var(--surface2)}
+.s2-character-grid.compact .s2-portrait-photo{object-position:center 28%}
+.s2-hero-faces{gap:.45rem}
+.s2-hero-faces>div{height:118px!important;border:1px solid var(--border)!important;border-radius:15px!important;overflow:hidden!important;background:var(--surface2)!important;box-shadow:0 6px 16px rgba(0,0,0,.08)!important}
+.s2-hero-faces .s2-portrait-photo{width:100%;height:100%;object-fit:cover;object-position:center 28%}
+.s2-hero-faces>div:nth-child(3) .s2-portrait-photo,.s2-hero-faces>div:nth-child(4) .s2-portrait-photo{object-position:center 25%}
+.s2-hero-collage>strong{font-size:.82rem;letter-spacing:.01em}
+.s2-case-board{overflow:hidden}
+@media(max-width:760px){.s2-hero-faces{grid-template-columns:repeat(2,minmax(0,1fr))}.s2-hero-faces>div{height:130px!important}.s2-character-card:not(.compact) .s2-character-portrait{height:220px}}
+@media(max-width:560px){.s2-character-grid.compact .s2-character-card{grid-template-columns:54px 1fr}.s2-character-grid.compact .s2-character-portrait{width:54px;height:54px}.s2-character-card:not(.compact) .s2-character-portrait{height:245px}}
+@media(prefers-reduced-motion:reduce){.s2-portrait-photo{transition:none!important}.s2-character-card:not(.compact):hover .s2-portrait-photo{transform:none!important}}

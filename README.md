@@ -1,11 +1,18 @@
-# English for Public Health · Group Activities V16
+# English for Public Health · Group Activities V17
 
-This package upgrades **Session 2 only** to **The Postcode Lottery**.
+## Session 2 · The Postcode Lottery · realistic visual edition
 
-- Session 1 engine (`app.js`) and Session 1 styles (`styles.css`) are unchanged from the audited V15 deployment.
-- Sessions 3–7 remain on the existing isolated group-session engine.
-- Session 2 now has 4 illustrated fictional profiles, 6 deterministic decisions, 5 options per round, sound effects, impact gauges, Pitch Checkpoints and a 2-minute final briefing.
-- Session 2 uses a new local-storage key so old V15 Session 2 progress cannot corrupt the new 6-round game.
-- Sound effects are generated locally with the Web Audio API and can be switched off; there are no external audio dependencies.
+This build keeps the V16 Session 2 mechanics, 6 decisions, deterministic scoring, sound effects, saved-state key and 2-minute Pitch Builder, but replaces the simplistic generated SVG avatars with four locally bundled realistic scene images.
 
-Upload all files at the repository root and replace files when prompted.
+### Visual assets added
+- `s2-maya.webp` — Riverside / connected city area
+- `s2-luca.webp` — North Moor / rural village
+- `s2-aisha.webp` — Eastbank / dense urban neighbourhood
+- `s2-noah.webp` — Station Lodge / temporary accommodation
+
+The images are used in the Session 2 hero, full case files, round character strips and final recap. They are stored locally, so the activity does not depend on external image URLs.
+
+### Session 1 protection
+`app.js` and `styles.css` are unchanged from V16/V14. Session 1 scoring and S1-R10 are not modified.
+
+Upload every file in this ZIP to the repository root and replace files when GitHub asks.
