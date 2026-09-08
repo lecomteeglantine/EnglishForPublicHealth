@@ -1,20 +1,17 @@
-# V15 — Sessions 2–7
+# Live Group Activity audit — 8 September 2026
 
-## Session 1 protection
-- `app.js` is byte-for-byte identical to V14.
-- S1-R10, the six Session 1 decisions, deterministic scoring, local save and 2-minute Pitch Builder are untouched.
-- Existing `styles.css` is unchanged. New session styling is isolated in `group-sessions.css`.
+Status: PASS — no functional code correction required after the live audit.
 
-## Added sessions
-- Session 2 — The Health Gap Challenge · Social Determinants & Health Inequalities
-- Session 3 — Outbreak Detective Room · Epidemiology & Disease Surveillance
-- Session 4 — Vaccine Confidence Crisis · Infectious Diseases, Pandemics & Vaccination
-- Session 5 — The Obesogenic City Lab · Nutrition, Obesity & Environmental Health
-- Session 6 — Youth Wellbeing Response · Mental Health, Stigma & Social Media
-- Session 7 — Campaign Rehearsal Lab · preparation for the Session 8 final campaign
+Validated:
+- Session library shows Sessions 1–7 after JavaScript initialisation.
+- Sessions 2–7: complete 4-decision route, consequence screen, Pitch Checkpoint, deterministic code, final briefing and 2-minute timer.
+- Session 1: original S1-R10 engine preserved byte-for-byte from V14; complete 6-decision route, consequences, Pitch Checkpoints and final timer validated after using Sessions 2–7.
+- Saved-state resume validated on Session 2.
+- Group completion counter reaches 7.
+- No duplicate HTML IDs.
+- No missing local assets.
+- JavaScript syntax: app.js, group-sessions.js and sw.js PASS.
+- Responsive library: no horizontal overflow at 320, 390, 768 or 1024 px.
+- Browser DOM test: 170/170 checks passed, 0 page errors, 0 console errors.
 
-## Common design
-Each new session has four deterministic team decisions, visible consequences, three score dimensions, a speaking checkpoint after every choice, an automatically structured 2-minute team briefing, team roles, integrated visual cues, a decision code, local save/resume/reset and a pitch timer.
-
-## Cache
-Service-worker cache bumped to V15 and includes the two new files.
+No runtime files were changed by this audit. This package is a revalidated deployment copy.
