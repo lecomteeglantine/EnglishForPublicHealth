@@ -160,7 +160,7 @@
 @media(max-width:560px){.s2-character-grid,.s2-how-to{grid-template-columns:1fr}.s2-character-grid.compact{grid-template-columns:repeat(2,minmax(0,1fr))}.s2-character-grid.compact .s2-character-card{grid-template-columns:44px 1fr}.s2-postcode-detail .extra-score-grid{grid-template-columns:1fr}.s2-mini-map i{display:none}.s2-pitch-heading{display:block}.s2-ready-count{display:inline-block;margin-bottom:.4rem}}
 @media(prefers-reduced-motion:reduce){.s2-alert-card,.s2-final .group-profile-banner:after{animation:none!important}}
 
-/* Session 2 · V17 realistic visual edition */
+/* Session 2 · V18 audited realistic visual edition */
 .s2-portrait-photo{display:block;width:100%;height:100%;object-fit:cover;object-position:center 34%;background:var(--surface2);transition:transform .25s ease,filter .2s ease}
 .s2-character-card:not(.compact){display:flex;flex-direction:column;gap:0;padding:0;overflow:hidden;align-items:stretch}
 .s2-character-card:not(.compact) .s2-character-portrait{width:100%;height:190px;overflow:hidden;border-bottom:1px solid var(--border);background:var(--surface2)}

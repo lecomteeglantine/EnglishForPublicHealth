@@ -1,4 +1,4 @@
-/* Sessions 2–7 extension · V17 · Session 2 Postcode Lottery · realistic visual edition
+/* Sessions 2–7 extension · V18 · Session 2 Postcode Lottery · audited realistic edition
    Deliberately isolated from the Session 1 S1-R10 engine.
    Session 1 HTML, scoring logic and app.js are not modified by this file. */
 (() => {
@@ -406,15 +406,36 @@
   let timerSeconds = 120;
 
   function loadState(n){
-    const fallback = {choices:[],step:0,outcome:null,completed:false,teamSize:(SESSIONS[n].teamSizes?.[0] || 4)};
+    const cfg=SESSIONS[n];
+    const fallback = {choices:[],step:0,outcome:null,completed:false,teamSize:(cfg.teamSizes?.[0] || 4)};
     try {
       const raw = JSON.parse(localStorage.getItem(keyFor(n)) || 'null');
       if(!raw || typeof raw !== 'object') return fallback;
-      const validChoices = Array.isArray(raw.choices) ? raw.choices.slice(0, SESSIONS[n].steps.length) : [];
-      const state = {...fallback,...raw,choices:validChoices};
-      state.step = Math.max(0, Math.min(SESSIONS[n].steps.length, Number(state.step)||0));
-      state.completed = Boolean(state.completed && state.choices.length === SESSIONS[n].steps.length);
-      return state;
+
+      // Keep only a contiguous sequence of valid option IDs. A stale, partial or
+      // manually-corrupted localStorage entry must never create a fake completed game.
+      const validChoices=[];
+      if(Array.isArray(raw.choices)){
+        for(let i=0;i<Math.min(raw.choices.length,cfg.steps.length);i++){
+          const id=String(raw.choices[i]??'');
+          if(!optionFor(n,i,id))break;
+          validChoices.push(id);
+        }
+      }
+
+      const allowed=cfg.teamSizes||[3,4];
+      const teamSize=allowed.includes(Number(raw.teamSize))?Number(raw.teamSize):fallback.teamSize;
+      let outcome=null;
+      if(raw.outcome && typeof raw.outcome==='object'){
+        const i=Number(raw.outcome.stepIndex), choiceId=String(raw.outcome.choiceId??'');
+        if(Number.isInteger(i) && i>=0 && i<cfg.steps.length && i===validChoices.length-1 && validChoices[i]===choiceId && optionFor(n,i,choiceId)){
+          outcome={stepIndex:i,choiceId};
+        }
+      }
+
+      const completed=Boolean(!outcome && raw.completed && validChoices.length===cfg.steps.length);
+      const step=completed?cfg.steps.length:(outcome?outcome.stepIndex:Math.min(validChoices.length,cfg.steps.length));
+      return {choices:validChoices,step,outcome,completed,teamSize};
     } catch { return fallback; }
   }
   function saveStateExtra(n,state){
@@ -457,7 +478,7 @@
     return Object.keys(SESSIONS[n].scores).map(k=>[k,after[k]-beforeScores[k]]);
   }
   function scoreBoard(n,scores){
-    return `<div class="extra-score-grid">${Object.entries(SESSIONS[n].scores).map(([k,label])=>`<div class="extra-score"><div class="extra-score-head"><span>${escapeHtml(label)}</span><strong>${scores[k]}</strong></div><div class="extra-score-track"><div style="width:${scores[k]}%"></div></div></div>`).join('')}</div>`;
+    return `<div class="extra-score-grid">${Object.entries(SESSIONS[n].scores).map(([k,label])=>`<div class="extra-score"><div class="extra-score-head"><span>${escapeHtml(label)}</span><strong>${scores[k]}</strong></div><div class="extra-score-track" role="progressbar" aria-label="${escapeHtml(label)} score" aria-valuemin="0" aria-valuemax="100" aria-valuenow="${scores[k]}"><div style="width:${scores[k]}%"></div></div></div>`).join('')}</div>`;
   }
   function pitchBuilder(n,state){
     if(n===2)return s2PitchBuilder(state);
@@ -526,7 +547,7 @@
 
   function detailShell(n){
     const c=SESSIONS[n];
-    return `<section id="session${n}Detail" class="session-detail extra-session-detail ${n===2?'s2-postcode-detail':''}" hidden aria-labelledby="session${n}DetailTitle"><div class="session-detail-toolbar"><button type="button" data-extra-back>← Back to sessions</button><span class="badge">Session ${n}</span>${n===2?'<span class="badge s2-version-badge">POSTCODE LOTTERY · V17 REALISTIC</span>':''}</div><section class="extra-session-hero ${n===2?'s2-session-hero':''}"><div><span class="eyebrow">Session ${n} · ${escapeHtml(c.subtitle)}</span><h3 id="session${n}DetailTitle" tabindex="-1">${escapeHtml(c.title)}</h3><p>${escapeHtml(c.description)}</p><div class="extra-session-meta"><span>👥 ${escapeHtml(c.team)}</span><span>⏱ ${escapeHtml(c.duration)}</span><span>🎙 ${escapeHtml(c.output)}</span><span>🧭 deterministic choices</span>${n===2?'<span>🎧 short sound cues</span>':''}</div><div class="extra-session-actions"><button class="primary-action" id="s${n}StartHero">▶ Start / resume mission</button><button id="s${n}ResetHero">↻ Reset this session</button>${n===2?'<button type="button" id="s2SoundToggle" class="s2-sound-toggle" aria-pressed="true">🔊 Sound effects: ON</button>':''}</div></div><div class="extra-session-hero-visual ${n===2?'s2-hero-visual':''}">${n===2?s2HeroVisual():c.icons.map(i=>`<div>${i}</div>`).join('')}</div></section><section id="s${n}Workspace" class="extra-session-workspace" aria-live="polite"></section>${languageStrip(n)}</section>`;
+    return `<section id="session${n}Detail" class="session-detail extra-session-detail ${n===2?'s2-postcode-detail':''}" hidden aria-labelledby="session${n}DetailTitle"><div class="session-detail-toolbar"><button type="button" data-extra-back>← Back to sessions</button><span class="badge">Session ${n}</span>${n===2?'<span class="badge s2-version-badge">POSTCODE LOTTERY · V18 AUDITED</span>':''}</div><section class="extra-session-hero ${n===2?'s2-session-hero':''}"><div><span class="eyebrow">Session ${n} · ${escapeHtml(c.subtitle)}</span><h3 id="session${n}DetailTitle" tabindex="-1">${escapeHtml(c.title)}</h3><p>${escapeHtml(c.description)}</p><div class="extra-session-meta"><span>👥 ${escapeHtml(c.team)}</span><span>⏱ ${escapeHtml(c.duration)}</span><span>🎙 ${escapeHtml(c.output)}</span><span>🧭 deterministic choices</span>${n===2?'<span>🎧 short sound cues</span>':''}</div><div class="extra-session-actions"><button class="primary-action" id="s${n}StartHero">▶ Start / resume mission</button><button id="s${n}ResetHero">↻ Reset this session</button>${n===2?'<button type="button" id="s2SoundToggle" class="s2-sound-toggle" aria-pressed="true">🔊 Sound effects: ON</button>':''}</div></div><div class="extra-session-hero-visual ${n===2?'s2-hero-visual':''}">${n===2?s2HeroVisual():c.icons.map(i=>`<div>${i}</div>`).join('')}</div></section><section id="s${n}Workspace" class="extra-session-workspace" aria-live="polite"></section>${languageStrip(n)}</section>`;
   }
 
   function hideAllDetails(){
@@ -534,11 +555,12 @@
     qa('.extra-session-detail').forEach(x=>x.hidden=true);
   }
   function showLibrary(focus=false){
+    const previousSession=activeSession;
     activeSession=null;hideAllDetails();
     const lib=q('#groupSessionLibrary');if(lib)lib.hidden=false;
     const s1=q('#session1Detail');if(s1)s1.hidden=true;
     for(let n=2;n<=7;n++)refreshCard(n);
-    if(focus)q('#session1CardButton')?.focus();
+    if(focus)q(previousSession?`#session${previousSession}CardButton`:'#session1CardButton')?.focus();
   }
   function openSession(n){
     stopTimer();activeSession=n;
@@ -584,7 +606,7 @@
   function renderOutcome(n){
     const cfg=SESSIONS[n],state=loadState(n),r=state.outcome;if(!r){renderStep(n);return;}const step=cfg.steps[r.stepIndex],opt=optionFor(n,r.stepIndex,r.choiceId);if(!step||!opt){state.outcome=null;saveStateExtra(n,state);renderStep(n);return;}
     const before=scoresFor(n,state.choices.slice(0,r.stepIndex)),after=scoresFor(n,state.choices),impact=impacts(n,r.stepIndex,opt,before),ws=q(`#s${n}Workspace`);
-    ws.innerHTML=`<article class="${n===2?'s2-outcome':''}"><div class="extra-progress"><div><strong>Decision ${r.stepIndex+1} complete</strong><small>Read the consequence, then do the Pitch Checkpoint aloud.</small></div><div class="extra-progress-count">${r.stepIndex+1}/${cfg.steps.length}</div><div class="extra-progress-track"><div style="width:${Math.round(((r.stepIndex+1)/cfg.steps.length)*100)}%"></div></div></div><aside class="extra-decision-visual"><span class="icon" aria-hidden="true">${step.icon}</span><div><strong>${escapeHtml(step.label)} · consequence</strong><small>You chose ${escapeHtml(opt[0]+'. '+opt[1])}</small></div><span class="extra-code">${escapeHtml(decisionCode(n,state))}</span></aside>${scoreBoard(n,after)}<div class="extra-consequence ${n===2?'s2-consequence':''}"><strong>What happens next?</strong><p>${escapeHtml(opt[4])}</p><div class="extra-impact-pills">${impact.map(([k,v])=>`<span>${escapeHtml(cfg.scores[k])} ${v>=0?'+':''}${v}</span>`).join('')}</div>${n===2?s2PeopleImpact(opt[5]||{}):''}</div><aside class="extra-checkpoint"><span class="icon" aria-hidden="true">🎙️</span><div><strong>Pitch Checkpoint · say one sentence now</strong><p>${escapeHtml(step.checkpoint)}</p><small>Agree on the idea before continuing. This sentence prepares one part of your final briefing.</small></div></aside>${pitchBuilder(n,state)}<div class="extra-step-actions"><button class="primary-action" id="s${n}Continue">${r.stepIndex===cfg.steps.length-1?'Build final briefing →':'Checkpoint done · next decision →'}</button><button id="s${n}OutcomeOverview">Session overview</button><button data-extra-back>← Back to sessions</button></div></article>`;
+    ws.innerHTML=`<article class="${n===2?'s2-outcome':''}"><div class="extra-progress"><div><strong>Decision ${r.stepIndex+1} complete</strong><small>Read the consequence, then do the Pitch Checkpoint aloud.</small></div><div class="extra-progress-count">${r.stepIndex+1}/${cfg.steps.length}</div><div class="extra-progress-track" role="progressbar" aria-label="Session progress" aria-valuemin="0" aria-valuemax="100" aria-valuenow="${Math.round(((r.stepIndex+1)/cfg.steps.length)*100)}"><div style="width:${Math.round(((r.stepIndex+1)/cfg.steps.length)*100)}%"></div></div></div><aside class="extra-decision-visual"><span class="icon" aria-hidden="true">${step.icon}</span><div><strong>${escapeHtml(step.label)} · consequence</strong><small>You chose ${escapeHtml(opt[0]+'. '+opt[1])}</small></div><span class="extra-code">${escapeHtml(decisionCode(n,state))}</span></aside>${scoreBoard(n,after)}<div class="extra-consequence ${n===2?'s2-consequence':''}"><strong>What happens next?</strong><p>${escapeHtml(opt[4])}</p><div class="extra-impact-pills">${impact.map(([k,v])=>`<span>${escapeHtml(cfg.scores[k])} ${v>=0?'+':''}${v}</span>`).join('')}</div>${n===2?s2PeopleImpact(opt[5]||{}):''}</div><aside class="extra-checkpoint"><span class="icon" aria-hidden="true">🎙️</span><div><strong>Pitch Checkpoint · say one sentence now</strong><p>${escapeHtml(step.checkpoint)}</p><small>Agree on the idea before continuing. This sentence prepares one part of your final briefing.</small></div></aside>${pitchBuilder(n,state)}<div class="extra-step-actions"><button class="primary-action" id="s${n}Continue">${r.stepIndex===cfg.steps.length-1?'Build final briefing →':'Checkpoint done · next decision →'}</button><button id="s${n}OutcomeOverview">Session overview</button><button data-extra-back>← Back to sessions</button></div></article>`;
     q(`#s${n}Continue`).onclick=()=>{if(n===2)s2Sound('tap');state.step=r.stepIndex+1;state.outcome=null;if(state.step>=cfg.steps.length){state.completed=true;markComplete(n)}saveStateExtra(n,state);state.completed?renderFinal(n):renderStep(n)};
     q(`#s${n}OutcomeOverview`).onclick=()=>renderOverview(n);
     qa('[data-extra-back]',ws).forEach(b=>b.onclick=()=>showLibrary(true));
@@ -594,7 +616,7 @@
 
   function finalProfile(n,scores){
     const vals=Object.values(scores),min=Math.min(...vals),max=Math.max(...vals),avg=Math.round(vals.reduce((a,b)=>a+b,0)/vals.length);
-    if(min>=72)return ['🏆','Balanced public-health response','Your choices perform strongly across all three priorities.'];
+    if(min>=72)return ['🏆','Balanced public-health response',`Your choices perform strongly across all ${vals.length} priorities.`];
     if(max-min<=12 && avg>=62)return ['⚖️','Pragmatic balanced response','Your team avoided a major weak point and built a defensible compromise.'];
     const [best]=Object.entries(scores).sort((a,b)=>b[1]-a[1])[0];return ['🧭',`${SESSIONS[n].scores[best]}-first strategy`,'Your plan has a clear strength. In the briefing, acknowledge the trade-off created by the lower-scoring priority.'];
   }
@@ -613,6 +635,7 @@
 
   function inject(){
     const library=q('#groupSessionLibrary'),s1=q('#session1CardButton'),group=q('#groupactivity');if(!library||!s1||!group)return;
+    try{localStorage.removeItem(LEGACY_S2_KEY)}catch{}
     let grid=q('.session-launch-grid',library);
     if(!grid){
       grid=document.createElement('div');grid.className='session-launch-grid';s1.parentNode.insertBefore(grid,s1);grid.appendChild(s1);
