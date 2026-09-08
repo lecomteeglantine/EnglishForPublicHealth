@@ -1,4 +1,4 @@
-/* Sessions 2–7 extension · V15
+/* Sessions 2–7 extension · V16 · Session 2 Postcode Lottery
    Deliberately isolated from the Session 1 S1-R10 engine.
    Session 1 HTML, scoring logic and app.js are not modified by this file. */
 (() => {
@@ -8,56 +8,76 @@
   const qa = (s, root=document) => [...root.querySelectorAll(s)];
   const clamp = n => Math.max(0, Math.min(100, n));
   const escapeHtml = value => String(value ?? '').replace(/[&<>"']/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
-  const keyFor = n => `pheng_group_session_${n}_v1`;
+  const keyFor = n => n===2 ? 'pheng_group_session_2_postcode_v2' : `pheng_group_session_${n}_v1`;
+  const LEGACY_S2_KEY = 'pheng_group_session_2_v1';
 
   const SESSIONS = {
     2: {
-      title: 'The Health Gap Challenge',
+      title: 'The Postcode Lottery',
       subtitle: 'Social Determinants & Health Inequalities',
-      description: 'Redesign a local prevention plan so that distance, income, transport and digital exclusion do not widen health inequalities.',
-      icons: ['🏘️','🚌','📶','⚖️'],
-      team: 'Teams of 3–4', duration: '20–25 min', output: 'Team pitch · 2 min max',
+      description: 'Follow four 20-year-olds with the same health-care need but very different living conditions. Trace the barriers, survive a surprise crisis and build a fairer response.',
+      icons: ['🧑🏽','🚌','🏚️','⚖️'],
+      team: 'Teams of 3–4', duration: '25–30 min', output: 'Investigation briefing · 2 min max',
+      teamSizes: [3,4],
       roles: [
-        ['Community Voice','Keep the plan realistic for residents facing everyday barriers.'],
-        ['Equity Lead','Check who benefits, who is missed and whether gaps narrow.'],
-        ['Evidence Lead','Connect each choice to plausible health consequences.'],
-        ['Implementation Lead','Watch cost, access, staffing and practical delivery.']
+        ['Barrier Detective','Spot the social determinants and connect each barrier to a health consequence.'],
+        ['Community Voice','Keep all four fictional residents visible and challenge assumptions about who is most vulnerable.'],
+        ['Equity Lead','Ask who benefits, who is left out and whether the gap is actually narrowing.'],
+        ['Policy Lead','Keep the final response realistic, affordable and explainable in two minutes.']
       ],
-      scores: { equity:'Equity', reach:'Reach', feasibility:'Feasibility' },
+      scores: { equity:'Equity', access:'Access', wellbeing:'Wellbeing', feasibility:'Practicality' },
       language: [
-        ['Cause → effect','“If transport is limited, people miss appointments.”'],
-        ['Explain a barrier','“This makes it more difficult to…”'],
+        ['Zero conditional','“If transport is limited, people miss appointments.”'],
+        ['Cause → effect','“This can result in… / This may lead to…”'],
         ['Qualify','“This may affect some groups more than others.”'],
         ['Recommend','“We would prioritise… because…”']
       ],
       steps: [
-        { icon:'🗺️', label:'Map the barrier', question:'Which problem should the team address first?', note:'A rural district has poor health outcomes despite having a regional hospital.', checkpoint:'“Our first priority is … because when …, people …”', options:[
-          ['A','Long travel times','Prioritise transport and mobile outreach for villages more than 45 minutes from care.',{equity:14,reach:12,feasibility:-4},'Access improves for isolated communities, but transport partnerships require coordination and recurring funding.'],
-          ['B','Low digital access','Prioritise devices, digital support and assisted telehealth access.',{equity:10,reach:8,feasibility:2},'Digital exclusion falls, but telehealth still cannot solve every problem that requires physical examination or treatment.'],
-          ['C','Low health literacy','Prioritise multilingual community health workers and plain-language information.',{equity:8,reach:10,feasibility:5},'Understanding and trust improve, although geographical and financial barriers remain.'],
-          ['D','Hospital capacity','Invest first in adding specialist appointments at the regional hospital.',{equity:-5,reach:4,feasibility:6},'Capacity increases for people who can reach the hospital, but the most isolated residents may still be excluded.']
+        { icon:'🗂️', label:'First impressions', characters:['maya','luca','aisha','noah'], question:'Before you call anyone “the most vulnerable”, what should your team do?', note:'You have four short profile cards and one minute. First impressions are useful — but they can also hide cumulative barriers.', checkpoint:'“At first we thought …, but when people face several barriers, …”', options:[
+          ['A','Prioritise Maya immediately','Her file looks easiest to understand, so use it as the reference case and decide from there.',{equity:-8,access:1,wellbeing:0,feasibility:8},'Maya has several protective factors. Starting with the easiest case gives you a neat baseline, but it tells you little about who is being excluded.',{helps:['maya'],misses:['luca','aisha','noah']}],
+          ['B','Prioritise Luca immediately','Distance from care is highly visible, so assume the rural profile is the most vulnerable.',{equity:2,access:5,wellbeing:0,feasibility:5},'Luca clearly faces geographical barriers, but focusing only on distance may hide housing, income and digital barriers affecting other people.',{helps:['luca'],misses:['aisha','noah']}],
+          ['C','Prioritise Aisha immediately','Poor housing and air pollution look serious, so rank Aisha first without comparing the other files.',{equity:3,access:0,wellbeing:5,feasibility:4},'Aisha faces important environmental and financial pressures, but vulnerability is multidimensional and another profile may face a different combination of barriers.',{helps:['aisha'],misses:['luca','noah']}],
+          ['D','Prioritise Noah immediately','Housing insecurity and unstable work look urgent, so assume Noah must rank first.',{equity:4,access:1,wellbeing:5,feasibility:3},'Noah has several serious barriers, but the team still needs a consistent way to compare need across all four profiles.',{helps:['noah'],misses:['luca','aisha']}],
+          ['E','Compare all four across the same determinants','Use housing, income, transport, digital access, environment and social support before ranking anyone.',{equity:8,access:4,wellbeing:4,feasibility:6},'The team avoids a single-factor judgement. The fuller comparison reveals that different postcodes create different combinations of risk and protection.',{helps:['maya','luca','aisha','noah'],misses:[]}]
         ]},
-        { icon:'🚐', label:'Choose the intervention', question:'What should the core intervention look like?', note:'You have funding for one main programme plus one small supporting action.', checkpoint:'“We chose … because if people can …, they are more likely to …”', options:[
-          ['A','Mobile health days','Send a rotating mobile team to villages twice a month.',{equity:14,reach:13,feasibility:-8},'The service reaches people directly, but staffing and travel costs are substantial.'],
-          ['B','Telehealth hubs','Create supported telehealth rooms in libraries and town halls.',{equity:9,reach:11,feasibility:5},'Travel decreases and digital support is available, but some consultations still need face-to-face follow-up.'],
-          ['C','Transport vouchers','Fund free transport for priority appointments.',{equity:11,reach:9,feasibility:1},'Financial and transport barriers fall, but residents still depend on central services and appointment availability.'],
-          ['D','Information campaign','Run a low-cost awareness campaign about existing services.',{equity:2,reach:5,feasibility:14},'Awareness rises cheaply, but information alone does not remove structural barriers.']
+        { icon:'🩺', label:'Same appointment, unequal access', characters:['maya','luca','aisha','noah'], question:'All four receive the same message: “Please book a respiratory review within 14 days.” What is the fairest access response?', note:'Equal advice does not create equal access. Think about distance, shifts, transport, broadband and the need for face-to-face care.', checkpoint:'“If transport or digital access is limited, people …; therefore we chose …”', options:[
+          ['A','Add more appointments at the central clinic','Increase specialist capacity at one hospital and keep the existing booking system.',{equity:-3,access:5,wellbeing:2,feasibility:10},'Waiting time falls for people who can reach the clinic. Luca still faces a long journey and Noah may still lose pay if appointments clash with shifts.',{helps:['maya','aisha'],misses:['luca','noah']}],
+          ['B','Telehealth for everyone','Move most first reviews online.',{equity:1,access:8,wellbeing:3,feasibility:8},'Travel falls, especially for Luca, but patchy broadband and limited mobile data can create a new digital inequality. Some respiratory checks still need physical examination.',{helps:['maya','luca'],misses:['noah']}],
+          ['C','Transport vouchers only','Pay travel costs for people who live far from care or cannot afford the journey.',{equity:7,access:10,wellbeing:4,feasibility:5},'Transport becomes less of a barrier, especially for Luca and Noah, but appointment times, work schedules and digital booking problems remain.',{helps:['luca','noah'],misses:['aisha']}],
+          ['D','Build a hybrid access network','Combine mobile clinic days, supported telehealth hubs and protected face-to-face slots for high-barrier patients.',{equity:12,access:15,wellbeing:8,feasibility:3},'Different routes now match different needs. The model costs more to coordinate, but it reduces the chance that one barrier simply replaces another.',{helps:['maya','luca','aisha','noah'],misses:[]}],
+          ['E','Run an awareness campaign','Tell residents more clearly that respiratory reviews are available.',{equity:-5,access:1,wellbeing:0,feasibility:14},'Awareness improves cheaply, but information does not create buses, broadband, time off work or healthier housing.',{helps:['maya'],misses:['luca','aisha','noah']}]
         ]},
-        { icon:'🎯', label:'Target fairly', question:'Who should receive extra support first?', note:'Universal access remains the goal, but resources for intensive support are limited.', checkpoint:'“We would target … first. This is more equitable because …”', options:[
-          ['A','Everyone equally','Give exactly the same support to every resident.',{equity:-3,reach:8,feasibility:7},'The rule feels simple, but equal inputs may preserve unequal outcomes when needs differ.'],
-          ['B','Older adults living alone','Prioritise people over 70 who live alone and have transport difficulties.',{equity:10,reach:4,feasibility:4},'A clearly vulnerable group receives focused support, though other disadvantaged groups may still need attention.'],
-          ['C','Highest-barrier households','Use transport, income, disability and digital-access indicators to identify households facing several barriers.',{equity:16,reach:8,feasibility:-5},'Support is closely matched to need, but identifying households fairly requires careful data governance and outreach.'],
-          ['D','People who request help','Offer extra support only to residents who contact the service.',{equity:-9,reach:-4,feasibility:12},'Administration is easy, but people with the greatest barriers may be the least likely to ask for help.']
+        { icon:'🏠', label:'Daily life becomes a health issue', characters:['aisha','noah'], question:'Aisha reports worsening mould at home. Noah is skipping meals to pay temporary-accommodation costs. What should happen next?', note:'The clinic can treat symptoms, but the team is asked to reduce the upstream pressures that keep producing poor health.', checkpoint:'“When housing or income is unstable, health …; our upstream response is …”', options:[
+          ['A','Give both people a healthy-living leaflet','Offer advice about diet, sleep and exercise.',{equity:-8,access:0,wellbeing:-5,feasibility:15},'The advice may be sensible, but it asks individuals to change behaviour while the structural problems remain.',{helps:[],misses:['aisha','noah']}],
+          ['B','Prioritise housing repair and tenant support','Fund rapid damp/mould repairs and housing advocacy for unsafe accommodation.',{equity:10,access:2,wellbeing:13,feasibility:4},'Aisha’s environmental exposure is addressed directly and housing advocacy may also help Noah, but food insecurity still needs a response.',{helps:['aisha','noah'],misses:[]}],
+          ['C','Give emergency food vouchers only','Provide short-term food support to low-income households.',{equity:7,access:2,wellbeing:8,feasibility:8},'Immediate food pressure falls, especially for Noah, but housing quality and longer-term income insecurity remain.',{helps:['noah'],misses:['aisha']}],
+          ['D','Create an integrated neighbourhood referral pathway','Link primary care to housing repair, food support and a community health worker who can follow up high-barrier households.',{equity:12,access:5,wellbeing:15,feasibility:2},'The response treats living conditions as part of health rather than as separate “social problems”. It is more complex, but it tackles several barriers together.',{helps:['aisha','noah'],misses:[]}],
+          ['E','Offer a lifestyle coaching course','Focus on motivation, meal planning and exercise goals.',{equity:-6,access:1,wellbeing:1,feasibility:10},'Coaching may help some people, but it cannot remove mould, insecure housing or the cost of basic food.',{helps:['maya'],misses:['aisha','noah']}]
         ]},
-        { icon:'📊', label:'Measure impact', question:'Which indicator best shows whether inequality is actually falling?', note:'The council wants one headline indicator after six months.', checkpoint:'“We would monitor … because a successful programme should reduce the gap between …”', options:[
-          ['A','Total appointments','Count all appointments delivered in the district.',{equity:1,reach:7,feasibility:10},'Activity is easy to count, but a higher total does not prove that underserved groups benefited.'],
-          ['B','Satisfaction score','Measure average patient satisfaction.',{equity:2,reach:2,feasibility:8},'Experience matters, but an average score can hide who never reached the service.'],
-          ['C','Access gap','Compare timely appointment rates in high-barrier versus low-barrier areas.',{equity:16,reach:9,feasibility:0},'The measure directly tests whether the inequality gap narrows, although good subgroup data are required.'],
-          ['D','Programme cost','Report spending per resident.',{equity:0,reach:0,feasibility:12},'Cost control is visible, but it says little about health access or fairness.']
+        { icon:'🚨', label:'Surprise event', characters:['maya','luca','aisha','noah'], question:'ALERT: a heatwave begins, buses stop for 48 hours and North Moor loses reliable mobile data. What is your emergency response?', note:'The same event does not create the same risk in every postcode. Your response must work even when transport or connectivity fails.', checkpoint:'“If a crisis removes transport and connectivity, the people most affected are …, so we would …”', options:[
+          ['A','Post one city-wide message on social media','Use the fastest digital channel and ask people to share the advice.',{equity:-7,access:-5,wellbeing:1,feasibility:15},'The message travels quickly, but residents with weak connectivity or low data access may never see it. Advice alone cannot move people to safer places.',{helps:['maya','aisha'],misses:['luca','noah']}],
+          ['B','Activate layered outreach and local support','Use SMS/phone where possible, door-to-door checks, cooling points, pharmacy/community partners and emergency transport for high-barrier residents.',{equity:10,access:10,wellbeing:12,feasibility:3},'The plan has redundancy: if one channel fails, another can still reach people. It needs coordination, but it protects residents who are easiest to miss.',{helps:['luca','aisha','noah','maya'],misses:[]}],
+          ['C','Tell everyone to attend the emergency department','Use hospital care as the default response for anyone who feels unwell.',{equity:-4,access:-2,wellbeing:4,feasibility:-5},'Emergency care remains essential for severe illness, but directing everyone there overloads the hospital and does not solve transport barriers.',{helps:['maya'],misses:['luca','noah']}],
+          ['D','Switch completely to telehealth','Move all routine support online until the buses restart.',{equity:-6,access:-6,wellbeing:1,feasibility:7},'The strategy depends on the very connectivity that has become unreliable, especially in North Moor.',{helps:['maya'],misses:['luca','noah']}],
+          ['E','Wait and respond only if demand rises','Avoid unnecessary intervention and keep services unchanged.',{equity:-10,access:-8,wellbeing:-10,feasibility:12},'The response is cheap, but it waits for preventable harm to appear and is least protective for people already facing barriers.',{helps:[],misses:['luca','aisha','noah']}]
+        ]},
+        { icon:'💷', label:'Spend the limited budget', characters:['maya','luca','aisha','noah'], question:'You now have one final funding package. Which bundle best reduces the postcode gap?', note:'You cannot fund everything. Choose the package you can defend to residents, clinicians and the council.', checkpoint:'“If resources are limited, we would prioritise … because this reaches … while also …”', options:[
+          ['A','Equal-share package','Give exactly the same amount to every neighbourhood, regardless of existing barriers.',{equity:-5,access:5,wellbeing:4,feasibility:10},'The distribution looks equal, but equal spending does not guarantee equal ability to benefit.',{helps:['maya','luca','aisha','noah'],misses:[]}],
+          ['B','Access-first package','Fund mobile clinics, transport vouchers and supported telehealth hubs.',{equity:10,access:15,wellbeing:7,feasibility:4},'Luca and Noah gain practical routes into care, and the whole region gains flexibility. Housing and food pressures remain less directly addressed.',{helps:['luca','noah','aisha'],misses:[]}],
+          ['C','Living-conditions package','Fund housing repairs, food access and neighbourhood environmental improvements.',{equity:11,access:3,wellbeing:15,feasibility:3},'Aisha and Noah benefit strongly from upstream action, but Luca’s geographical access problem remains.',{helps:['aisha','noah'],misses:['luca']}],
+          ['D','Balanced equity package','Target high-barrier households with a hybrid access network plus housing/food referral and community outreach.',{equity:12,access:12,wellbeing:10,feasibility:2},'The package does less of everything than a single-focus strategy, but it is the strongest all-round attempt to prevent barriers from stacking up.',{helps:['luca','aisha','noah','maya'],misses:[]}],
+          ['E','Hospital-first package','Spend most of the budget on extra beds, scanners and specialist appointments at the central hospital.',{equity:-6,access:4,wellbeing:3,feasibility:6},'Clinical capacity improves, but the people who struggle to reach or use the hospital may still experience the same postcode gap.',{helps:['maya','aisha'],misses:['luca','noah']}]
+        ]},
+        { icon:'📊', label:'Prove the gap is shrinking', characters:['maya','luca','aisha','noah'], question:'Six months later, what should be the headline measure of success?', note:'The council wants one dashboard. Your job is to show whether the programme improved health equity — not merely activity.', checkpoint:'“If the postcode gap is narrowing, we should see … between high-barrier and low-barrier areas.”', options:[
+          ['A','Total number of appointments','Show how many appointments were delivered across the whole region.',{equity:0,access:5,wellbeing:1,feasibility:12},'Activity is easy to count, but a larger total can hide persistent gaps between neighbourhoods.',{helps:['maya','luca','aisha','noah'],misses:[]}],
+          ['B','Average satisfaction score','Report one average satisfaction score for all patients.',{equity:-2,access:1,wellbeing:3,feasibility:10},'Experience matters, but an average excludes people who never accessed the service and can hide postcode differences.',{helps:['maya','aisha'],misses:['luca','noah']}],
+          ['C','Total programme cost','Judge success mainly by whether spending stayed within budget.',{equity:-4,access:0,wellbeing:0,feasibility:14},'Budget control is necessary, but it does not show whether health barriers or inequalities changed.',{helps:[],misses:['luca','aisha','noah']}],
+          ['D','Equity-gap dashboard','Compare timely access, missed appointments and avoidable urgent-care use between high-barrier and low-barrier postcodes.',{equity:10,access:8,wellbeing:5,feasibility:8},'The dashboard directly tests whether the gap is narrowing and makes hidden differences visible. Good subgroup data are essential.',{helps:['maya','luca','aisha','noah'],misses:[]}],
+          ['E','Campaign reach on social media','Use views, likes and shares as the main indicator.',{equity:-5,access:-2,wellbeing:0,feasibility:13},'Reach is easy to display but says little about access, health outcomes or residents who are digitally excluded.',{helps:['maya','aisha'],misses:['luca','noah']}]
         ]}
       ],
-      pitch: ['Problem & determinant','Intervention','Equity trade-off','Impact measure'],
-      finalPrompt: 'Explain which social determinant you prioritised, what intervention you chose, who receives extra support and how you will know the health gap is narrowing.'
+      pitch: ['What the profiles reveal','Access & living conditions','Crisis response & policy package','How we will measure equity'],
+      finalPrompt: 'Explain which two profiles faced the greatest cumulative barriers, identify the determinants that mattered most, defend your response package and show how you would measure whether the postcode gap is actually narrowing.'
     },
 
     3: {
@@ -306,6 +326,82 @@
     }
   };
 
+  const S2_CHARACTERS = {
+    maya: {name:'Maya',age:20,area:'Riverside',tag:'Connected city area',icon:'🌳',skin:'#9b6547',hair:'#2d1b16',shirt:'#4267a9',facts:['Stable housing','Bus every 10 min','GP 8 min away','Reliable broadband','Park & supermarket nearby'],protect:'Strong access + stable environment'},
+    luca: {name:'Luca',age:20,area:'North Moor',tag:'Rural village',icon:'🌾',skin:'#d39a72',hair:'#5a3823',shirt:'#5b8c5a',facts:['Specialist 55 km away','Two buses per day','Patchy broadband','Family support nearby','Limited local services'],protect:'Strong social support · weak access'},
+    aisha:{name:'Aisha',age:20,area:'Eastbank',tag:'Dense urban neighbourhood',icon:'🏙️',skin:'#7d4c34',hair:'#201713',shirt:'#a54e72',facts:['Overcrowded rental','Damp & mould','Heavy traffic pollution','Tight food budget','GP nearby · long waits'],protect:'Strong community network · housing pressure'},
+    noah: {name:'Noah',age:20,area:'Station Lodge',tag:'Temporary accommodation',icon:'🧳',skin:'#c78462',hair:'#8c5a3c',shirt:'#8466a8',facts:['Temporary housing','Zero-hours shifts','Low mobile-data allowance','Often postpones appointments','Limited local support'],protect:'Flexible location · unstable daily conditions'}
+  };
+
+  let s2SoundOn = (()=>{try{return localStorage.getItem('pheng_s2_sound')!=='off'}catch{return true}})();
+  let s2AudioCtx = null;
+  function s2Sound(kind='tap'){
+    if(!s2SoundOn)return;
+    try{
+      const AC=window.AudioContext||window.webkitAudioContext;if(!AC)return;
+      if(!s2AudioCtx)s2AudioCtx=new AC();
+      if(s2AudioCtx.state==='suspended')s2AudioCtx.resume();
+      const now=s2AudioCtx.currentTime;
+      const notes={tap:[[420,0,.055]],select:[[520,0,.06],[660,.055,.07]],reveal:[[440,0,.08],[660,.08,.09],[880,.17,.11]],alert:[[740,0,.10],[480,.11,.10],[740,.22,.10]],finish:[[523,0,.10],[659,.10,.10],[784,.20,.16]],reset:[[330,0,.08],[260,.08,.10]]}[kind]||[[420,0,.06]];
+      notes.forEach(([freq,delay,dur])=>{
+        const osc=s2AudioCtx.createOscillator(),gain=s2AudioCtx.createGain();
+        osc.type=kind==='alert'?'square':'sine';osc.frequency.setValueAtTime(freq,now+delay);
+        gain.gain.setValueAtTime(0.0001,now+delay);gain.gain.exponentialRampToValueAtTime(kind==='alert'?0.055:0.035,now+delay+.008);gain.gain.exponentialRampToValueAtTime(0.0001,now+delay+dur);
+        osc.connect(gain);gain.connect(s2AudioCtx.destination);osc.start(now+delay);osc.stop(now+delay+dur+.02);
+      });
+    }catch{}
+  }
+  function refreshS2SoundButton(){
+    const b=q('#s2SoundToggle');if(!b)return;b.textContent=s2SoundOn?'🔊 Sound effects: ON':'🔇 Sound effects: OFF';b.setAttribute('aria-pressed',String(s2SoundOn));
+  }
+  function setupS2SoundButton(){
+    const b=q('#s2SoundToggle');if(!b||b.dataset.bound)return;b.dataset.bound='1';refreshS2SoundButton();
+    b.addEventListener('click',()=>{s2SoundOn=!s2SoundOn;try{localStorage.setItem('pheng_s2_sound',s2SoundOn?'on':'off')}catch{}refreshS2SoundButton();if(s2SoundOn)s2Sound('reveal')});
+  }
+  function s2Portrait(id){
+    const c=S2_CHARACTERS[id];if(!c)return '';
+    const hair=id==='aisha'?`<path d="M29 34c0-15 9-25 23-25 15 0 24 11 24 27l-5 3c-3-12-10-18-20-18-9 0-15 5-18 17z" fill="${c.hair}"/><circle cx="29" cy="36" r="7" fill="${c.hair}"/><circle cx="75" cy="36" r="7" fill="${c.hair}"/>`:`<path d="M29 34c2-18 14-25 25-25 12 0 21 7 23 24-8-6-16-9-25-9-9 0-16 3-23 10z" fill="${c.hair}"/>`;
+    return `<svg class="s2-portrait-svg" viewBox="0 0 104 104" role="img" aria-label="Illustrated portrait of ${escapeHtml(c.name)}"><rect width="104" height="104" rx="24" fill="currentColor" opacity=".10"/>${hair}<ellipse cx="52" cy="44" rx="21" ry="24" fill="${c.skin}"/><circle cx="44" cy="43" r="2" fill="#1e2025"/><circle cx="60" cy="43" r="2" fill="#1e2025"/><path d="M45 55c5 4 10 4 15 0" fill="none" stroke="#6b3d32" stroke-width="2.2" stroke-linecap="round"/><path d="M20 104c3-24 15-35 32-35s29 11 32 35" fill="${c.shirt}"/><circle cx="84" cy="20" r="14" fill="white" opacity=".92"/><text x="84" y="25" text-anchor="middle" font-size="15">${c.icon}</text></svg>`;
+  }
+  function s2CharacterCard(id,compact=false,active=true){
+    const c=S2_CHARACTERS[id];if(!c)return '';
+    return `<article class="s2-character-card ${compact?'compact':''} ${active?'active':'muted'}" data-character="${id}"><div class="s2-character-portrait">${s2Portrait(id)}</div><div class="s2-character-copy"><span class="s2-postcode">${escapeHtml(c.area)}</span><h5>${escapeHtml(c.name)}, ${c.age}</h5><small>${escapeHtml(c.tag)}</small>${compact?'':`<ul>${c.facts.map(f=>`<li>${escapeHtml(f)}</li>`).join('')}</ul><p class="s2-protect"><strong>Snapshot:</strong> ${escapeHtml(c.protect)}</p>`}</div></article>`;
+  }
+  function s2CaseBoard(){
+    return `<section class="s2-case-board"><div class="s2-case-head"><div><span class="eyebrow">Case files · fictional composite profiles</span><h4>Same age. Same health-care message. Four very different postcodes.</h4><p>All four are 20. All four receive the same instruction to book a respiratory review within 14 days. Your job is to find out why “equal advice” may still produce unequal health outcomes.</p></div><div class="s2-letter" aria-label="Appointment message illustration"><span>✉️</span><strong>PLEASE BOOK</strong><small>Respiratory review<br>within 14 days</small></div></div><div class="s2-character-grid">${Object.keys(S2_CHARACTERS).map(id=>s2CharacterCard(id)).join('')}</div><div class="s2-determinant-ribbon" aria-label="Social determinants to watch"><span>🏠 Housing</span><span>💷 Income</span><span>🚌 Transport</span><span>📶 Digital access</span><span>🌫️ Environment</span><span>🤝 Social support</span></div></section>`;
+  }
+  function s2CharacterStrip(activeIds=[]){
+    const ids=Object.keys(S2_CHARACTERS);const active=new Set(activeIds.length?activeIds:ids);
+    return `<section class="s2-character-strip"><div class="s2-strip-title"><strong>Who is affected in this round?</strong><span>Compare barriers — do not reduce a person to one factor.</span></div><div class="s2-character-grid compact">${ids.map(id=>s2CharacterCard(id,true,active.has(id))).join('')}</div></section>`;
+  }
+  function s2PeopleImpact(meta={}){
+    const helps=meta.helps||[],misses=meta.misses||[];
+    const chips=ids=>ids.map(id=>`<span class="s2-person-chip">${S2_CHARACTERS[id]?.icon||'•'} ${escapeHtml(S2_CHARACTERS[id]?.name||id)}</span>`).join('');
+    return `<div class="s2-people-impact"><div><strong>Who benefits most?</strong>${helps.length?chips(helps):'<span class="s2-none">No profile clearly benefits.</span>'}</div><div><strong>Who may still be missed?</strong>${misses.length?chips(misses):'<span class="s2-none good">No obvious profile is left out by this choice.</span>'}</div></div>`;
+  }
+  function s2HeroVisual(){
+    return `<div class="s2-hero-collage" aria-label="Four illustrated fictional residents in different postcodes"><div class="s2-mini-map"><span>🌳 Riverside</span><i>→</i><span>🌾 North Moor</span><i>↘</i><span>🏙️ Eastbank</span><i>→</i><span>🧳 Station Lodge</span></div><div class="s2-hero-faces">${Object.keys(S2_CHARACTERS).map(id=>`<div title="${escapeHtml(S2_CHARACTERS[id].name)}">${s2Portrait(id)}</div>`).join('')}</div><strong>Same age · same message · different barriers</strong></div>`;
+  }
+  function s2HowToPlay(){
+    return `<section class="s2-how-to"><div><span>1</span><strong>Read the case files</strong><small>Compare all four residents before judging vulnerability.</small></div><div><span>2</span><strong>Make 6 team decisions</strong><small>Discuss all five options; confirm one shared choice.</small></div><div><span>3</span><strong>Watch the consequences</strong><small>Scores and character impacts update immediately.</small></div><div><span>4</span><strong>Say every Pitch Checkpoint</strong><small>Your final 2-minute briefing is built during the game.</small></div></section>`;
+  }
+
+  function s2PitchBuilder(state){
+    const c=i=>optionFor(2,i,state.choices[i]);
+    const parts=[
+      ['What the profiles reveal',[0],c(0)?`✓ ${c(0)[1]}`:'Compare the four profiles first'],
+      ['Access + living conditions',[1,2],c(1)&&c(2)?`✓ ${c(1)[1]} · ${c(2)[1]}`:'Decisions 2–3 will build this part'],
+      ['Crisis + policy package',[3,4],c(3)&&c(4)?`✓ ${c(3)[1]} · ${c(4)[1]}`:'Decisions 4–5 will build this part'],
+      ['How you will measure equity',[5],c(5)?`✓ ${c(5)[1]}`:'Decision 6 will complete the briefing']
+    ];
+    const ready=parts.filter(p=>p[1].every(i=>Boolean(c(i)))).length;
+    return `<section class="extra-pitch-builder s2-pitch-builder"><div class="s2-pitch-heading"><div><span class="eyebrow">Live Pitch Builder</span><h4>Your 2-minute briefing is being built now.</h4></div><span class="s2-ready-count">${ready}/4 parts ready</span></div><div class="extra-pitch-parts">${parts.map((p,i)=>{const done=p[1].every(x=>Boolean(c(x)));return `<div class="extra-pitch-part ${done?'done':''}"><strong>${i+1} · ${escapeHtml(p[0])}</strong><span>${escapeHtml(p[2])}</span></div>`}).join('')}</div><p class="s2-pitch-rule"><strong>Rule:</strong> after every consequence, say the checkpoint sentence aloud. By the end, nobody should be inventing the pitch from scratch.</p></section>`;
+  }
+  function s2FinalScript(state){
+    const o=i=>optionFor(2,i,state.choices[i]);
+    return `<p><strong>1 · What the profiles reveal:</strong> “At first, we chose <mark>${escapeHtml(o(0)?.[1]||'—')}</mark>. The two profiles facing the greatest cumulative barriers were … because …”</p><p><strong>2 · Access & living conditions:</strong> “For access, we chose <mark>${escapeHtml(o(1)?.[1]||'—')}</mark>. For upstream living conditions, we chose <mark>${escapeHtml(o(2)?.[1]||'—')}</mark>. If …, people …”</p><p><strong>3 · Crisis & package:</strong> “During the surprise event, we chose <mark>${escapeHtml(o(3)?.[1]||'—')}</mark>. Our longer-term package was <mark>${escapeHtml(o(4)?.[1]||'—')}</mark>. The main trade-off is …”</p><p><strong>4 · Prove the gap is shrinking:</strong> “We would monitor <mark>${escapeHtml(o(5)?.[1]||'—')}</mark>. If the postcode gap is narrowing, we should see …”</p>`;
+  }
+
   let activeSession = null;
   let timerHandle = null;
   let timerSeconds = 120;
@@ -365,6 +461,7 @@
     return `<div class="extra-score-grid">${Object.entries(SESSIONS[n].scores).map(([k,label])=>`<div class="extra-score"><div class="extra-score-head"><span>${escapeHtml(label)}</span><strong>${scores[k]}</strong></div><div class="extra-score-track"><div style="width:${scores[k]}%"></div></div></div>`).join('')}</div>`;
   }
   function pitchBuilder(n,state){
+    if(n===2)return s2PitchBuilder(state);
     const cfg=SESSIONS[n];
     return `<section class="extra-pitch-builder"><span class="eyebrow">Pitch Builder</span><h4>Your 2-minute briefing is built as you go.</h4><div class="extra-pitch-parts">${cfg.pitch.map((label,i)=>{const opt=optionFor(n,i,state.choices[i]);return `<div class="extra-pitch-part ${opt?'done':''}"><strong>${i+1} · ${escapeHtml(label)}</strong><span>${opt?`✓ ${escapeHtml(opt[1])}`:'Waiting for this decision'}</span></div>`}).join('')}</div></section>`;
   }
@@ -430,7 +527,7 @@
 
   function detailShell(n){
     const c=SESSIONS[n];
-    return `<section id="session${n}Detail" class="session-detail extra-session-detail" hidden aria-labelledby="session${n}DetailTitle"><div class="session-detail-toolbar"><button type="button" data-extra-back>← Back to sessions</button><span class="badge">Session ${n}</span></div><section class="extra-session-hero"><div><span class="eyebrow">Session ${n} · ${escapeHtml(c.subtitle)}</span><h3 id="session${n}DetailTitle" tabindex="-1">${escapeHtml(c.title)}</h3><p>${escapeHtml(c.description)}</p><div class="extra-session-meta"><span>👥 ${escapeHtml(c.team)}</span><span>⏱ ${escapeHtml(c.duration)}</span><span>🎙 ${escapeHtml(c.output)}</span><span>🧭 deterministic choices</span></div><div class="extra-session-actions"><button class="primary-action" id="s${n}StartHero">▶ Start / resume mission</button><button id="s${n}ResetHero">↻ Reset this session</button></div></div><div class="extra-session-hero-visual" aria-hidden="true">${c.icons.map(i=>`<div>${i}</div>`).join('')}</div></section><section id="s${n}Workspace" class="extra-session-workspace" aria-live="polite"></section>${languageStrip(n)}</section>`;
+    return `<section id="session${n}Detail" class="session-detail extra-session-detail ${n===2?'s2-postcode-detail':''}" hidden aria-labelledby="session${n}DetailTitle"><div class="session-detail-toolbar"><button type="button" data-extra-back>← Back to sessions</button><span class="badge">Session ${n}</span>${n===2?'<span class="badge s2-version-badge">POSTCODE LOTTERY · V16</span>':''}</div><section class="extra-session-hero ${n===2?'s2-session-hero':''}"><div><span class="eyebrow">Session ${n} · ${escapeHtml(c.subtitle)}</span><h3 id="session${n}DetailTitle" tabindex="-1">${escapeHtml(c.title)}</h3><p>${escapeHtml(c.description)}</p><div class="extra-session-meta"><span>👥 ${escapeHtml(c.team)}</span><span>⏱ ${escapeHtml(c.duration)}</span><span>🎙 ${escapeHtml(c.output)}</span><span>🧭 deterministic choices</span>${n===2?'<span>🎧 short sound cues</span>':''}</div><div class="extra-session-actions"><button class="primary-action" id="s${n}StartHero">▶ Start / resume mission</button><button id="s${n}ResetHero">↻ Reset this session</button>${n===2?'<button type="button" id="s2SoundToggle" class="s2-sound-toggle" aria-pressed="true">🔊 Sound effects: ON</button>':''}</div></div><div class="extra-session-hero-visual ${n===2?'s2-hero-visual':''}">${n===2?s2HeroVisual():c.icons.map(i=>`<div>${i}</div>`).join('')}</div></section><section id="s${n}Workspace" class="extra-session-workspace" aria-live="polite"></section>${languageStrip(n)}</section>`;
   }
 
   function hideAllDetails(){
@@ -459,14 +556,15 @@
   function renderOverview(n,scroll=true){
     const cfg=SESSIONS[n],state=loadState(n),ws=q(`#s${n}Workspace`);if(!ws)return;
     const allowed=cfg.teamSizes||[3,4]; if(!allowed.includes(Number(state.teamSize)))state.teamSize=allowed[0]; saveStateExtra(n,state);
-    ws.innerHTML=`<article><div class="extra-session-overview-grid"><section class="extra-session-panel"><span class="eyebrow">Mission map</span><h4>Four decisions → one structured briefing</h4><p>Discuss every option before confirming one shared answer. After each consequence, complete the speaking checkpoint aloud.</p>${missionMap(n)}</section><section class="extra-session-panel"><span class="eyebrow">Team roles</span><h4>Give everyone a job.</h4><div class="extra-role-grid">${cfg.roles.map(r=>`<div class="extra-role-card"><strong>${escapeHtml(r[0])}</strong><small>${escapeHtml(r[1])}</small></div>`).join('')}</div><label>Team size <select id="s${n}TeamSize">${allowed.map(x=>`<option value="${x}" ${Number(state.teamSize)===x?'selected':''}>${x} student${x>1?'s':''}</option>`).join('')}</select></label><button id="s${n}AssignRoles">Assign roles</button><div id="s${n}RoleBox" class="extra-role-assignment" hidden></div></section></div><section class="extra-session-panel"><span class="eyebrow">Your final output</span><h4>${escapeHtml(cfg.output)}</h4><p>${escapeHtml(cfg.finalPrompt)}</p><p><strong>Same choices = same scores and same decision code.</strong> There is no random scoring.</p><div class="extra-session-actions"><button class="primary-action" id="s${n}Start">${state.completed?'🏁 View final briefing':state.choices.length?'▶ Resume mission':'▶ Start mission'}</button>${state.choices.length?`<button id="s${n}Reset">↻ Reset choices</button>`:''}<button data-extra-back>← Back to sessions</button></div></section>${pitchBuilder(n,state)}</article>`;
+    ws.innerHTML=`<article>${n===2?s2HowToPlay()+s2CaseBoard():''}<div class="extra-session-overview-grid"><section class="extra-session-panel"><span class="eyebrow">Mission map</span><h4>${cfg.steps.length} decisions → one structured briefing</h4><p>Discuss every option before confirming one shared answer. After each consequence, complete the speaking checkpoint aloud.</p>${missionMap(n)}</section><section class="extra-session-panel"><span class="eyebrow">Team roles</span><h4>Give everyone a job.</h4><div class="extra-role-grid">${cfg.roles.map(r=>`<div class="extra-role-card"><strong>${escapeHtml(r[0])}</strong><small>${escapeHtml(r[1])}</small></div>`).join('')}</div><label>Team size <select id="s${n}TeamSize">${allowed.map(x=>`<option value="${x}" ${Number(state.teamSize)===x?'selected':''}>${x} student${x>1?'s':''}</option>`).join('')}</select></label><button id="s${n}AssignRoles">Assign roles</button><div id="s${n}RoleBox" class="extra-role-assignment" hidden></div></section></div><section class="extra-session-panel"><span class="eyebrow">Your final output</span><h4>${escapeHtml(cfg.output)}</h4><p>${escapeHtml(cfg.finalPrompt)}</p><p><strong>Same choices = same scores and same decision code.</strong> There is no random scoring.</p>${n===2?'<p class="s2-fiction-note">The four residents are fictional composite profiles created for learning. The aim is to analyse barriers, not stereotype people or places.</p>':''}<div class="extra-session-actions"><button class="primary-action" id="s${n}Start">${state.completed?'🏁 View final briefing':state.choices.length?'▶ Resume mission':'▶ Start mission'}</button>${state.choices.length?`<button id="s${n}Reset">↻ Reset choices</button>`:''}<button data-extra-back>← Back to sessions</button></div></section>${pitchBuilder(n,state)}</article>`;
     const team=q(`#s${n}TeamSize`); if(team)team.onchange=()=>{state.teamSize=Number(team.value);saveStateExtra(n,state);const rb=q(`#s${n}RoleBox`);if(rb&&!rb.hidden)paintRoles(n,state)};
-    q(`#s${n}AssignRoles`)?.addEventListener('click',()=>paintRoles(n,state));
+    q(`#s${n}AssignRoles`)?.addEventListener('click',()=>{if(n===2)s2Sound('select');paintRoles(n,state)});
     q(`#s${n}Start`)?.addEventListener('click',()=>{if(state.completed)renderFinal(n);else renderStep(n)});
-    q(`#s${n}Reset`)?.addEventListener('click',()=>{if(confirm('Reset this session and remove its saved choices on this device?')){resetState(n);renderOverview(n)}});
+    q(`#s${n}Reset`)?.addEventListener('click',()=>{if(confirm('Reset this session and remove its saved choices on this device?')){if(n===2)s2Sound('reset');resetState(n);renderOverview(n)}});
     qa('[data-extra-back]',ws).forEach(b=>b.addEventListener('click',()=>showLibrary(true)));
     if(scroll)ws.scrollIntoView({behavior:'smooth',block:'start'});
   }
+
   function paintRoles(n,state){
     state.teamSize=Number(q(`#s${n}TeamSize`)?.value||state.teamSize||4);saveStateExtra(n,state);
     const box=q(`#s${n}RoleBox`);if(!box)return;box.hidden=false;box.innerHTML=`<strong>Suggested role split</strong><p>${rolePlan(n,state.teamSize).map(escapeHtml).join('<br>')}</p><small>You may swap roles. The roles organise discussion; they do not change the scores.</small>`;
@@ -475,21 +573,23 @@
   function renderStep(n){
     stopTimer();const cfg=SESSIONS[n],state=loadState(n);if(state.completed||state.step>=cfg.steps.length){renderFinal(n);return;}if(state.outcome){renderOutcome(n);return;}
     const step=cfg.steps[state.step],scores=scoresFor(n,state.choices),progress=Math.round(((state.step+1)/cfg.steps.length)*100),ws=q(`#s${n}Workspace`);
-    ws.innerHTML=`<article><div class="extra-progress"><div><strong>Decision ${state.step+1} of ${cfg.steps.length}</strong><small>${escapeHtml(step.label)}</small></div><div class="extra-progress-count">${state.step+1}/${cfg.steps.length}</div><div class="extra-progress-track" role="progressbar" aria-valuemin="1" aria-valuemax="${cfg.steps.length}" aria-valuenow="${state.step+1}"><div style="width:${progress}%"></div></div></div><aside class="extra-decision-visual"><span class="icon" aria-hidden="true">${step.icon}</span><div><strong>${escapeHtml(step.label)}</strong><small>${escapeHtml(step.note)}</small></div><span class="extra-code">${escapeHtml(decisionCode(n,state))}</span></aside><h3 id="s${n}StepHeading" tabindex="-1">${escapeHtml(step.question)}</h3>${scoreBoard(n,scores)}${pitchBuilder(n,state)}<div class="extra-choice-grid">${step.options.map(o=>`<button type="button" class="extra-choice-card" data-extra-choice="${o[0]}" aria-pressed="false"><span class="extra-choice-letter">${o[0]}</span><strong>${escapeHtml(o[1])}</strong><span>${escapeHtml(o[2])}</span></button>`).join('')}</div><div class="extra-step-actions"><button class="primary-action" id="s${n}Confirm" disabled>Confirm this group choice</button><button id="s${n}Overview">Session overview</button><button data-extra-back>← Back to sessions</button></div><p id="s${n}ChoiceHint" class="fiction-note" role="status" aria-live="polite">Discuss all four options, then select one shared answer.</p></article>`;
-    let selected=null;qa('[data-extra-choice]',ws).forEach(btn=>btn.onclick=()=>{selected=btn.dataset.extraChoice;qa('[data-extra-choice]',ws).forEach(x=>{const on=x===btn;x.classList.toggle('selected',on);x.setAttribute('aria-pressed',String(on))});q(`#s${n}Confirm`).disabled=false;q(`#s${n}ChoiceHint`).textContent=`Selected option ${selected}. Confirm only when the whole team agrees.`});
-    q(`#s${n}Confirm`).onclick=()=>{if(!selected)return;state.choices=state.choices.slice(0,state.step);state.choices[state.step]=selected;state.outcome={stepIndex:state.step,choiceId:selected};saveStateExtra(n,state);renderOutcome(n)};
+    ws.innerHTML=`<article class="${n===2?'s2-round':''}"><div class="extra-progress"><div><strong>Decision ${state.step+1} of ${cfg.steps.length}</strong><small>${escapeHtml(step.label)}</small></div><div class="extra-progress-count">${state.step+1}/${cfg.steps.length}</div><div class="extra-progress-track" role="progressbar" aria-valuemin="1" aria-valuemax="${cfg.steps.length}" aria-valuenow="${state.step+1}"><div style="width:${progress}%"></div></div></div><aside class="extra-decision-visual ${n===2&&state.step===3?'s2-alert-card':''}"><span class="icon" aria-hidden="true">${step.icon}</span><div><strong>${escapeHtml(step.label)}</strong><small>${escapeHtml(step.note)}</small></div><span class="extra-code">${escapeHtml(decisionCode(n,state))}</span></aside>${n===2?s2CharacterStrip(step.characters||[]):''}<h3 id="s${n}StepHeading" tabindex="-1">${escapeHtml(step.question)}</h3>${scoreBoard(n,scores)}${pitchBuilder(n,state)}<div class="extra-choice-grid ${n===2?'s2-choice-grid':''}">${step.options.map(o=>`<button type="button" class="extra-choice-card" data-extra-choice="${o[0]}" aria-pressed="false"><span class="extra-choice-letter">${o[0]}</span><strong>${escapeHtml(o[1])}</strong><span>${escapeHtml(o[2])}</span></button>`).join('')}</div><div class="extra-step-actions"><button class="primary-action" id="s${n}Confirm" disabled>Confirm this group choice</button><button id="s${n}Overview">Session overview</button><button data-extra-back>← Back to sessions</button></div><p id="s${n}ChoiceHint" class="fiction-note" role="status" aria-live="polite">Discuss all ${step.options.length} options, then select one shared answer.</p></article>`;
+    let selected=null;qa('[data-extra-choice]',ws).forEach(btn=>btn.onclick=()=>{selected=btn.dataset.extraChoice;if(n===2)s2Sound('select');qa('[data-extra-choice]',ws).forEach(x=>{const on=x===btn;x.classList.toggle('selected',on);x.setAttribute('aria-pressed',String(on))});q(`#s${n}Confirm`).disabled=false;q(`#s${n}ChoiceHint`).textContent=`Selected option ${selected}. Confirm only when the whole team agrees.`});
+    q(`#s${n}Confirm`).onclick=()=>{if(!selected)return;if(n===2)s2Sound('tap');state.choices=state.choices.slice(0,state.step);state.choices[state.step]=selected;state.outcome={stepIndex:state.step,choiceId:selected};saveStateExtra(n,state);renderOutcome(n)};
     q(`#s${n}Overview`).onclick=()=>renderOverview(n);
     qa('[data-extra-back]',ws).forEach(b=>b.onclick=()=>showLibrary(true));
+    if(n===2)s2Sound(state.step===3?'alert':'reveal');
     requestAnimationFrame(()=>q(`#s${n}StepHeading`)?.focus());ws.scrollIntoView({behavior:'smooth',block:'start'});
   }
 
   function renderOutcome(n){
     const cfg=SESSIONS[n],state=loadState(n),r=state.outcome;if(!r){renderStep(n);return;}const step=cfg.steps[r.stepIndex],opt=optionFor(n,r.stepIndex,r.choiceId);if(!step||!opt){state.outcome=null;saveStateExtra(n,state);renderStep(n);return;}
     const before=scoresFor(n,state.choices.slice(0,r.stepIndex)),after=scoresFor(n,state.choices),impact=impacts(n,r.stepIndex,opt,before),ws=q(`#s${n}Workspace`);
-    ws.innerHTML=`<article><div class="extra-progress"><div><strong>Decision ${r.stepIndex+1} complete</strong><small>Read the consequence, then do the Pitch Checkpoint aloud.</small></div><div class="extra-progress-count">${r.stepIndex+1}/${cfg.steps.length}</div><div class="extra-progress-track"><div style="width:${Math.round(((r.stepIndex+1)/cfg.steps.length)*100)}%"></div></div></div><aside class="extra-decision-visual"><span class="icon" aria-hidden="true">${step.icon}</span><div><strong>${escapeHtml(step.label)} · consequence</strong><small>You chose ${escapeHtml(opt[0]+'. '+opt[1])}</small></div><span class="extra-code">${escapeHtml(decisionCode(n,state))}</span></aside>${scoreBoard(n,after)}<div class="extra-consequence"><strong>What happens next?</strong><p>${escapeHtml(opt[4])}</p><div class="extra-impact-pills">${impact.map(([k,v])=>`<span>${escapeHtml(cfg.scores[k])} ${v>=0?'+':''}${v}</span>`).join('')}</div></div><aside class="extra-checkpoint"><span class="icon" aria-hidden="true">🎙️</span><div><strong>Pitch Checkpoint · say one sentence now</strong><p>${escapeHtml(step.checkpoint)}</p><small>Agree on the idea before continuing. This sentence prepares one part of your final briefing.</small></div></aside>${pitchBuilder(n,state)}<div class="extra-step-actions"><button class="primary-action" id="s${n}Continue">${r.stepIndex===cfg.steps.length-1?'Build final briefing →':'Checkpoint done · next decision →'}</button><button id="s${n}OutcomeOverview">Session overview</button><button data-extra-back>← Back to sessions</button></div></article>`;
-    q(`#s${n}Continue`).onclick=()=>{state.step=r.stepIndex+1;state.outcome=null;if(state.step>=cfg.steps.length){state.completed=true;markComplete(n)}saveStateExtra(n,state);state.completed?renderFinal(n):renderStep(n)};
+    ws.innerHTML=`<article class="${n===2?'s2-outcome':''}"><div class="extra-progress"><div><strong>Decision ${r.stepIndex+1} complete</strong><small>Read the consequence, then do the Pitch Checkpoint aloud.</small></div><div class="extra-progress-count">${r.stepIndex+1}/${cfg.steps.length}</div><div class="extra-progress-track"><div style="width:${Math.round(((r.stepIndex+1)/cfg.steps.length)*100)}%"></div></div></div><aside class="extra-decision-visual"><span class="icon" aria-hidden="true">${step.icon}</span><div><strong>${escapeHtml(step.label)} · consequence</strong><small>You chose ${escapeHtml(opt[0]+'. '+opt[1])}</small></div><span class="extra-code">${escapeHtml(decisionCode(n,state))}</span></aside>${scoreBoard(n,after)}<div class="extra-consequence ${n===2?'s2-consequence':''}"><strong>What happens next?</strong><p>${escapeHtml(opt[4])}</p><div class="extra-impact-pills">${impact.map(([k,v])=>`<span>${escapeHtml(cfg.scores[k])} ${v>=0?'+':''}${v}</span>`).join('')}</div>${n===2?s2PeopleImpact(opt[5]||{}):''}</div><aside class="extra-checkpoint"><span class="icon" aria-hidden="true">🎙️</span><div><strong>Pitch Checkpoint · say one sentence now</strong><p>${escapeHtml(step.checkpoint)}</p><small>Agree on the idea before continuing. This sentence prepares one part of your final briefing.</small></div></aside>${pitchBuilder(n,state)}<div class="extra-step-actions"><button class="primary-action" id="s${n}Continue">${r.stepIndex===cfg.steps.length-1?'Build final briefing →':'Checkpoint done · next decision →'}</button><button id="s${n}OutcomeOverview">Session overview</button><button data-extra-back>← Back to sessions</button></div></article>`;
+    q(`#s${n}Continue`).onclick=()=>{if(n===2)s2Sound('tap');state.step=r.stepIndex+1;state.outcome=null;if(state.step>=cfg.steps.length){state.completed=true;markComplete(n)}saveStateExtra(n,state);state.completed?renderFinal(n):renderStep(n)};
     q(`#s${n}OutcomeOverview`).onclick=()=>renderOverview(n);
     qa('[data-extra-back]',ws).forEach(b=>b.onclick=()=>showLibrary(true));
+    if(n===2)s2Sound('reveal');
     ws.scrollIntoView({behavior:'smooth',block:'start'});
   }
 
@@ -500,15 +600,16 @@
     const [best]=Object.entries(scores).sort((a,b)=>b[1]-a[1])[0];return ['🧭',`${SESSIONS[n].scores[best]}-first strategy`,'Your plan has a clear strength. In the briefing, acknowledge the trade-off created by the lower-scoring priority.'];
   }
   function finalScript(n,state){
+    if(n===2)return s2FinalScript(state);
     const cfg=SESSIONS[n];return cfg.pitch.map((label,i)=>{const opt=optionFor(n,i,state.choices[i]);return `<p><strong>${i+1} · ${escapeHtml(label)}:</strong> “We chose <mark>${escapeHtml(opt?opt[1]:'—')}</mark>. Our reason is … The key consequence/trade-off is …”</p>`}).join('');
   }
   function renderFinal(n){
     stopTimer();const cfg=SESSIONS[n],state=loadState(n);if(state.choices.length!==cfg.steps.length){state.completed=false;state.step=Math.min(state.choices.length,cfg.steps.length-1);saveStateExtra(n,state);renderStep(n);return;}state.completed=true;markComplete(n);saveStateExtra(n,state);refreshCard(n);
     const scores=scoresFor(n,state.choices),profile=finalProfile(n,scores),ws=q(`#s${n}Workspace`),size=Number(state.teamSize)||4;
-    ws.innerHTML=`<article><div class="group-profile-banner"><div class="group-profile-icon" aria-hidden="true">${profile[0]}</div><div><span class="eyebrow">Session ${n} complete</span><h3 id="s${n}ResultHeading" tabindex="-1">${escapeHtml(profile[1])}</h3><p>${escapeHtml(profile[2])}</p></div></div><div class="extra-session-panel"><div class="extra-progress"><div><strong>Final decision code</strong><small>Fixed choices · same code = same scores</small></div><span class="extra-code">${escapeHtml(decisionCode(n,state))}</span></div>${scoreBoard(n,scores)}</div>${pitchBuilder(n,state)}<div class="extra-final-grid"><section class="extra-session-panel"><span class="eyebrow">Final speaking task</span><h4>${escapeHtml(cfg.output)}</h4><p>${escapeHtml(cfg.finalPrompt)}</p><p><strong>Every student speaks whenever the group has more than one member.</strong> Explain reasoning and one trade-off; do not just list choices.</p>${speakerPlan(n,size)}</section><section class="extra-session-panel"><span class="eyebrow">Ready-to-rehearse scaffold</span><h4>Use the choices — add your reasoning yourselves.</h4><div class="extra-script">${finalScript(n,state)}</div></section></div><section class="extra-timer"><div><span class="eyebrow">Rehearsal</span><h4>Two-minute hard-stop timer</h4><p id="s${n}TimerStatus" role="status" aria-live="polite">Aim to finish between 1:45 and 1:55.</p></div><div class="extra-timer-controls"><strong class="extra-timer-display" id="s${n}TimerDisplay">2:00</strong><button class="primary-action" id="s${n}TimerStart">Start</button><button id="s${n}TimerReset">Reset</button></div></section><div class="extra-step-actions"><button class="primary-action" id="s${n}Replay">↻ Play again</button><button id="s${n}FinalOverview">Session overview</button><button data-extra-back>← Back to sessions</button></div></article>`;
+    ws.innerHTML=`<article class="${n===2?'s2-final':''}"><div class="group-profile-banner"><div class="group-profile-icon" aria-hidden="true">${profile[0]}</div><div><span class="eyebrow">Session ${n} complete</span><h3 id="s${n}ResultHeading" tabindex="-1">${escapeHtml(profile[1])}</h3><p>${escapeHtml(profile[2])}</p></div></div><div class="extra-session-panel"><div class="extra-progress"><div><strong>Final decision code</strong><small>Fixed choices · same code = same scores</small></div><span class="extra-code">${escapeHtml(decisionCode(n,state))}</span></div>${scoreBoard(n,scores)}</div>${pitchBuilder(n,state)}${n===2?`<section class="s2-final-cast"><span class="eyebrow">Back to the four lives</span><h4>Your policy is only fair if you can explain who it helps — and who may still be missed.</h4><div class="s2-character-grid compact">${Object.keys(S2_CHARACTERS).map(id=>s2CharacterCard(id,true,true)).join('')}</div></section>`:''}<div class="extra-final-grid"><section class="extra-session-panel"><span class="eyebrow">Final speaking task</span><h4>${escapeHtml(cfg.output)}</h4><p>${escapeHtml(cfg.finalPrompt)}</p><p><strong>Every student speaks whenever the group has more than one member.</strong> Explain reasoning and one trade-off; do not just list choices.</p>${speakerPlan(n,size)}</section><section class="extra-session-panel"><span class="eyebrow">Ready-to-rehearse scaffold</span><h4>Use the choices — add your reasoning yourselves.</h4><div class="extra-script">${finalScript(n,state)}</div></section></div><section class="extra-timer"><div><span class="eyebrow">Rehearsal</span><h4>Two-minute hard-stop timer</h4><p id="s${n}TimerStatus" role="status" aria-live="polite">Aim to finish between 1:45 and 1:55.</p></div><div class="extra-timer-controls"><strong class="extra-timer-display" id="s${n}TimerDisplay">2:00</strong><button class="primary-action" id="s${n}TimerStart">Start</button><button id="s${n}TimerReset">Reset</button></div></section><div class="extra-step-actions"><button class="primary-action" id="s${n}Replay">↻ Play again</button><button id="s${n}FinalOverview">Session overview</button><button data-extra-back>← Back to sessions</button></div></article>`;
     q(`#s${n}Replay`).onclick=()=>{if(confirm('Start this session again from Decision 1?')){resetState(n);renderStep(n)}};
     q(`#s${n}FinalOverview`).onclick=()=>renderOverview(n);
-    qa('[data-extra-back]',ws).forEach(b=>b.onclick=()=>showLibrary(true));setupTimer(n);requestAnimationFrame(()=>q(`#s${n}ResultHeading`)?.focus());ws.scrollIntoView({behavior:'smooth',block:'start'});
+    qa('[data-extra-back]',ws).forEach(b=>b.onclick=()=>showLibrary(true));setupTimer(n);if(n===2)s2Sound('finish');requestAnimationFrame(()=>q(`#s${n}ResultHeading`)?.focus());ws.scrollIntoView({behavior:'smooth',block:'start'});
   }
 
   function inject(){
@@ -529,10 +630,12 @@
     for(let n=2;n<=7;n++){
       q(`#session${n}CardButton`)?.addEventListener('click',()=>openSession(n));
       q(`#s${n}StartHero`)?.addEventListener('click',()=>{const st=loadState(n);st.completed?renderFinal(n):renderStep(n)});
-      q(`#s${n}ResetHero`)?.addEventListener('click',()=>{if(confirm('Reset this session and remove its saved choices on this device?')){resetState(n);renderOverview(n)}});
+      q(`#s${n}ResetHero`)?.addEventListener('click',()=>{if(confirm('Reset this session and remove its saved choices on this device?')){if(n===2)s2Sound('reset');resetState(n);renderOverview(n)}});
       qa('[data-extra-back]',q(`#session${n}Detail`)).forEach(b=>b.addEventListener('click',()=>showLibrary(true)));
     }
+    if(!loadState(2).completed) clearCompletionSignal(2);
     restoreCompletionSignals();
+    setupS2SoundButton();
     const groupNav=q('[data-page="groupactivity"]'); if(groupNav)groupNav.addEventListener('click',()=>setTimeout(()=>showLibrary(false),0));
     window.addEventListener('hashchange',()=>{if(location.hash==='#groupactivity')setTimeout(()=>showLibrary(false),0);else stopTimer();});
     document.addEventListener('visibilitychange',()=>{if(document.hidden)stopTimer();});
