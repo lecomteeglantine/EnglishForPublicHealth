@@ -1,27 +1,23 @@
-# EnglishForPublicHealth – Group Activity final audit V11
+# EnglishForPublicHealth — Group Activity Session 1 — V12
 
-## Scope
-Audit of Session 1 — **Who Gets the Medicine?** on the deployed V10 codebase.
+Date: 8 September 2026
 
-## Corrections in V11
-1. **Valid session-card HTML** — replaced block-level `div/h3/p` content inside the session `<button>` with valid phrasing elements. This improves cross-browser and assistive-technology reliability.
-2. **Valid option-button HTML** — A–E decision buttons no longer contain block-level paragraphs; option descriptions now use valid inline content.
-3. **Dark/high-contrast CTA contrast** — `Open Session 1` now uses the theme-aware accent text colour rather than fixed white.
-4. **Team-size persistence** — 3/4-student selection is stored locally and restored after reload.
-5. **Session status in library** — card now shows Not started, In progress (x/6), or Completed on this device, with an appropriate Open/Resume/View result CTA.
-6. **Direct exit controls** — decision and consequence screens now include a direct `Back to sessions` action without erasing progress.
-7. **Decision progress** — Decision 1 now visibly starts at 1/6 instead of showing an empty progress bar. The visual track has progressbar semantics for assistive technology.
-8. **State preservation** — navigating back to the session library does not erase confirmed choices; reopening the card resumes correctly.
-9. **Direct-hash startup safety** — opening the site directly at `#groupactivity` can no longer invoke session-state rendering before the Session 1 engine has initialised.
-10. **Version alignment** — app meta, JS/CSS query versions and PWA cache all use V11.
+## Target
+`#groupactivity` → Session 1 → **Who Gets the Medicine? · The Global Access Challenge**
 
-## Determinism guarantee
-Scoring rules are deliberately unchanged from V10: **Ruleset S1-R10**. There is no `Math.random()`, `shuffle()`, date/time input, network input or device-specific input in the Session 1 decision/scoring engine. Therefore identical decision codes under S1-R10 produce identical scores and profiles on different devices.
+## Corrections applied
+- Final oral output changed from 90 seconds to a **2-minute maximum team pitch** everywhere.
+- Added a visible four-part pitch roadmap with a 1:45–1:55 target and 2:00 hard stop.
+- Added a **progressive Pitch Builder** that is derived automatically from confirmed decisions. No extra student data is required.
+- Added a **Pitch Checkpoint after every decision** so the group agrees on one oral sentence before moving on.
+- Added speaking plans for **3-student and 4-student teams**, ensuring every student speaks.
+- Added a final ready-to-rehearse scaffold using the team’s actual choices, plus vocabulary and readiness checks.
+- Added a simple **2:00 rehearsal timer** with Start/Pause/Reset.
+- Preserved **Ruleset S1-R10** and all scoring values: same six choices still produce the same decision code, scores and final profile.
+- Bumped the UI engine to V12 and retained/added the V11 accessibility/state hardening: persistent team size, session status, progressbar semantics and full mobile navigation.
+- Existing visual scenario/country illustrations were retained and the new pitch roadmap/checkpoints add visual structure without external dependencies.
+- Updated the service-worker cache and asset query strings so GitHub Pages/PWA users receive the new build instead of a stale cached copy.
+- Verified direct loading of `#groupactivity` so the page does not fail when students open the activity from the shared anchor URL.
 
-## Static checks
-- JavaScript syntax checked.
-- 6 decision steps.
-- 5 fixed options (A–E) at each step.
-- No duplicate static HTML IDs.
-- All PWA assets referenced by the service worker are present.
-- No scoring-rule changes in V11.
+## Deployment
+Upload **all files from this ZIP to the repository root**. There is no enclosing folder in the ZIP.
