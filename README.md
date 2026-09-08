@@ -1,18 +1,17 @@
-# EnglishForPublicHealth — V18
+# EnglishForPublicHealth — V19
 
-This package contains the audited Session 2 group activity **The Postcode Lottery** with realistic resident visuals, six deterministic group decisions, short sound cues, four live score dimensions, Pitch Checkpoints and a two-minute final briefing.
+Session 2: **The Postcode Lottery** · hardened audited realistic edition.
 
-## Important
-Upload **all files directly to the GitHub repository root**. There is no enclosing folder in the ZIP.
+## What changed from V18
+- Stops the 2-minute rehearsal timer whenever the student returns to the Session overview.
+- Adds an in-memory state fallback so Session 2 remains playable when browser localStorage is blocked, unavailable, or a write fails because of quota restrictions.
+- The in-memory state is preferred during the current tab session, preventing stale persistent data from overwriting a newer choice after a failed storage write.
+- Session 2 runtime/cache version bumped to V19.
 
-## Session 1 protection
-`app.js` and `styles.css` are unchanged from the previous audited build. Session 1 S1-R10 scoring and its 2-minute Pitch Builder were not modified.
+## Protected
+- Session 1 engine (`app.js`) is unchanged.
+- Session 1 stylesheet (`styles.css`) is unchanged.
+- Session 2 decision content and scoring are unchanged from V18.
+- The four realistic Session 2 WebP illustrations are unchanged.
 
-## V18 fixes
-- correct four-priority final wording;
-- robust saved-game validation/recovery;
-- correct focus when returning to the session library;
-- progress/score accessibility semantics;
-- V18 cache/version synchronisation.
-
-See `AUDIT-CORRECTIONS.md` for the full test record.
+Upload every file in this ZIP to the repository root and replace existing files.

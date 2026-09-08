@@ -1,5 +1,5 @@
-const CACHE='ph-english-v18-20260908-session2-audited-realistic';
-const ASSETS=['./','./index.html','./styles.css?v=20260908-14','./group-sessions.css?v=20260908-18','./app.js?v=20260908-14','./group-sessions.js?v=20260908-18','./manifest.webmanifest','./icon-192.png','./icon-512.png','./apple-touch-icon.png','./s2-maya.webp','./s2-luca.webp','./s2-aisha.webp','./s2-noah.webp'];
+const CACHE='ph-english-v19-20260908-session2-hardened-audit';
+const ASSETS=['./','./index.html','./styles.css?v=20260908-14','./group-sessions.css?v=20260908-19','./app.js?v=20260908-14','./group-sessions.js?v=20260908-19','./manifest.webmanifest','./icon-192.png','./icon-512.png','./apple-touch-icon.png','./s2-maya.webp','./s2-luca.webp','./s2-aisha.webp','./s2-noah.webp'];
 
 self.addEventListener('install',event=>{
   event.waitUntil(caches.open(CACHE).then(cache=>cache.addAll(ASSETS)).then(()=>self.skipWaiting()));

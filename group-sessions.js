@@ -1,4 +1,4 @@
-/* Sessions 2–7 extension · V18 · Session 2 Postcode Lottery · audited realistic edition
+/* Sessions 2–7 extension · V19 · Session 2 Postcode Lottery · hardened audited realistic edition
    Deliberately isolated from the Session 1 S1-R10 engine.
    Session 1 HTML, scoring logic and app.js are not modified by this file. */
 (() => {
@@ -404,42 +404,54 @@
   let activeSession = null;
   let timerHandle = null;
   let timerSeconds = 120;
+  // Same-tab fallback so the activity remains playable when localStorage is
+  // blocked, unavailable or temporarily over quota. Persistent storage is still
+  // preferred whenever the browser allows it.
+  const volatileState = new Map();
 
   function loadState(n){
     const cfg=SESSIONS[n];
     const fallback = {choices:[],step:0,outcome:null,completed:false,teamSize:(cfg.teamSizes?.[0] || 4)};
-    try {
-      const raw = JSON.parse(localStorage.getItem(keyFor(n)) || 'null');
-      if(!raw || typeof raw !== 'object') return fallback;
+    let raw=volatileState.get(n) || null;
+    if(!raw || typeof raw !== 'object'){
+      try { raw=JSON.parse(localStorage.getItem(keyFor(n)) || 'null'); } catch {}
+    }
+    if(!raw || typeof raw !== 'object'){
+      volatileState.set(n,{...fallback,choices:[]});
+      return fallback;
+    }
 
-      // Keep only a contiguous sequence of valid option IDs. A stale, partial or
-      // manually-corrupted localStorage entry must never create a fake completed game.
-      const validChoices=[];
-      if(Array.isArray(raw.choices)){
-        for(let i=0;i<Math.min(raw.choices.length,cfg.steps.length);i++){
-          const id=String(raw.choices[i]??'');
-          if(!optionFor(n,i,id))break;
-          validChoices.push(id);
-        }
+    // Keep only a contiguous sequence of valid option IDs. A stale, partial or
+    // manually-corrupted storage entry must never create a fake completed game.
+    const validChoices=[];
+    if(Array.isArray(raw.choices)){
+      for(let i=0;i<Math.min(raw.choices.length,cfg.steps.length);i++){
+        const id=String(raw.choices[i]??'');
+        if(!optionFor(n,i,id))break;
+        validChoices.push(id);
       }
+    }
 
-      const allowed=cfg.teamSizes||[3,4];
-      const teamSize=allowed.includes(Number(raw.teamSize))?Number(raw.teamSize):fallback.teamSize;
-      let outcome=null;
-      if(raw.outcome && typeof raw.outcome==='object'){
-        const i=Number(raw.outcome.stepIndex), choiceId=String(raw.outcome.choiceId??'');
-        if(Number.isInteger(i) && i>=0 && i<cfg.steps.length && i===validChoices.length-1 && validChoices[i]===choiceId && optionFor(n,i,choiceId)){
-          outcome={stepIndex:i,choiceId};
-        }
+    const allowed=cfg.teamSizes||[3,4];
+    const teamSize=allowed.includes(Number(raw.teamSize))?Number(raw.teamSize):fallback.teamSize;
+    let outcome=null;
+    if(raw.outcome && typeof raw.outcome==='object'){
+      const i=Number(raw.outcome.stepIndex), choiceId=String(raw.outcome.choiceId??'');
+      if(Number.isInteger(i) && i>=0 && i<cfg.steps.length && i===validChoices.length-1 && validChoices[i]===choiceId && optionFor(n,i,choiceId)){
+        outcome={stepIndex:i,choiceId};
       }
+    }
 
-      const completed=Boolean(!outcome && raw.completed && validChoices.length===cfg.steps.length);
-      const step=completed?cfg.steps.length:(outcome?outcome.stepIndex:Math.min(validChoices.length,cfg.steps.length));
-      return {choices:validChoices,step,outcome,completed,teamSize};
-    } catch { return fallback; }
+    const completed=Boolean(!outcome && raw.completed && validChoices.length===cfg.steps.length);
+    const step=completed?cfg.steps.length:(outcome?outcome.stepIndex:Math.min(validChoices.length,cfg.steps.length));
+    const normalised={choices:validChoices,step,outcome,completed,teamSize};
+    volatileState.set(n,{...normalised,choices:[...normalised.choices],outcome:normalised.outcome?{...normalised.outcome}:null});
+    return normalised;
   }
   function saveStateExtra(n,state){
-    try { localStorage.setItem(keyFor(n), JSON.stringify(state)); } catch {}
+    const snapshot={...state,choices:[...(state.choices||[])],outcome:state.outcome?{...state.outcome}:null};
+    volatileState.set(n,snapshot);
+    try { localStorage.setItem(keyFor(n), JSON.stringify(snapshot)); } catch {}
   }
   function clearCompletionSignal(n){
     try {
@@ -547,7 +559,7 @@
 
   function detailShell(n){
     const c=SESSIONS[n];
-    return `<section id="session${n}Detail" class="session-detail extra-session-detail ${n===2?'s2-postcode-detail':''}" hidden aria-labelledby="session${n}DetailTitle"><div class="session-detail-toolbar"><button type="button" data-extra-back>← Back to sessions</button><span class="badge">Session ${n}</span>${n===2?'<span class="badge s2-version-badge">POSTCODE LOTTERY · V18 AUDITED</span>':''}</div><section class="extra-session-hero ${n===2?'s2-session-hero':''}"><div><span class="eyebrow">Session ${n} · ${escapeHtml(c.subtitle)}</span><h3 id="session${n}DetailTitle" tabindex="-1">${escapeHtml(c.title)}</h3><p>${escapeHtml(c.description)}</p><div class="extra-session-meta"><span>👥 ${escapeHtml(c.team)}</span><span>⏱ ${escapeHtml(c.duration)}</span><span>🎙 ${escapeHtml(c.output)}</span><span>🧭 deterministic choices</span>${n===2?'<span>🎧 short sound cues</span>':''}</div><div class="extra-session-actions"><button class="primary-action" id="s${n}StartHero">▶ Start / resume mission</button><button id="s${n}ResetHero">↻ Reset this session</button>${n===2?'<button type="button" id="s2SoundToggle" class="s2-sound-toggle" aria-pressed="true">🔊 Sound effects: ON</button>':''}</div></div><div class="extra-session-hero-visual ${n===2?'s2-hero-visual':''}">${n===2?s2HeroVisual():c.icons.map(i=>`<div>${i}</div>`).join('')}</div></section><section id="s${n}Workspace" class="extra-session-workspace" aria-live="polite"></section>${languageStrip(n)}</section>`;
+    return `<section id="session${n}Detail" class="session-detail extra-session-detail ${n===2?'s2-postcode-detail':''}" hidden aria-labelledby="session${n}DetailTitle"><div class="session-detail-toolbar"><button type="button" data-extra-back>← Back to sessions</button><span class="badge">Session ${n}</span>${n===2?'<span class="badge s2-version-badge">POSTCODE LOTTERY · V19 AUDITED</span>':''}</div><section class="extra-session-hero ${n===2?'s2-session-hero':''}"><div><span class="eyebrow">Session ${n} · ${escapeHtml(c.subtitle)}</span><h3 id="session${n}DetailTitle" tabindex="-1">${escapeHtml(c.title)}</h3><p>${escapeHtml(c.description)}</p><div class="extra-session-meta"><span>👥 ${escapeHtml(c.team)}</span><span>⏱ ${escapeHtml(c.duration)}</span><span>🎙 ${escapeHtml(c.output)}</span><span>🧭 deterministic choices</span>${n===2?'<span>🎧 short sound cues</span>':''}</div><div class="extra-session-actions"><button class="primary-action" id="s${n}StartHero">▶ Start / resume mission</button><button id="s${n}ResetHero">↻ Reset this session</button>${n===2?'<button type="button" id="s2SoundToggle" class="s2-sound-toggle" aria-pressed="true">🔊 Sound effects: ON</button>':''}</div></div><div class="extra-session-hero-visual ${n===2?'s2-hero-visual':''}">${n===2?s2HeroVisual():c.icons.map(i=>`<div>${i}</div>`).join('')}</div></section><section id="s${n}Workspace" class="extra-session-workspace" aria-live="polite"></section>${languageStrip(n)}</section>`;
   }
 
   function hideAllDetails(){
@@ -575,6 +587,7 @@
     return `<div class="extra-mission-map">${SESSIONS[n].steps.map((s,i)=>`<article><span>${s.icon}</span><strong>${i+1} · ${escapeHtml(s.label)}</strong></article>`).join('')}</div>`;
   }
   function renderOverview(n,scroll=true){
+    stopTimer();
     const cfg=SESSIONS[n],state=loadState(n),ws=q(`#s${n}Workspace`);if(!ws)return;
     const allowed=cfg.teamSizes||[3,4]; if(!allowed.includes(Number(state.teamSize)))state.teamSize=allowed[0]; saveStateExtra(n,state);
     ws.innerHTML=`<article>${n===2?s2HowToPlay()+s2CaseBoard():''}<div class="extra-session-overview-grid"><section class="extra-session-panel"><span class="eyebrow">Mission map</span><h4>${cfg.steps.length} decisions → one structured briefing</h4><p>Discuss every option before confirming one shared answer. After each consequence, complete the speaking checkpoint aloud.</p>${missionMap(n)}</section><section class="extra-session-panel"><span class="eyebrow">Team roles</span><h4>Give everyone a job.</h4><div class="extra-role-grid">${cfg.roles.map(r=>`<div class="extra-role-card"><strong>${escapeHtml(r[0])}</strong><small>${escapeHtml(r[1])}</small></div>`).join('')}</div><label>Team size <select id="s${n}TeamSize">${allowed.map(x=>`<option value="${x}" ${Number(state.teamSize)===x?'selected':''}>${x} student${x>1?'s':''}</option>`).join('')}</select></label><button id="s${n}AssignRoles">Assign roles</button><div id="s${n}RoleBox" class="extra-role-assignment" hidden></div></section></div><section class="extra-session-panel"><span class="eyebrow">Your final output</span><h4>${escapeHtml(cfg.output)}</h4><p>${escapeHtml(cfg.finalPrompt)}</p><p><strong>Same choices = same scores and same decision code.</strong> There is no random scoring.</p>${n===2?'<p class="s2-fiction-note">The four residents are fictional composite profiles created for learning. The aim is to analyse barriers, not stereotype people or places.</p>':''}<div class="extra-session-actions"><button class="primary-action" id="s${n}Start">${state.completed?'🏁 View final briefing':state.choices.length?'▶ Resume mission':'▶ Start mission'}</button>${state.choices.length?`<button id="s${n}Reset">↻ Reset choices</button>`:''}<button data-extra-back>← Back to sessions</button></div></section>${pitchBuilder(n,state)}</article>`;
