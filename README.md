@@ -1,17 +1,10 @@
-# EnglishForPublicHealth — V19
+# EnglishForPublicHealth — V20
 
-Session 2: **The Postcode Lottery** · hardened audited realistic edition.
+Full GitHub-ready package. Upload every file to the repository root and replace the matching files.
 
-## What changed from V18
-- Stops the 2-minute rehearsal timer whenever the student returns to the Session overview.
-- Adds an in-memory state fallback so Session 2 remains playable when browser localStorage is blocked, unavailable, or a write fails because of quota restrictions.
-- The in-memory state is preferred during the current tab session, preventing stale persistent data from overwriting a newer choice after a failed storage write.
-- Session 2 runtime/cache version bumped to V19.
+V20 only hardens Session 2 — The Postcode Lottery. Session 1's `app.js` and `styles.css` are unchanged.
 
-## Protected
-- Session 1 engine (`app.js`) is unchanged.
-- Session 1 stylesheet (`styles.css`) is unchanged.
-- Session 2 decision content and scoring are unchanged from V18.
-- The four realistic Session 2 WebP illustrations are unchanged.
-
-Upload every file in this ZIP to the repository root and replace existing files.
+Main V20 changes:
+- timer button/state stays consistent after the tab is backgrounded;
+- interrupted/corrupt final saves restore Decision 6's consequence instead of skipping the last Pitch Checkpoint;
+- cache-busting and service-worker cache updated to V20.

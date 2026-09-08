@@ -442,7 +442,15 @@
       }
     }
 
-    const completed=Boolean(!outcome && raw.completed && validChoices.length===cfg.steps.length);
+    // If all choices survived but the final completion flag/outcome did not
+    // (for example after an interrupted write), restore the last consequence
+    // instead of skipping the final Pitch Checkpoint.
+    const rawCompleted=Boolean(raw.completed && validChoices.length===cfg.steps.length);
+    if(!outcome && !rawCompleted && validChoices.length===cfg.steps.length){
+      const last=cfg.steps.length-1;
+      outcome={stepIndex:last,choiceId:validChoices[last]};
+    }
+    const completed=Boolean(!outcome && rawCompleted);
     const step=completed?cfg.steps.length:(outcome?outcome.stepIndex:Math.min(validChoices.length,cfg.steps.length));
     const normalised={choices:validChoices,step,outcome,completed,teamSize};
     volatileState.set(n,{...normalised,choices:[...normalised.choices],outcome:normalised.outcome?{...normalised.outcome}:null});
@@ -559,7 +567,7 @@
 
   function detailShell(n){
     const c=SESSIONS[n];
-    return `<section id="session${n}Detail" class="session-detail extra-session-detail ${n===2?'s2-postcode-detail':''}" hidden aria-labelledby="session${n}DetailTitle"><div class="session-detail-toolbar"><button type="button" data-extra-back>← Back to sessions</button><span class="badge">Session ${n}</span>${n===2?'<span class="badge s2-version-badge">POSTCODE LOTTERY · V19 AUDITED</span>':''}</div><section class="extra-session-hero ${n===2?'s2-session-hero':''}"><div><span class="eyebrow">Session ${n} · ${escapeHtml(c.subtitle)}</span><h3 id="session${n}DetailTitle" tabindex="-1">${escapeHtml(c.title)}</h3><p>${escapeHtml(c.description)}</p><div class="extra-session-meta"><span>👥 ${escapeHtml(c.team)}</span><span>⏱ ${escapeHtml(c.duration)}</span><span>🎙 ${escapeHtml(c.output)}</span><span>🧭 deterministic choices</span>${n===2?'<span>🎧 short sound cues</span>':''}</div><div class="extra-session-actions"><button class="primary-action" id="s${n}StartHero">▶ Start / resume mission</button><button id="s${n}ResetHero">↻ Reset this session</button>${n===2?'<button type="button" id="s2SoundToggle" class="s2-sound-toggle" aria-pressed="true">🔊 Sound effects: ON</button>':''}</div></div><div class="extra-session-hero-visual ${n===2?'s2-hero-visual':''}">${n===2?s2HeroVisual():c.icons.map(i=>`<div>${i}</div>`).join('')}</div></section><section id="s${n}Workspace" class="extra-session-workspace" aria-live="polite"></section>${languageStrip(n)}</section>`;
+    return `<section id="session${n}Detail" class="session-detail extra-session-detail ${n===2?'s2-postcode-detail':''}" hidden aria-labelledby="session${n}DetailTitle"><div class="session-detail-toolbar"><button type="button" data-extra-back>← Back to sessions</button><span class="badge">Session ${n}</span>${n===2?'<span class="badge s2-version-badge">POSTCODE LOTTERY · V20 AUDITED</span>':''}</div><section class="extra-session-hero ${n===2?'s2-session-hero':''}"><div><span class="eyebrow">Session ${n} · ${escapeHtml(c.subtitle)}</span><h3 id="session${n}DetailTitle" tabindex="-1">${escapeHtml(c.title)}</h3><p>${escapeHtml(c.description)}</p><div class="extra-session-meta"><span>👥 ${escapeHtml(c.team)}</span><span>⏱ ${escapeHtml(c.duration)}</span><span>🎙 ${escapeHtml(c.output)}</span><span>🧭 deterministic choices</span>${n===2?'<span>🎧 short sound cues</span>':''}</div><div class="extra-session-actions"><button class="primary-action" id="s${n}StartHero">▶ Start / resume mission</button><button id="s${n}ResetHero">↻ Reset this session</button>${n===2?'<button type="button" id="s2SoundToggle" class="s2-sound-toggle" aria-pressed="true">🔊 Sound effects: ON</button>':''}</div></div><div class="extra-session-hero-visual ${n===2?'s2-hero-visual':''}">${n===2?s2HeroVisual():c.icons.map(i=>`<div>${i}</div>`).join('')}</div></section><section id="s${n}Workspace" class="extra-session-workspace" aria-live="polite"></section>${languageStrip(n)}</section>`;
   }
 
   function hideAllDetails(){
@@ -673,7 +681,12 @@
     setupS2SoundButton();
     const groupNav=q('[data-page="groupactivity"]'); if(groupNav)groupNav.addEventListener('click',()=>setTimeout(()=>showLibrary(false),0));
     window.addEventListener('hashchange',()=>{if(location.hash==='#groupactivity')setTimeout(()=>showLibrary(false),0);else stopTimer();});
-    document.addEventListener('visibilitychange',()=>{if(document.hidden)stopTimer();});
+    document.addEventListener('visibilitychange',()=>{
+      if(document.hidden){
+        stopTimer();
+        if(activeSession)paintTimer(activeSession);
+      }
+    });
     window.addEventListener('beforeunload',stopTimer);
     for(let n=2;n<=7;n++)refreshCard(n);
   }
