@@ -1,22 +1,20 @@
-# EnglishForPublicHealth — Group Activity V14
+# V15 — Sessions 2–7
 
-Final hardening audit after checking the deployed V13 build.
+## Session 1 protection
+- `app.js` is byte-for-byte identical to V14.
+- S1-R10, the six Session 1 decisions, deterministic scoring, local save and 2-minute Pitch Builder are untouched.
+- Existing `styles.css` is unchanged. New session styling is isolated in `group-sessions.css`.
 
-## Fixes in V14
-- **Start / resume button:** now opens the actual decision flow immediately. If Session 1 is already complete, it opens the final result instead of adding an unnecessary intermediate click.
-- **Pitch timer lifecycle:** the 2-minute rehearsal timer now stops automatically when the student leaves Group Activity through the main navigation, so it cannot continue running invisibly in the background.
-- **Version synchronisation:** HTML, JavaScript, CSS cache-busting and service-worker cache are all V14.
-- Ruleset **S1-R10 is unchanged**. No scoring values, options, consequences or decision order were modified.
+## Added sessions
+- Session 2 — The Health Gap Challenge · Social Determinants & Health Inequalities
+- Session 3 — Outbreak Detective Room · Epidemiology & Disease Surveillance
+- Session 4 — Vaccine Confidence Crisis · Infectious Diseases, Pandemics & Vaccination
+- Session 5 — The Obesogenic City Lab · Nutrition, Obesity & Environmental Health
+- Session 6 — Youth Wellbeing Response · Mental Health, Stigma & Social Media
+- Session 7 — Campaign Rehearsal Lab · preparation for the Session 8 final campaign
 
-## Validation
-- JavaScript syntax: PASS
-- Service-worker syntax: PASS
-- Duplicate HTML IDs: 0
-- Missing local references: 0
-- Session 1: 6 decisions × 5 fixed options
-- Exhaustive deterministic score audit: **15,625 / 15,625 combinations PASS**
-- All computed score dimensions remain within 0–100
-- No stale `90-second` / `90-sec` wording
-- Final pitch remains **2:00 maximum**, progressively prepared through Pitch Checkpoints
+## Common design
+Each new session has four deterministic team decisions, visible consequences, three score dimensions, a speaking checkpoint after every choice, an automatically structured 2-minute team briefing, team roles, integrated visual cues, a decision code, local save/resume/reset and a pitch timer.
 
-Upload the files from this ZIP directly to the repository root and replace the existing files.
+## Cache
+Service-worker cache bumped to V15 and includes the two new files.
