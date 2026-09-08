@@ -204,7 +204,7 @@ input,select,textarea{max-width:100%;min-width:0}
 @media(max-width:1024px){.pitch-roadmap{grid-template-columns:1fr 1fr}.final-pitch-layout{grid-template-columns:1fr}}
 @media(max-width:700px){.group-output-brief{grid-template-columns:auto 1fr}.pitch-hard-stop{grid-column:1/-1}.pitch-roadmap,.pitch-builder-grid{grid-template-columns:1fr}.pitch-builder-head,.pitch-timer{grid-template-columns:1fr}.pitch-builder-meter{width:100%}.pitch-timer-controls{justify-content:flex-start}.pitch-timer-controls button{min-height:44px}.pitch-part-top{grid-template-columns:auto 1fr}.pitch-part-state{grid-column:2}}
 
-/* V13 · synchronised visual/gameplay audit */
+/* V14 · final hardened Group Activity build */
 .group-hero-session1{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(300px,.85fr);align-items:stretch;gap:1rem}
 .group-hero-main{min-width:0;align-self:center}
 .group-hero-side{display:grid;gap:.7rem;align-content:start;min-width:0}
