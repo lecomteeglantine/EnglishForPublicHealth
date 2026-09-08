@@ -1,7 +1,7 @@
-# Public Health English — V12 Group Activity Pitch Builder
+# Public Health English — V13 Group Activity
 
-Ready for GitHub Pages. Upload every file in this ZIP directly to the root of `EnglishForPublicHealth`.
+Synchronised GitHub Pages build for Session 1. Upload every file in this ZIP directly to the repository root.
 
-Session 1 now builds a structured team pitch throughout the activity and ends with a 2-minute maximum rehearsal. Scoring rules remain S1-R10.
+Visible deployment marker inside Group Activity: **V13 · 2-MIN PITCH BUILD**.
 
-See `AUDIT-CORRECTIONS.md` for the change list.
+Ruleset remains S1-R10. See `AUDIT-CORRECTIONS.md`.

@@ -1,23 +1,21 @@
-# EnglishForPublicHealth — Group Activity Session 1 — V12
+# EnglishForPublicHealth — Group Activity Session 1 — V13
 
 Date: 8 September 2026
 
-## Target
-`#groupactivity` → Session 1 → **Who Gets the Medicine? · The Global Access Challenge**
+## Why this patch exists
+The live repository was in a mixed state: the HTML still showed the V11 / 90-second briefing while the JavaScript already contained the V12 / two-minute Pitch Builder. V13 synchronises the full build.
 
-## Corrections applied
-- Final oral output changed from 90 seconds to a **2-minute maximum team pitch** everywhere.
-- Added a visible four-part pitch roadmap with a 1:45–1:55 target and 2:00 hard stop.
-- Added a **progressive Pitch Builder** that is derived automatically from confirmed decisions. No extra student data is required.
-- Added a **Pitch Checkpoint after every decision** so the group agrees on one oral sentence before moving on.
-- Added speaking plans for **3-student and 4-student teams**, ensuring every student speaks.
-- Added a final ready-to-rehearse scaffold using the team’s actual choices, plus vocabulary and readiness checks.
-- Added a simple **2:00 rehearsal timer** with Start/Pause/Reset.
-- Preserved **Ruleset S1-R10** and all scoring values: same six choices still produce the same decision code, scores and final profile.
-- Bumped the UI engine to V12 and retained/added the V11 accessibility/state hardening: persistent team size, session status, progressbar semantics and full mobile navigation.
-- Existing visual scenario/country illustrations were retained and the new pitch roadmap/checkpoints add visual structure without external dependencies.
-- Updated the service-worker cache and asset query strings so GitHub Pages/PWA users receive the new build instead of a stale cached copy.
-- Verified direct loading of `#groupactivity` so the page does not fail when students open the activity from the shared anchor URL.
+## V13 corrections
+- HTML, CSS, JavaScript and service-worker cache now use one matching V13 build.
+- All visible instructions consistently require a **team pitch of 2:00 maximum**.
+- Progressive four-part Pitch Builder remains active after every confirmed decision.
+- Pitch Checkpoint remains mandatory after every consequence.
+- Corrected the 3-student speaking-time wording: students 1–2 ≈35 seconds each; student 3 ≈45 seconds because they cover the final two parts.
+- Added a large embedded team/global-access illustration, an illustrated six-stage mission map, an at-a-glance panel and illustrated decision banners. No external image URLs are required.
+- Added a visible V13 build badge so deployment can be checked instantly.
+- Kept the activity playful: mission map, role identities, score meters, decision consequences, profile result, decision code and rehearsal timer.
+- Ruleset **S1-R10 is unchanged**. Same six choices still give the same scores, code and final profile on every device.
+- Mobile layouts added for the new visual elements; no horizontal scrolling intended.
 
 ## Deployment
-Upload **all files from this ZIP to the repository root**. There is no enclosing folder in the ZIP.
+Upload every file from the ZIP directly to the repository root and replace the existing files. Do not upload an enclosing folder.
