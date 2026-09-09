@@ -17,3 +17,7 @@ GitHub-ready full package. Upload every file from this ZIP to the repository roo
 - Cache-busting references for `styles.css`, `app.js`, `group-sessions.js` and the service-worker cache have been refreshed for deployment.
 
 See `AUDIT-CORRECTIONS.md` for the validation performed.
+
+
+## V23 deployment coherence hardening
+All index asset URLs and service-worker precache URLs now use the same 20260909-23 revision. This prevents mixed-cache/offline failures after deployment. Session 1 includes the V22 illustrated Flash Missions and preserves S1-R10 deterministic scoring.

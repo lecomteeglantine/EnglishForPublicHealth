@@ -100,3 +100,7 @@ An initial draft of the new Flash Mission wiring used helper names belonging to 
 - Session 1 score effects, consequences and Ruleset **S1-R10** were not modified.
 - Sessions 2–7 score data, consequences and deterministic-choice logic were not modified.
 - The 2:00 whole-group speaking limit was not relaxed or reinterpreted.
+
+
+## V23 deployment coherence hardening
+All index asset URLs and service-worker precache URLs now use the same 20260909-23 revision. This prevents mixed-cache/offline failures after deployment. Session 1 includes the V22 illustrated Flash Missions and preserves S1-R10 deterministic scoring.
