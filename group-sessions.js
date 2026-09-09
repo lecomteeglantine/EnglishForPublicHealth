@@ -1,4 +1,4 @@
-/* Sessions 2–7 extension · V19 · Session 2 Postcode Lottery · hardened audited realistic edition
+/* Sessions 2–7 extension · V21 · whole-team two-minute pitch hardening · audited deterministic edition
    Deliberately isolated from the Session 1 S1-R10 engine.
    Session 1 HTML, scoring logic and app.js are not modified by this file. */
 (() => {
@@ -17,7 +17,7 @@
       subtitle: 'Social Determinants & Health Inequalities',
       description: 'Follow four 20-year-olds with the same health-care need but very different living conditions. Trace the barriers, survive a surprise crisis and build a fairer response.',
       icons: ['🧑🏽','🚌','🏚️','⚖️'],
-      team: 'Teams of 3–4', duration: '25–30 min', output: 'Investigation briefing · 2 min max',
+      team: 'Teams of 3–4', duration: '25–30 min', output: 'Investigation briefing · 2:00 total',
       teamSizes: [3,4],
       roles: [
         ['Barrier Detective','Spot the social determinants and connect each barrier to a health consequence.'],
@@ -85,7 +85,7 @@
       subtitle: 'Epidemiology & Disease Surveillance',
       description: 'Investigate a fictional outbreak, choose the next epidemiological move and communicate the evidence without confusing association with causation.',
       icons: ['🕵️','🦠','📈','🔬'],
-      team: 'Teams of 3–4', duration: '20–25 min', output: 'Evidence briefing · 2 min max',
+      team: 'Teams of 3–4', duration: '20–25 min', output: 'Evidence briefing · 2:00 total',
       roles: [
         ['Surveillance Lead','Track who is affected, where and when.'],
         ['Study Design Lead','Choose comparisons that can answer the question.'],
@@ -134,7 +134,7 @@
       subtitle: 'Infectious Diseases, Pandemics & Vaccination',
       description: 'Respond to a measles cluster while protecting vulnerable people, maintaining public trust and giving clear prevention advice.',
       icons: ['💉','🦠','🛡️','📣'],
-      team: 'Teams of 3–4', duration: '20–25 min', output: 'Crisis briefing · 2 min max',
+      team: 'Teams of 3–4', duration: '20–25 min', output: 'Crisis briefing · 2:00 total',
       roles: [
         ['Protection Lead','Focus on outbreak control and vulnerable populations.'],
         ['Trust Lead','Protect respectful communication and public confidence.'],
@@ -183,7 +183,7 @@
       subtitle: 'Nutrition, Obesity & Environmental Health',
       description: 'Build a prevention package that treats obesity as a population-health issue rather than reducing it to individual willpower.',
       icons: ['🥗','🏙️','🌫️','🚲'],
-      team: 'Teams of 3–4', duration: '20–25 min', output: 'Policy pitch · 2 min max',
+      team: 'Teams of 3–4', duration: '20–25 min', output: 'Policy pitch · 2:00 total',
       roles: [
         ['Environment Lead','Look at food, air quality, transport and neighbourhood conditions.'],
         ['Prevention Lead','Focus on practical population-level actions.'],
@@ -232,7 +232,7 @@
       subtitle: 'Mental Health, Stigma & Social Media',
       description: 'Build a balanced response to youth mental-health concerns while separating allegations, company claims and research evidence.',
       icons: ['🧠','📱','💬','🤝'],
-      team: 'Teams of 3–4', duration: '20–25 min', output: 'Balanced briefing · 2 min max',
+      team: 'Teams of 3–4', duration: '20–25 min', output: 'Balanced briefing · 2:00 total',
       roles: [
         ['Prevention Lead','Focus on early support, screening and practical prevention.'],
         ['Youth Voice','Check tone, stigma and whether young people would trust the plan.'],
@@ -281,7 +281,7 @@
       subtitle: 'Final Campaign Workshop · before Session 8',
       description: 'Stress-test your real public-health campaign before the final presentation: audience, message, evidence, strategy, prevention advice, visual and impact indicator.',
       icons: ['🎯','📣','🎨','🎤'],
-      team: 'Campaign groups · 1–3', duration: '25–30 min', output: 'Checkpoint pitch · 2 min max',
+      team: 'Campaign groups · 1–3', duration: '25–30 min', output: 'Checkpoint pitch · 2:00 total',
       teamSizes: [1,2,3],
       roles: [
         ['Audience & Need Lead','Make the target population precise and justify why it matters.'],
@@ -382,7 +382,7 @@
     return `<div class="s2-hero-collage" aria-label="Four realistic fictional resident profiles in different postcodes"><div class="s2-mini-map"><span>🌳 Riverside</span><i>→</i><span>🌾 North Moor</span><i>↘</i><span>🏙️ Eastbank</span><i>→</i><span>🧳 Station Lodge</span></div><div class="s2-hero-faces">${Object.keys(S2_CHARACTERS).map(id=>`<div title="${escapeHtml(S2_CHARACTERS[id].name)}">${s2Portrait(id,true)}</div>`).join('')}</div><strong>Same age · same message · different barriers</strong></div>`;
   }
   function s2HowToPlay(){
-    return `<section class="s2-how-to"><div><span>1</span><strong>Read the case files</strong><small>Compare all four residents before judging vulnerability.</small></div><div><span>2</span><strong>Make 6 team decisions</strong><small>Discuss all five options; confirm one shared choice.</small></div><div><span>3</span><strong>Watch the consequences</strong><small>Scores and character impacts update immediately.</small></div><div><span>4</span><strong>Say every Pitch Checkpoint</strong><small>Your final 2-minute briefing is built during the game.</small></div></section>`;
+    return `<section class="s2-how-to"><div><span>1</span><strong>Read the case files</strong><small>Compare all four residents before judging vulnerability.</small></div><div><span>2</span><strong>Make 6 team decisions</strong><small>Discuss all five options; confirm one shared choice.</small></div><div><span>3</span><strong>Watch the consequences</strong><small>Scores and character impacts update immediately.</small></div><div><span>4</span><strong>Say every Pitch Checkpoint</strong><small>Your final 2:00 whole-team briefing is built during the game.</small></div></section>`;
   }
 
   function s2PitchBuilder(state){
@@ -394,7 +394,8 @@
       ['How you will measure equity',[5],c(5)?`✓ ${c(5)[1]}`:'Decision 6 will complete the briefing']
     ];
     const ready=parts.filter(p=>p[1].every(i=>Boolean(c(i)))).length;
-    return `<section class="extra-pitch-builder s2-pitch-builder"><div class="s2-pitch-heading"><div><span class="eyebrow">Live Pitch Builder</span><h4>Your 2-minute briefing is being built now.</h4></div><span class="s2-ready-count">${ready}/4 parts ready</span></div><div class="extra-pitch-parts">${parts.map((p,i)=>{const done=p[1].every(x=>Boolean(c(x)));return `<div class="extra-pitch-part ${done?'done':''}"><strong>${i+1} · ${escapeHtml(p[0])}</strong><span>${escapeHtml(p[2])}</span></div>`}).join('')}</div><p class="s2-pitch-rule"><strong>Rule:</strong> after every consequence, say the checkpoint sentence aloud. By the end, nobody should be inventing the pitch from scratch.</p></section>`;
+    const times=['≈ 25 sec','≈ 30 sec','≈ 30 sec','≈ 25 sec'];
+    return `<section class="extra-pitch-builder s2-pitch-builder"><div class="s2-pitch-heading"><div><span class="eyebrow">Live Pitch Builder</span><h4>Your 2:00 whole-team briefing is being built now.</h4></div><span class="s2-ready-count">${ready}/4 parts ready</span></div><div class="extra-pitch-parts">${parts.map((p,i)=>{const done=p[1].every(x=>Boolean(c(x)));return `<div class="extra-pitch-part ${done?'done':''}"><strong>${i+1} · ${escapeHtml(p[0])} · ${times[i]}</strong><span>${escapeHtml(p[2])}</span></div>`}).join('')}</div><p class="s2-pitch-rule"><strong>Time rule:</strong> 2:00 is the total for the whole group, not for each student. Aim for 1:45–1:55. After every consequence, say the checkpoint sentence aloud so the pitch is built progressively.</p></section>`;
   }
   function s2FinalScript(state){
     const o=i=>optionFor(2,i,state.choices[i]);
@@ -503,7 +504,8 @@
   function pitchBuilder(n,state){
     if(n===2)return s2PitchBuilder(state);
     const cfg=SESSIONS[n];
-    return `<section class="extra-pitch-builder"><span class="eyebrow">Pitch Builder</span><h4>Your 2-minute briefing is built as you go.</h4><div class="extra-pitch-parts">${cfg.pitch.map((label,i)=>{const opt=optionFor(n,i,state.choices[i]);return `<div class="extra-pitch-part ${opt?'done':''}"><strong>${i+1} · ${escapeHtml(label)}</strong><span>${opt?`✓ ${escapeHtml(opt[1])}`:'Waiting for this decision'}</span></div>`}).join('')}</div></section>`;
+    const times=['≈ 25 sec','≈ 30 sec','≈ 30 sec','≈ 25 sec'];
+    return `<section class="extra-pitch-builder"><span class="eyebrow">Pitch Builder</span><h4>Your 2:00 whole-team briefing is built as you go.</h4><div class="extra-pitch-parts">${cfg.pitch.map((label,i)=>{const opt=optionFor(n,i,state.choices[i]);return `<div class="extra-pitch-part ${opt?'done':''}"><strong>${i+1} · ${escapeHtml(label)} · ${times[i]||'≈ 25 sec'}</strong><span>${opt?`✓ ${escapeHtml(opt[1])}`:'Waiting for this decision'}</span></div>`}).join('')}</div><p class="s2-pitch-rule"><strong>Time rule:</strong> the whole group shares one 2:00 total. Aim for 1:45–1:55; it is not 2 minutes per student.</p></section>`;
   }
   function languageStrip(n){
     return `<div class="extra-language-strip">${SESSIONS[n].language.map(x=>`<div><strong>${escapeHtml(x[0])}</strong><small>${escapeHtml(x[1])}</small></div>`).join('')}</div>`;
@@ -527,7 +529,7 @@
     d.textContent=`${Math.floor(timerSeconds/60)}:${String(timerSeconds%60).padStart(2,'0')}`;
     d.classList.toggle('warning',timerSeconds<=20);
     if(start) start.textContent=timerHandle?'Pause':'Start';
-    if(status) status.textContent=timerSeconds===0?'STOP · 2:00 reached.':timerSeconds<=20?'Final 20 seconds. Conclude now.':'Aim to finish between 1:45 and 1:55.';
+    if(status) status.textContent=timerSeconds===0?'STOP · whole-team 2:00 reached.':timerSeconds<=20?'Final 20 seconds. Conclude now.':'Aim to finish between 1:45 and 1:55.';
   }
   function setupTimer(n){
     stopTimer();timerSeconds=120;paintTimer(n);
@@ -567,7 +569,7 @@
 
   function detailShell(n){
     const c=SESSIONS[n];
-    return `<section id="session${n}Detail" class="session-detail extra-session-detail ${n===2?'s2-postcode-detail':''}" hidden aria-labelledby="session${n}DetailTitle"><div class="session-detail-toolbar"><button type="button" data-extra-back>← Back to sessions</button><span class="badge">Session ${n}</span>${n===2?'<span class="badge s2-version-badge">POSTCODE LOTTERY · V20 AUDITED</span>':''}</div><section class="extra-session-hero ${n===2?'s2-session-hero':''}"><div><span class="eyebrow">Session ${n} · ${escapeHtml(c.subtitle)}</span><h3 id="session${n}DetailTitle" tabindex="-1">${escapeHtml(c.title)}</h3><p>${escapeHtml(c.description)}</p><div class="extra-session-meta"><span>👥 ${escapeHtml(c.team)}</span><span>⏱ ${escapeHtml(c.duration)}</span><span>🎙 ${escapeHtml(c.output)}</span><span>🧭 deterministic choices</span>${n===2?'<span>🎧 short sound cues</span>':''}</div><div class="extra-session-actions"><button class="primary-action" id="s${n}StartHero">▶ Start / resume mission</button><button id="s${n}ResetHero">↻ Reset this session</button>${n===2?'<button type="button" id="s2SoundToggle" class="s2-sound-toggle" aria-pressed="true">🔊 Sound effects: ON</button>':''}</div></div><div class="extra-session-hero-visual ${n===2?'s2-hero-visual':''}">${n===2?s2HeroVisual():c.icons.map(i=>`<div>${i}</div>`).join('')}</div></section><section id="s${n}Workspace" class="extra-session-workspace" aria-live="polite"></section>${languageStrip(n)}</section>`;
+    return `<section id="session${n}Detail" class="session-detail extra-session-detail ${n===2?'s2-postcode-detail':''}" hidden aria-labelledby="session${n}DetailTitle"><div class="session-detail-toolbar"><button type="button" data-extra-back>← Back to sessions</button><span class="badge">Session ${n}</span>${n===2?'<span class="badge s2-version-badge">POSTCODE LOTTERY · V21 AUDITED</span>':''}</div><section class="extra-session-hero ${n===2?'s2-session-hero':''}"><div><span class="eyebrow">Session ${n} · ${escapeHtml(c.subtitle)}</span><h3 id="session${n}DetailTitle" tabindex="-1">${escapeHtml(c.title)}</h3><p>${escapeHtml(c.description)}</p><div class="extra-session-meta"><span>👥 ${escapeHtml(c.team)}</span><span>⏱ ${escapeHtml(c.duration)}</span><span>🎙 ${escapeHtml(c.output)}</span><span>🧭 deterministic choices</span>${n===2?'<span>🎧 short sound cues</span>':''}</div><div class="extra-session-actions"><button class="primary-action" id="s${n}StartHero">▶ Start / resume mission</button><button id="s${n}ResetHero">↻ Reset this session</button>${n===2?'<button type="button" id="s2SoundToggle" class="s2-sound-toggle" aria-pressed="true">🔊 Sound effects: ON</button>':''}</div></div><div class="extra-session-hero-visual ${n===2?'s2-hero-visual':''}">${n===2?s2HeroVisual():c.icons.map(i=>`<div>${i}</div>`).join('')}</div></section><section id="s${n}Workspace" class="extra-session-workspace" aria-live="polite"></section>${languageStrip(n)}</section>`;
   }
 
   function hideAllDetails(){
@@ -598,7 +600,7 @@
     stopTimer();
     const cfg=SESSIONS[n],state=loadState(n),ws=q(`#s${n}Workspace`);if(!ws)return;
     const allowed=cfg.teamSizes||[3,4]; if(!allowed.includes(Number(state.teamSize)))state.teamSize=allowed[0]; saveStateExtra(n,state);
-    ws.innerHTML=`<article>${n===2?s2HowToPlay()+s2CaseBoard():''}<div class="extra-session-overview-grid"><section class="extra-session-panel"><span class="eyebrow">Mission map</span><h4>${cfg.steps.length} decisions → one structured briefing</h4><p>Discuss every option before confirming one shared answer. After each consequence, complete the speaking checkpoint aloud.</p>${missionMap(n)}</section><section class="extra-session-panel"><span class="eyebrow">Team roles</span><h4>Give everyone a job.</h4><div class="extra-role-grid">${cfg.roles.map(r=>`<div class="extra-role-card"><strong>${escapeHtml(r[0])}</strong><small>${escapeHtml(r[1])}</small></div>`).join('')}</div><label>Team size <select id="s${n}TeamSize">${allowed.map(x=>`<option value="${x}" ${Number(state.teamSize)===x?'selected':''}>${x} student${x>1?'s':''}</option>`).join('')}</select></label><button id="s${n}AssignRoles">Assign roles</button><div id="s${n}RoleBox" class="extra-role-assignment" hidden></div></section></div><section class="extra-session-panel"><span class="eyebrow">Your final output</span><h4>${escapeHtml(cfg.output)}</h4><p>${escapeHtml(cfg.finalPrompt)}</p><p><strong>Same choices = same scores and same decision code.</strong> There is no random scoring.</p>${n===2?'<p class="s2-fiction-note">The four residents are fictional composite profiles created for learning. The aim is to analyse barriers, not stereotype people or places.</p>':''}<div class="extra-session-actions"><button class="primary-action" id="s${n}Start">${state.completed?'🏁 View final briefing':state.choices.length?'▶ Resume mission':'▶ Start mission'}</button>${state.choices.length?`<button id="s${n}Reset">↻ Reset choices</button>`:''}<button data-extra-back>← Back to sessions</button></div></section>${pitchBuilder(n,state)}</article>`;
+    ws.innerHTML=`<article>${n===2?s2HowToPlay()+s2CaseBoard():''}<div class="extra-session-overview-grid"><section class="extra-session-panel"><span class="eyebrow">Mission map</span><h4>${cfg.steps.length} decisions → one structured briefing</h4><p>Discuss every option before confirming one shared answer. After each consequence, complete the speaking checkpoint aloud.</p>${missionMap(n)}</section><section class="extra-session-panel"><span class="eyebrow">Team roles</span><h4>Give everyone a job.</h4><div class="extra-role-grid">${cfg.roles.map(r=>`<div class="extra-role-card"><strong>${escapeHtml(r[0])}</strong><small>${escapeHtml(r[1])}</small></div>`).join('')}</div><label>Team size <select id="s${n}TeamSize">${allowed.map(x=>`<option value="${x}" ${Number(state.teamSize)===x?'selected':''}>${x} student${x>1?'s':''}</option>`).join('')}</select></label><button id="s${n}AssignRoles">Assign roles</button><div id="s${n}RoleBox" class="extra-role-assignment" hidden></div></section></div><section class="extra-session-panel"><span class="eyebrow">Your final output</span><h4>${escapeHtml(cfg.output)}</h4><p>${escapeHtml(cfg.finalPrompt)}</p><p><strong>Time rule: 2:00 is the total for the whole group — not 2 minutes per student.</strong> Build it progressively: after every consequence, agree on the checkpoint sentence before continuing.</p><p><strong>Same choices = same scores and same decision code.</strong> There is no random scoring.</p>${n===2?'<p class="s2-fiction-note">The four residents are fictional composite profiles created for learning. The aim is to analyse barriers, not stereotype people or places.</p>':''}<div class="extra-session-actions"><button class="primary-action" id="s${n}Start">${state.completed?'🏁 View final briefing':state.choices.length?'▶ Resume mission':'▶ Start mission'}</button>${state.choices.length?`<button id="s${n}Reset">↻ Reset choices</button>`:''}<button data-extra-back>← Back to sessions</button></div></section>${pitchBuilder(n,state)}</article>`;
     const team=q(`#s${n}TeamSize`); if(team)team.onchange=()=>{state.teamSize=Number(team.value);saveStateExtra(n,state);const rb=q(`#s${n}RoleBox`);if(rb&&!rb.hidden)paintRoles(n,state)};
     q(`#s${n}AssignRoles`)?.addEventListener('click',()=>{if(n===2)s2Sound('select');paintRoles(n,state)});
     q(`#s${n}Start`)?.addEventListener('click',()=>{if(state.completed)renderFinal(n);else renderStep(n)});
@@ -648,7 +650,7 @@
   function renderFinal(n){
     stopTimer();const cfg=SESSIONS[n],state=loadState(n);if(state.choices.length!==cfg.steps.length){state.completed=false;state.step=Math.min(state.choices.length,cfg.steps.length-1);saveStateExtra(n,state);renderStep(n);return;}state.completed=true;markComplete(n);saveStateExtra(n,state);refreshCard(n);
     const scores=scoresFor(n,state.choices),profile=finalProfile(n,scores),ws=q(`#s${n}Workspace`),size=Number(state.teamSize)||4;
-    ws.innerHTML=`<article class="${n===2?'s2-final':''}"><div class="group-profile-banner"><div class="group-profile-icon" aria-hidden="true">${profile[0]}</div><div><span class="eyebrow">Session ${n} complete</span><h3 id="s${n}ResultHeading" tabindex="-1">${escapeHtml(profile[1])}</h3><p>${escapeHtml(profile[2])}</p></div></div><div class="extra-session-panel"><div class="extra-progress"><div><strong>Final decision code</strong><small>Fixed choices · same code = same scores</small></div><span class="extra-code">${escapeHtml(decisionCode(n,state))}</span></div>${scoreBoard(n,scores)}</div>${pitchBuilder(n,state)}${n===2?`<section class="s2-final-cast"><span class="eyebrow">Back to the four lives</span><h4>Your policy is only fair if you can explain who it helps — and who may still be missed.</h4><div class="s2-character-grid compact">${Object.keys(S2_CHARACTERS).map(id=>s2CharacterCard(id,true,true)).join('')}</div></section>`:''}<div class="extra-final-grid"><section class="extra-session-panel"><span class="eyebrow">Final speaking task</span><h4>${escapeHtml(cfg.output)}</h4><p>${escapeHtml(cfg.finalPrompt)}</p><p><strong>Every student speaks whenever the group has more than one member.</strong> Explain reasoning and one trade-off; do not just list choices.</p>${speakerPlan(n,size)}</section><section class="extra-session-panel"><span class="eyebrow">Ready-to-rehearse scaffold</span><h4>Use the choices — add your reasoning yourselves.</h4><div class="extra-script">${finalScript(n,state)}</div></section></div><section class="extra-timer"><div><span class="eyebrow">Rehearsal</span><h4>Two-minute hard-stop timer</h4><p id="s${n}TimerStatus" role="status" aria-live="polite">Aim to finish between 1:45 and 1:55.</p></div><div class="extra-timer-controls"><strong class="extra-timer-display" id="s${n}TimerDisplay">2:00</strong><button class="primary-action" id="s${n}TimerStart">Start</button><button id="s${n}TimerReset">Reset</button></div></section><div class="extra-step-actions"><button class="primary-action" id="s${n}Replay">↻ Play again</button><button id="s${n}FinalOverview">Session overview</button><button data-extra-back>← Back to sessions</button></div></article>`;
+    ws.innerHTML=`<article class="${n===2?'s2-final':''}"><div class="group-profile-banner"><div class="group-profile-icon" aria-hidden="true">${profile[0]}</div><div><span class="eyebrow">Session ${n} complete</span><h3 id="s${n}ResultHeading" tabindex="-1">${escapeHtml(profile[1])}</h3><p>${escapeHtml(profile[2])}</p></div></div><div class="extra-session-panel"><div class="extra-progress"><div><strong>Final decision code</strong><small>Fixed choices · same code = same scores</small></div><span class="extra-code">${escapeHtml(decisionCode(n,state))}</span></div>${scoreBoard(n,scores)}</div>${pitchBuilder(n,state)}${n===2?`<section class="s2-final-cast"><span class="eyebrow">Back to the four lives</span><h4>Your policy is only fair if you can explain who it helps — and who may still be missed.</h4><div class="s2-character-grid compact">${Object.keys(S2_CHARACTERS).map(id=>s2CharacterCard(id,true,true)).join('')}</div></section>`:''}<div class="extra-final-grid"><section class="extra-session-panel"><span class="eyebrow">Final speaking task</span><h4>${escapeHtml(cfg.output)}</h4><p>${escapeHtml(cfg.finalPrompt)}</p><p><strong>2:00 TOTAL for the whole group.</strong> Every student speaks whenever the group has more than one member, but all speakers share the same two-minute limit. Explain reasoning and one trade-off; do not just list choices.</p>${speakerPlan(n,size)}</section><section class="extra-session-panel"><span class="eyebrow">Ready-to-rehearse scaffold</span><h4>Use the choices — add your reasoning yourselves.</h4><div class="extra-script">${finalScript(n,state)}</div></section></div><section class="extra-timer"><div><span class="eyebrow">Rehearsal</span><h4>Two-minute hard-stop timer</h4><p id="s${n}TimerStatus" role="status" aria-live="polite">Aim to finish between 1:45 and 1:55.</p></div><div class="extra-timer-controls"><strong class="extra-timer-display" id="s${n}TimerDisplay">2:00</strong><button class="primary-action" id="s${n}TimerStart">Start</button><button id="s${n}TimerReset">Reset</button></div></section><div class="extra-step-actions"><button class="primary-action" id="s${n}Replay">↻ Play again</button><button id="s${n}FinalOverview">Session overview</button><button data-extra-back>← Back to sessions</button></div></article>`;
     q(`#s${n}Replay`).onclick=()=>{if(confirm('Start this session again from Decision 1?')){resetState(n);renderStep(n)}};
     q(`#s${n}FinalOverview`).onclick=()=>renderOverview(n);
     qa('[data-extra-back]',ws).forEach(b=>b.onclick=()=>showLibrary(true));setupTimer(n);if(n===2)s2Sound('finish');requestAnimationFrame(()=>q(`#s${n}ResultHeading`)?.focus());ws.scrollIntoView({behavior:'smooth',block:'start'});

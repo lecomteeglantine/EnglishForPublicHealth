@@ -1,10 +1,15 @@
-# EnglishForPublicHealth — V20
+# EnglishForPublicHealth — V21
 
-Full GitHub-ready package. Upload every file to the repository root and replace the matching files.
+GitHub-ready full package. Upload every file from this ZIP to the repository root and replace the matching files.
 
-V20 only hardens Session 2 — The Postcode Lottery. Session 1's `app.js` and `styles.css` are unchanged.
+## V21 focus — Group Activity pitch clarity + functional hardening
 
-Main V20 changes:
-- timer button/state stays consistent after the tab is backgrounded;
-- interrupted/corrupt final saves restore Decision 6's consequence instead of skipping the last Pitch Checkpoint;
-- cache-busting and service-worker cache updated to V20.
+- Sessions 1–7 now state unambiguously that **2:00 is the total for the whole group**, not 2 minutes per student.
+- The pitch is built progressively during the activity through **Pitch Checkpoints** after consequences.
+- Pitch Builders show four speaking parts with a practical time budget and a 1:45–1:55 target.
+- Final screens repeat the shared 2:00 limit and keep the hard-stop timer at 120 seconds.
+- Session 1 still uses Ruleset **S1-R10**; scoring and decision logic are unchanged.
+- Sessions 2–7 remain deterministic: the same confirmed choices produce the same scores and decision code.
+- `app.js`, `group-sessions.js`, `index.html` and `sw.js` have fresh cache-busting/version references so browsers do not keep the previous scripts.
+
+See `AUDIT-CORRECTIONS.md` for the checks performed.
