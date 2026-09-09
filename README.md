@@ -1,15 +1,19 @@
-# EnglishForPublicHealth — V21
+# EnglishForPublicHealth — V22
 
 GitHub-ready full package. Upload every file from this ZIP to the repository root and replace the matching files.
 
-## V21 focus — Group Activity pitch clarity + functional hardening
+## V22 focus — illustrated Flash Missions + full group-flow audit
 
-- Sessions 1–7 now state unambiguously that **2:00 is the total for the whole group**, not 2 minutes per student.
-- The pitch is built progressively during the activity through **Pitch Checkpoints** after consequences.
-- Pitch Builders show four speaking parts with a practical time budget and a 1:45–1:55 target.
-- Final screens repeat the shared 2:00 limit and keep the hard-stop timer at 120 seconds.
-- Session 1 still uses Ruleset **S1-R10**; scoring and decision logic are unchanged.
-- Sessions 2–7 remain deterministic: the same confirmed choices produce the same scores and decision code.
-- `app.js`, `group-sessions.js`, `index.html` and `sw.js` have fresh cache-busting/version references so browsers do not keep the previous scripts.
+- Session 1 keeps its deterministic **S1-R10** scoring and the same 6 core decisions.
+- Three new **illustrated Flash Missions** appear after Decisions 1, 3 and 5:
+  - **Supply Scan** — identify the figure that proves the access shortage.
+  - **Trade-off Detective** — choose a defensible policy compromise sentence.
+  - **Crisis Desk** — prepare responsible emergency-response wording.
+- Flash Missions are deliberately **score-neutral**: they do not modify scores, saved choices or the deterministic decision code.
+- Each Flash Mission gives the team language/evidence that can be reused in the final pitch.
+- The existing **Pitch Checkpoints** remain after every consequence.
+- The final pitch remains **2:00 total for the whole group**, not 2 minutes per student.
+- Sessions 2–7 are unchanged in content/logic and were replayed through their final screen to verify that V22 does not break them.
+- Cache-busting references for `styles.css`, `app.js`, `group-sessions.js` and the service-worker cache have been refreshed for deployment.
 
-See `AUDIT-CORRECTIONS.md` for the checks performed.
+See `AUDIT-CORRECTIONS.md` for the validation performed.
