@@ -1,12 +1,11 @@
-/* EnglishForPublicHealth · V25 deep group-activity audit
-   Goals:
-   - keep every classroom device on the same deployed ruleset;
-   - never delete Cache Storage belonging to other GitHub Pages projects;
-   - inject the small V25 state-consistency patch without rewriting the large app files;
-   - preserve offline use after the current version has been cached. */
+/* EnglishForPublicHealth · V26 group-activity functional audit
+   Network-first, app-scoped cache, deterministic patch injection. */
 
-const CACHE = 'ph-english-v25-20260915-groupactivity-deep-audit';
-const PATCH_SCRIPT = './groupactivity-v25-fixes.js?v=20260915-25';
+const CACHE_PREFIX = 'ph-english-';
+const CACHE = 'ph-english-v26-20260915-groupactivity-functional-audit';
+const PATCH_SCRIPT = './groupactivity-v26-fixes.js?v=20260915-26';
+const SCOPE_URL = new URL(self.registration.scope);
+const SCOPE_PATH = SCOPE_URL.pathname.endsWith('/') ? SCOPE_URL.pathname : `${SCOPE_URL.pathname}/`;
 
 const CORE_ASSETS = [
   './',
@@ -30,18 +29,28 @@ const OPTIONAL_ASSETS = [
 ];
 
 function freshRequest(input) {
-  return input instanceof Request
-    ? new Request(input, { cache: 'reload' })
-    : new Request(input, { cache: 'reload' });
+  return new Request(input, { cache: 'reload' });
 }
 
 async function fetchFresh(input) {
   return fetch(freshRequest(input));
 }
 
+function isInThisApp(url) {
+  return url.origin === self.location.origin && url.pathname.startsWith(SCOPE_PATH);
+}
+
 function patchHtmlText(text) {
-  if (text.includes('groupactivity-v25-fixes.js')) return text;
+  // Do not stack multiple audit patches in one document.
+  text = text.replace(/\s*<script[^>]+src=["'][^"']*groupactivity-v2[45]-fixes\.js[^"']*["'][^>]*><\/script>\s*/gi, '\n');
+  if (text.includes('groupactivity-v26-fixes.js')) return text;
+
   const tag = `<script src="${PATCH_SCRIPT}"></script>`;
+  const version = '<meta name="application-version" content="2026-09-15-v26-groupactivity-functional-audit">';
+  if (/<meta\s+name=["']application-version["'][^>]*>/i.test(text)) {
+    text = text.replace(/<meta\s+name=["']application-version["'][^>]*>/i, version);
+  }
+
   if (/<\/body>/i.test(text)) return text.replace(/<\/body>/i, `${tag}\n</body>`);
   return `${text}\n${tag}`;
 }
@@ -55,6 +64,7 @@ async function patchedHtmlResponse(response) {
   const headers = new Headers(response.headers);
   headers.delete('content-length');
   headers.delete('content-encoding');
+
   return new Response(body, {
     status: response.status,
     statusText: response.statusText,
@@ -71,14 +81,14 @@ self.addEventListener('install', event => {
   event.waitUntil((async () => {
     const cache = await caches.open(CACHE);
 
-    // Core files must all belong to one coherent deployment.
+    // A service-worker update is accepted only if all functional core files can
+    // be fetched from the same deployment. Optional portraits cannot block it.
     for (const asset of CORE_ASSETS) {
       const response = await fetchFresh(asset);
       if (!response.ok) throw new Error(`Could not cache core asset ${asset}: ${response.status}`);
       await cache.put(asset, response.clone());
     }
 
-    // Portraits improve Session 2 but must not prevent a service-worker update.
     await Promise.all(OPTIONAL_ASSETS.map(async asset => {
       try {
         const response = await fetchFresh(asset);
@@ -94,23 +104,22 @@ self.addEventListener('activate', event => {
   event.waitUntil((async () => {
     const keys = await caches.keys();
 
-    // IMPORTANT: Cache Storage is origin-wide. On GitHub Pages, other course
-    // projects share lecomteeglantine.github.io. Delete only this app's caches.
+    // Cache Storage is origin-wide on GitHub Pages. Delete only this app's caches.
     await Promise.all(
       keys
-        .filter(key => key.startsWith('ph-english-') && key !== CACHE)
+        .filter(key => key.startsWith(CACHE_PREFIX) && key !== CACHE)
         .map(key => caches.delete(key))
     );
 
     await self.clients.claim();
 
-    // Pages already open may have loaded an older app.js/group-sessions.js.
-    // Reload each controlled page once when V25 activates.
+    // Reload only pages inside /EnglishForPublicHealth/. Do not touch another
+    // course/site that happens to be open on lecomteeglantine.github.io.
     const windows = await self.clients.matchAll({ type: 'window', includeUncontrolled: true });
     await Promise.all(windows.map(async client => {
       try {
         const url = new URL(client.url);
-        if (url.origin === self.location.origin) await client.navigate(client.url);
+        if (isInThisApp(url)) await client.navigate(client.url);
       } catch (_) {}
     }));
   })());
@@ -121,7 +130,7 @@ self.addEventListener('fetch', event => {
   if (request.method !== 'GET') return;
 
   const url = new URL(request.url);
-  if (url.origin !== self.location.origin) return;
+  if (!isInThisApp(url)) return;
 
   event.respondWith((async () => {
     const cache = await caches.open(CACHE);
@@ -132,10 +141,12 @@ self.addEventListener('fetch', event => {
       await putSafe(cache, request, response);
       return response;
     } catch (_) {
-      let cached = await caches.match(request, { ignoreSearch: false });
+      // Read only this deployment's cache. Searching every origin-wide cache can
+      // resurrect a stale file from an older deployment.
+      let cached = await cache.match(request, { ignoreSearch: false });
 
       if (!cached && request.mode === 'navigate') {
-        cached = (await caches.match('./index.html')) || (await caches.match('./'));
+        cached = (await cache.match('./index.html')) || (await cache.match('./'));
       }
 
       if (cached && request.mode === 'navigate') return patchedHtmlResponse(cached);

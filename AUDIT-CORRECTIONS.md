@@ -1,54 +1,49 @@
-# EnglishForPublicHealth · Group Activity deep audit · V25
+# EnglishForPublicHealth — Group Activity V26 functional audit
 
-Audit date: 15 September 2026
-Scope: `https://lecomteeglantine.github.io/EnglishForPublicHealth/#groupactivity`
+Audit target: the live `#groupactivity` deployment on 15 September 2026.
 
-## Deterministic parity verified
+## What was verified
 
-- Session 1 uses fixed A–E choices and fixed score deltas. Its group-game path does not use randomisation.
-- Sessions 2–7 use fixed option arrays and deterministic score recalculation.
-- `group-sessions.js` contains no `Math.random()` and no shuffle call.
-- For Sessions 2–7, stored choices are validated as one contiguous sequence before scores and progress are rebuilt.
-- Same confirmed choice sequence therefore produces the same decision code, scores and final profile on different devices running the same deployment.
+- Session 1 uses six fixed decisions and deterministic score effects.
+- Sessions 2–7 use fixed option arrays and deterministic score recalculation; no `Math.random()` is used by their engine.
+- Saved choices are normalised to a contiguous valid sequence before a session is resumed.
+- Sessions 2–7 restore the last consequence if the browser was interrupted after writing the final choice but before writing completion.
+- Session 1 receives the same interrupted-final-choice protection in the V26 patch.
+- Reset/replay removes the corresponding current-completion marker.
+- The global completion counter is rebuilt from current Session 1 state and current Session 2–7 saved state/card status.
+- Session 7 stale references to a non-existent Session 8 are removed from dynamically-rendered screens.
+- The duplicated Session 7 phrase `because they are a priority because…` is cleaned up.
+- The current Session 2 portrait assets are optional for service-worker installation, so a missing portrait cannot block the whole app update.
 
-## Inconsistencies found and corrected
+## Functional corrections in V26
 
-1. **Origin-wide cache deletion risk**
-   The deployed service-worker logic deleted every cache key except its own. GitHub Pages projects under the same `lecomteeglantine.github.io` origin share Cache Storage, so this could remove caches used by other course sites. V25 deletes only cache names beginning with `ph-english-`.
+### 1. Service-worker reload is scoped to this app
 
-2. **Mixed-version / stale-device risk**
-   V25 forces revalidation of same-origin files, installs a new cache, claims open clients and reloads pages already open when the new worker activates. This prevents one phone/computer from temporarily running an older ruleset than another.
+The previous worker matched clients by origin only. On GitHub Pages, several projects share `lecomteeglantine.github.io`. V26 reloads only client URLs whose pathname is inside the current service-worker scope (`/EnglishForPublicHealth/`).
 
-3. **Session 1 interrupted-final-save inconsistency**
-   Sessions 2–7 already restore the final consequence if all choices survive but the last outcome/completion flag is missing. Session 1 did not. V25 applies the same recovery rule so the final Pitch Checkpoint cannot be skipped after that edge case.
+### 2. Offline fallback cannot resurrect an older deployment
 
-4. **Completion-counter desynchronisation**
-   Session completion markers can otherwise become stale after some reset/replay paths. V25 reconciles Session 1–7 completion markers with the engines' current status and removes Session 1's marker when Session 1 is reset/replayed, matching Sessions 2–7 semantics.
+The previous worker used origin-wide `caches.match(...)` on fallback. V26 reads only the current V26 cache. This prevents a stale matching URL from an older cache from being returned after a deployment change.
 
-5. **Session 7 course-sequence wording**
-   Two stale labels referred to a non-existent “Session 8”. The V25 patch removes those references and keeps the wording tied to the final campaign/final presentation in the seven-session course.
+### 3. One active patch only
 
-6. **Optional image failure during service-worker install**
-   Session 2 portraits are now best-effort cache assets. A temporary image-fetch problem can no longer block the whole service-worker update; core HTML/CSS/JS files remain mandatory.
+HTML navigation responses remove injected V24/V25 group-activity patch tags before V26 is injected. This prevents stacked monkey-patches and duplicate click/storage handlers after upgrades.
 
-## What is deliberately unchanged
+### 4. Completion state is hardened
 
-- scenario content;
-- option order;
-- score values;
-- score formulas;
-- decision codes;
-- 2:00 whole-team pitch rule;
-- Session 2 sound cues;
-- Session 7's deliberately different 1–3-person campaign-rehearsal setting.
+V26 keeps the Session 1 interrupted-final-choice repair and reset cleanup from V25, while rebuilding Session 2–7 completion signals from saved state as well as the launch-card status.
 
-## Files to upload
+### 5. Session 7 wording is corrected everywhere
 
-Upload both files below to the repository root, replacing `sw.js`:
+The correction now scans dynamically-rendered Session 7 text, so the final screen cannot reintroduce `Session 8` after a later render.
 
-- `sw.js`
-- `groupactivity-v25-fixes.js`
+## Files to upload to repository root
 
-`AUDIT-CORRECTIONS.md` is documentation and may also be uploaded.
+- `sw.js` — replace the existing file.
+- `groupactivity-v26-fixes.js` — add this file.
 
-The first visit after deployment may reload once automatically when the new service worker activates. That is intentional.
+The previous `groupactivity-v25-fixes.js` can remain in the repository; V26 no longer injects it. It may be deleted later if desired, but deletion is not required for correct functioning.
+
+## Deployment behaviour
+
+When V26 activates, an already-open EnglishForPublicHealth page may reload once. This is intentional so the page, app scripts and patch all belong to the same deployed ruleset.
