@@ -1,10 +1,10 @@
-/* EnglishForPublicHealth · V28 · distinct course sessions + Session 4 clarity
+/* EnglishForPublicHealth · V29 · Session 4 deterministic classroom hardening
    This worker keeps one coherent classroom build on every device and injects
-   the V28 UI/state patch without changing scenario choices or scoring. */
+   the V29 UI/state patch without changing scenario choices or scoring. */
 
-const CACHE = 'efph-v28-20260915-distinct-sessions';
-const BUILD = '20260915-28';
-const PATCH_SCRIPT = `./groupactivity-v28-session-separation.js?v=${BUILD}`;
+const CACHE = 'efph-v29-20260915-session4-hardening';
+const BUILD = '20260915-29';
+const PATCH_SCRIPT = `./groupactivity-v29-session4-hardening.js?v=${BUILD}`;
 const APP_SCOPE_PATH = new URL('./', self.location.href).pathname;
 
 const CORE_ASSETS = [
@@ -50,9 +50,9 @@ async function fetchFresh(input) {
 function patchHtmlText(source) {
   let text = String(source || '');
 
-  // Remove earlier runtime group-activity patches so only V28 runs.
+  // Remove earlier runtime group-activity patches so only V29 runs.
   text = text.replace(
-    /<script\b[^>]*\bsrc=["'][^"']*groupactivity-v(?:25|26|27|28)(?:-[^"']*)?\.js[^"']*["'][^>]*>\s*<\/script>\s*/gi,
+    /<script\b[^>]*\bsrc=["'][^"']*groupactivity-v(?:25|26|27|28|29)(?:-[^"']*)?\.js[^"']*["'][^>]*>\s*<\/script>\s*/gi,
     ''
   );
 
@@ -66,6 +66,27 @@ function patchHtmlText(source) {
   const tag = `<script src="${PATCH_SCRIPT}"></script>`;
   if (/<\/body>/i.test(text)) return text.replace(/<\/body>/i, `${tag}\n</body>`);
   return `${text}\n${tag}`;
+}
+
+function patchGroupSessionsText(source) {
+  let text = String(source || '');
+  if (text.includes("pheng_group_session_4_v2")) return text;
+  const original = "const keyFor = n => n===2 ? 'pheng_group_session_2_postcode_v2' : `pheng_group_session_${n}_v1`;";
+  const replacement = "const keyFor = n => n===2 ? 'pheng_group_session_2_postcode_v2' : n===4 ? 'pheng_group_session_4_v2' : `pheng_group_session_${n}_v1`;";
+  return text.replace(original, replacement);
+}
+
+async function patchedGroupSessionsResponse(response) {
+  if (!response || !response.ok) return response;
+  const headers = new Headers(response.headers);
+  headers.delete('content-length');
+  headers.delete('content-encoding');
+  const patched = patchGroupSessionsText(await response.text());
+  return new Response(patched, {
+    status: response.status,
+    statusText: response.statusText,
+    headers
+  });
 }
 
 async function patchedHtmlResponse(response) {
@@ -91,8 +112,9 @@ self.addEventListener('install', event => {
   event.waitUntil((async () => {
     const cache = await caches.open(CACHE);
     for (const asset of CORE_ASSETS) {
-      const response = await fetchFresh(asset);
+      let response = await fetchFresh(asset);
       if (!response.ok) throw new Error(`Could not cache core asset ${asset}: ${response.status}`);
+      if (asset.startsWith('./group-sessions.js')) response = await patchedGroupSessionsResponse(response);
       await cache.put(asset, response.clone());
     }
     await Promise.all(OPTIONAL_ASSETS.map(async asset => {
@@ -112,7 +134,7 @@ self.addEventListener('activate', event => {
     await self.clients.claim();
 
     // Reload only this GitHub Pages project so an already-open classroom device
-    // immediately receives the same V28 build. Other projects are untouched.
+    // immediately receives the same V29 build. Other projects are untouched.
     const windows = await self.clients.matchAll({ type:'window', includeUncontrolled:true });
     await Promise.all(windows.map(async client => {
       try {
@@ -133,7 +155,8 @@ self.addEventListener('fetch', event => {
     const cache = await caches.open(CACHE);
     try {
       let response = await fetchFresh(request);
-      if (request.mode === 'navigate') response = await patchedHtmlResponse(response);
+      if (url.pathname.endsWith('/group-sessions.js')) response = await patchedGroupSessionsResponse(response);
+      else if (request.mode === 'navigate') response = await patchedHtmlResponse(response);
       await putSafe(cache, request, response);
       return response;
     } catch (_) {
