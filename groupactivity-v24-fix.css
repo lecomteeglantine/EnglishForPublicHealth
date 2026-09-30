@@ -1,0 +1,28 @@
+/* EnglishForPublicHealth – Group Activity UX patch */
+.groupactivity-audit-badge{
+  margin: 0 0 1rem;
+  padding: .75rem 1rem;
+  border: 1px solid color-mix(in srgb, currentColor 18%, transparent);
+  border-radius: 14px;
+  background: color-mix(in srgb, currentColor 4%, transparent);
+  line-height: 1.45;
+}
+@media (max-width: 700px){
+  #session1Detail .group-step-actions,
+  #groupMissionWorkspace .group-step-actions,
+  #groupMissionWorkspace .session-launch-actions{
+    display:grid;
+    grid-template-columns:1fr;
+    gap:.65rem;
+  }
+  #session1Detail button,
+  #groupMissionWorkspace button{
+    min-height:44px;
+  }
+  #groupMissionWorkspace .group-choice-grid{
+    grid-template-columns:1fr !important;
+  }
+  #groupMissionWorkspace .pitch-builder-grid{
+    grid-template-columns:1fr !important;
+  }
+}

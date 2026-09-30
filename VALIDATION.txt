@@ -1,0 +1,6 @@
+Static validation
+=================
+node --check exit=0
+
+
+Patch is additive and does not contain score tables or randomisation.
