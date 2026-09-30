@@ -1,0 +1,40 @@
+IMPORTANT — the V24 patch files are present, but the published index.html still does not load them.
+
+In index.html:
+
+1. Immediately after:
+<link rel="stylesheet" href="group-sessions.css?v=20260909-23">
+
+add:
+<link rel="stylesheet" href="groupactivity-v24-fix.css?v=20260930-24">
+
+2. Immediately before </body>, AFTER the existing application/group-session scripts, add:
+<script src="groupactivity-v24-fix.js?v=20260930-24"></script>
+
+Upload these three files to the repository root:
+- groupactivity-v24-fix.css
+- groupactivity-v24-fix.js
+- your modified index.html
+
+Then hard-refresh the GitHub Pages site once.
+
+DETERMINISM AUDIT
+Session 1:
+- score is recomputed from the exact confirmed choice sequence;
+- each choice ID maps to one fixed effect table;
+- the next consequence is rendered from the same stored choice;
+- no random function is used in the Session 1 decision engine.
+
+Sessions 2–7:
+- each option has a fixed score delta;
+- scores are recomputed from the confirmed choice sequence;
+- outcome screen uses the selected option ID and the same fixed tables;
+- no Math.random() occurs in group-sessions.js.
+
+Therefore, with the same starting state and the same confirmed choices, two devices receive the same:
+- consequence/outcome screen;
+- decision code;
+- points after each decision;
+- final scores/profile.
+
+Local storage only preserves progress per device; it does not alter scoring.
