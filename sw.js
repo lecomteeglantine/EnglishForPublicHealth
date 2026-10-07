@@ -1,9 +1,9 @@
-/* EnglishForPublicHealth · V29 · Session 4 deterministic classroom hardening
-   This worker keeps one coherent classroom build on every device and injects
-   the V29 UI/state patch without changing scenario choices or scoring. */
+/* EnglishForPublicHealth · V30 · Session 7 environmental-health mission deployment
+   Forces a fresh classroom build so existing PWA/service-worker caches receive
+   the redesigned Session 7 and its mandatory debrief. */
 
-const CACHE = 'efph-v29-20260915-session4-hardening';
-const BUILD = '20260915-29';
+const CACHE = 'efph-v30-20261007-session7-envhealth';
+const BUILD = '20261007-30';
 const PATCH_SCRIPT = `./groupactivity-v29-session4-hardening.js?v=${BUILD}`;
 const APP_SCOPE_PATH = new URL('./', self.location.href).pathname;
 
@@ -29,6 +29,7 @@ const OPTIONAL_ASSETS = [
 ];
 
 const LEGACY_EFPH_CACHES = new Set([
+  'efph-v29-20260915-session4-hardening',
   'ph-english-v24-20260915-groupactivity-parity-lock',
   'ph-english-v25-20260915-groupactivity-deep-audit',
   'ph-english-v26-20260915-groupactivity-functional-audit',
