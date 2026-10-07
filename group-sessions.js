@@ -1,4 +1,4 @@
-/* Sessions 2–7 extension · V22 · whole-team two-minute pitch hardening · audited deterministic edition
+/* Sessions 2–7 extension · V32 · Session 7 visual/parity audit + storage coherence
    Deliberately isolated from the Session 1 S1-R10 engine.
    Session 1 HTML, scoring logic and app.js are not modified by this file. */
 (() => {
@@ -8,7 +8,7 @@
   const qa = (s, root=document) => [...root.querySelectorAll(s)];
   const clamp = n => Math.max(0, Math.min(100, n));
   const escapeHtml = value => String(value ?? '').replace(/[&<>"']/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
-  const keyFor = n => n===2 ? 'pheng_group_session_2_postcode_v2' : n===7 ? 'pheng_group_session_7_envhealth_v2' : `pheng_group_session_${n}_v1`;
+  const keyFor = n => n===2 ? 'pheng_group_session_2_postcode_v2' : n===4 ? 'pheng_group_session_4_v2' : n===7 ? 'pheng_group_session_7_envhealth_v2' : `pheng_group_session_${n}_v1`;
   const LEGACY_S2_KEY = 'pheng_group_session_2_v1';
 
   const SESSIONS = {
