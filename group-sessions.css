@@ -205,3 +205,10 @@
 .s7-how-to b{display:grid;place-items:center;flex:0 0 24px;height:24px;border-radius:50%;background:var(--accent);color:#fff}
 @media(max-width:900px){.s7-brief-grid{grid-template-columns:repeat(2,1fr)}.s7-how-to{grid-template-columns:repeat(2,1fr)}}
 @media(max-width:560px){.s7-brief-head{display:block}.s7-alert-badge{margin-top:.55rem}.s7-brief-grid,.s7-how-to{grid-template-columns:1fr}}
+
+
+.s7-debrief{border-left:5px solid var(--accent);background:linear-gradient(135deg,var(--surface),color-mix(in srgb,var(--accent) 6%,var(--surface2)))}
+.s7-debrief h4{margin:.2rem 0 .55rem}
+.s7-debrief ol{margin:.7rem 0 .7rem;padding-left:1.25rem}
+.s7-debrief li{margin:.48rem 0;line-height:1.4}
+.s7-debrief-close{margin:.75rem 0 0;padding:.7rem .8rem;border-radius:14px;background:var(--surface2);border:1px solid var(--border)}
