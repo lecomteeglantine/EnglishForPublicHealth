@@ -412,38 +412,122 @@
 
 
   function s7HeroVisual(){
-    return `<figure class="s7-hero-illustration" role="img" aria-label="Illustrated city split between severe heat exposure and public-health protection measures.">
-      <svg viewBox="0 0 620 360" aria-hidden="true" focusable="false">
+    return `<figure class="s7-hero-illustration" role="img" aria-label="Illustrated heatwave city showing a shaded cooling area, a hospital, residents, hot streets and public-health response teams.">
+      <svg viewBox="0 0 760 430" aria-hidden="true" focusable="false">
         <defs>
-          <linearGradient id="s7sky" x1="0" x2="1"><stop offset="0" stop-color="#f6d38b"/><stop offset="1" stop-color="#f08a5d"/></linearGradient>
-          <linearGradient id="s7cool" x1="0" x2="1"><stop offset="0" stop-color="#7bc8b6"/><stop offset="1" stop-color="#d8f0e8"/></linearGradient>
+          <linearGradient id="s7sky31" x1="0" x2="1"><stop offset="0" stop-color="#f7e4b8"/><stop offset=".52" stop-color="#f2bd76"/><stop offset="1" stop-color="#e97855"/></linearGradient>
+          <linearGradient id="s7park31" x1="0" x2="1"><stop offset="0" stop-color="#6fb59d"/><stop offset="1" stop-color="#d9ead8"/></linearGradient>
+          <linearGradient id="s7road31" x1="0" x2="0" y1="0" y2="1"><stop offset="0" stop-color="#d79b79"/><stop offset="1" stop-color="#b96f5f"/></linearGradient>
+          <filter id="s7shadow31" x="-20%" y="-20%" width="140%" height="140%"><feDropShadow dx="0" dy="7" stdDeviation="7" flood-opacity=".18"/></filter>
         </defs>
-        <rect x="8" y="8" width="604" height="344" rx="26" fill="url(#s7sky)" opacity=".92"/>
-        <circle cx="505" cy="76" r="42" fill="#f6c344"/><g fill="#8b4b3e" opacity=".84"><rect x="420" y="178" width="54" height="104" rx="3"/><rect x="480" y="150" width="65" height="132" rx="3"/><rect x="552" y="192" width="39" height="90" rx="3"/></g>
-        <path d="M0 286h620v74H0z" fill="#d98a55" opacity=".6"/><path d="M390 318l35-30 34 30 33-26 37 28 28-21 41 31" fill="none" stroke="#9a4e3d" stroke-width="6" opacity=".75"/>
-        <path d="M8 258C105 226 165 245 241 222c60-18 95-59 149-76v206H8z" fill="url(#s7cool)" opacity=".95"/>
-        <g fill="#2b6f63"><circle cx="92" cy="205" r="34"/><rect x="86" y="205" width="12" height="73" rx="6"/><circle cx="169" cy="228" r="28"/><rect x="164" y="228" width="10" height="60" rx="5"/></g>
-        <g transform="translate(232 204)"><rect width="116" height="83" rx="12" fill="#f7f4ea"/><path d="M58 14v55M31 41h54" stroke="#d45b52" stroke-width="15" stroke-linecap="round"/></g>
-        <g transform="translate(58 285)"><circle cx="18" cy="18" r="16" fill="#f2b38a"/><path d="M2 66c2-25 10-38 16-38s14 13 16 38" fill="#315b74"/><circle cx="70" cy="18" r="16" fill="#8b5f4a"/><path d="M54 66c2-25 10-38 16-38s14 13 16 38" fill="#5d7f55"/></g>
-        <g transform="translate(365 74)" fill="none" stroke="#fff" stroke-width="8" stroke-linecap="round"><path d="M0 0v92"/><circle cx="0" cy="105" r="22"/><path d="M0 23h21"/></g>
-        <g transform="translate(499 281)"><path d="M0 0h74v45H0z" fill="#f7f4ea"/><path d="M11 11h52M11 22h38M11 33h44" stroke="#2b6f63" stroke-width="5" stroke-linecap="round"/></g>
+        <rect x="7" y="7" width="746" height="416" rx="30" fill="url(#s7sky31)"/>
+        <circle cx="663" cy="82" r="48" fill="#ffd45f" opacity=".95"/>
+        <g stroke="#ffd45f" stroke-width="6" stroke-linecap="round" opacity=".75">
+          <path d="M663 18v-24M663 168v24M599 82h-24M751 82h24M618 37l-17-17M708 127l17 17M708 37l17-17M618 127l-17 17"/>
+        </g>
+        <path d="M0 305C98 275 172 286 248 252c54-24 99-63 154-76v247H0z" fill="url(#s7park31)"/>
+        <path d="M392 300c76-28 166-24 368 15v108H392z" fill="url(#s7road31)" opacity=".92"/>
+        <g fill="#4d6558">
+          <rect x="64" y="220" width="14" height="88" rx="7"/><circle cx="71" cy="208" r="43"/>
+          <rect x="143" y="238" width="12" height="72" rx="6"/><circle cx="149" cy="228" r="34"/>
+          <rect x="214" y="247" width="11" height="65" rx="5"/><circle cx="219" cy="238" r="31"/>
+        </g>
+        <g filter="url(#s7shadow31)">
+          <rect x="279" y="191" width="143" height="112" rx="16" fill="#fff9ec"/>
+          <rect x="294" y="174" width="113" height="30" rx="10" fill="#fff9ec"/>
+          <path d="M350 214v61M320 244h60" stroke="#cb5e5d" stroke-width="18" stroke-linecap="round"/>
+          <rect x="302" y="286" width="97" height="11" rx="5.5" fill="#b9c7c3"/>
+        </g>
+        <g transform="translate(430 222)" filter="url(#s7shadow31)">
+          <rect x="0" y="0" width="104" height="63" rx="14" fill="#f7fbf8"/>
+          <rect x="13" y="14" width="78" height="12" rx="6" fill="#5ca48e"/>
+          <rect x="13" y="35" width="50" height="9" rx="4.5" fill="#a8cfc2"/>
+          <path d="M84 43h13l10 11h-23z" fill="#d95c5c"/>
+        </g>
+        <g fill="#8c5544" opacity=".86">
+          <rect x="565" y="189" width="46" height="104" rx="4"/>
+          <rect x="615" y="161" width="59" height="132" rx="4"/>
+          <rect x="681" y="204" width="40" height="89" rx="4"/>
+        </g>
+        <g fill="#6a352f" opacity=".55">
+          <rect x="577" y="205" width="8" height="14"/><rect x="592" y="205" width="8" height="14"/>
+          <rect x="627" y="180" width="9" height="15"/><rect x="645" y="180" width="9" height="15"/>
+          <rect x="627" y="207" width="9" height="15"/><rect x="645" y="207" width="9" height="15"/>
+        </g>
+        <g transform="translate(92 323)" filter="url(#s7shadow31)">
+          <path d="M0 15h150l-22-38H24z" fill="#f0dfad"/>
+          <rect x="18" y="15" width="8" height="48" rx="4" fill="#8c735b"/><rect x="124" y="15" width="8" height="48" rx="4" fill="#8c735b"/>
+          <rect x="40" y="28" width="72" height="10" rx="5" fill="#7f9f8b"/>
+        </g>
+        <g transform="translate(63 315)">
+          <circle cx="18" cy="18" r="15" fill="#d79a78"/><path d="M1 67c4-27 11-39 17-39s13 12 17 39" fill="#386b72"/>
+          <circle cx="73" cy="16" r="15" fill="#8e5d48"/><path d="M56 67c4-27 11-39 17-39s13 12 17 39" fill="#6b8463"/>
+          <circle cx="124" cy="19" r="12" fill="#c8896f"/><path d="M111 67c3-22 8-34 13-34s10 12 13 34" fill="#d18058"/>
+        </g>
+        <g transform="translate(515 305)" fill="none" stroke="#fff7ea" stroke-width="8" stroke-linecap="round">
+          <path d="M0 0v69"/><circle cx="0" cy="84" r="21"/><path d="M0 19h20"/>
+        </g>
+        <g transform="translate(580 320)" filter="url(#s7shadow31)">
+          <circle cx="22" cy="20" r="16" fill="#8b604a"/><path d="M5 72c4-29 11-42 17-42s13 13 17 42" fill="#2f6e72"/>
+          <rect x="46" y="11" width="74" height="48" rx="11" fill="#f8f2e8"/>
+          <path d="M58 25h49M58 37h35M58 49h43" stroke="#397c70" stroke-width="5" stroke-linecap="round"/>
+        </g>
+        <g transform="translate(232 334)">
+          <path d="M0 32c22-24 52-29 88-13 22 10 45 10 66 0" fill="none" stroke="#4c9786" stroke-width="9" stroke-linecap="round"/>
+          <circle cx="26" cy="25" r="9" fill="#fff"/><circle cx="121" cy="25" r="9" fill="#fff"/>
+        </g>
       </svg>
     </figure>`;
   }
 
   function s7MissionBrief(){
     return `<section class="s7-mission-brief" aria-label="Session 7 mission briefing">
-      <div class="s7-brief-head"><div><span class="eyebrow">MISSION BRIEF · FICTIONAL CITY</span><h4>48 hours. One heatwave. Four public-health pressures.</h4></div><span class="s7-alert-badge">RED HEAT-HEALTH ALERT</span></div>
+      <div class="s7-brief-head"><div><span class="eyebrow">MISSION BRIEF · FICTIONAL CITY</span><h4>48 hours to protect the city.</h4><p>Your team must reduce heat-related harm without increasing inequalities.</p></div><span class="s7-alert-badge">RED HEAT-HEALTH ALERT</span></div>
       <div class="s7-brief-grid">
-        <article><div class="s7-brief-art heat" aria-hidden="true">🌡️☀️</div><strong>Extreme heat</strong><p>Temperatures may reach 40°C. Heat illness and ambulance calls are rising.</p></article>
-        <article><div class="s7-brief-art care" aria-hidden="true">🏥🚑</div><strong>Overstretched care</strong><p>Hospitals report corridor care. Prevention must reduce avoidable emergencies.</p></article>
-        <article><div class="s7-brief-art water" aria-hidden="true">💧🌳</div><strong>Water & unequal exposure</strong><p>Water demand is high, while low-shade neighbourhoods are becoming much hotter.</p></article>
-        <article><div class="s7-brief-art mind" aria-hidden="true">🧠💬</div><strong>Climate anxiety</strong><p>Some young residents feel overwhelmed and hopeless. Your message must turn concern into useful action.</p></article>
+        <article><div class="s7-brief-art heat" aria-hidden="true"><span class="s7-art-sun"></span><span class="s7-art-thermo"></span></div><strong>Extreme heat</strong><p>40°C forecast. Heat illness and ambulance calls are rising.</p></article>
+        <article><div class="s7-brief-art care" aria-hidden="true"><span class="s7-art-hospital">+</span><span class="s7-art-ambulance"></span></div><strong>Health services</strong><p>Hospitals are under pressure. Prevent avoidable emergencies.</p></article>
+        <article><div class="s7-brief-art water" aria-hidden="true"><span class="s7-art-drop"></span><span class="s7-art-tree"></span></div><strong>Water & shade</strong><p>Demand is high. Low-shade neighbourhoods are hotter.</p></article>
+        <article><div class="s7-brief-art mind" aria-hidden="true"><span class="s7-art-head"></span><span class="s7-art-bubble"></span></div><strong>Climate anxiety</strong><p>Some residents feel helpless. Turn concern into practical action.</p></article>
       </div>
-      <div class="s7-how-to">
-        <span><b>1</b> Read the situation.</span><span><b>2</b> Discuss every option.</span><span><b>3</b> Confirm one team choice.</span><span><b>4</b> Say the checkpoint before continuing.</span>
+      <div class="s7-how-to" aria-label="How to play">
+        <span><b>1</b> Choose 3 or 4 students.</span>
+        <span><b>2</b> Assign the roles.</span>
+        <span><b>3</b> Discuss every option.</span>
+        <span><b>4</b> Confirm one team choice.</span>
+        <span><b>5</b> Say the checkpoint aloud.</span>
       </div>
+      <p class="s7-parity-note"><strong>Same choices = same screens, same scores, same final code.</strong> No random events or random scoring are used.</p>
     </section>`;
+  }
+
+  function s7StepIllustration(stepIndex){
+    const scenes=[
+      `<svg viewBox="0 0 720 220" aria-hidden="true"><defs><linearGradient id="s7s1" x1="0" x2="1"><stop offset="0" stop-color="#ffe6b8"/><stop offset="1" stop-color="#f58b67"/></linearGradient></defs><rect width="720" height="220" rx="24" fill="url(#s7s1)"/><circle cx="616" cy="54" r="34" fill="#ffd259"/><g fill="#7c4b3d"><rect x="486" y="94" width="58" height="83" rx="4"/><rect x="552" y="79" width="70" height="98" rx="4"/></g><g fill="#548773"><circle cx="95" cy="116" r="38"/><rect x="89" y="115" width="12" height="65" rx="6"/><circle cx="178" cy="128" r="30"/><rect x="173" y="127" width="10" height="52" rx="5"/></g><g transform="translate(248 111)"><rect x="0" y="0" width="149" height="72" rx="14" fill="#fff9ef"/><path d="M23 22h103M23 38h73M23 54h91" stroke="#d7675b" stroke-width="7" stroke-linecap="round"/></g><g transform="translate(72 155)"><circle cx="18" cy="14" r="13" fill="#d99d7d"/><path d="M4 62c3-24 9-35 14-35s11 11 14 35" fill="#4d6f85"/><circle cx="73" cy="14" r="13" fill="#8e614c"/><path d="M59 62c3-24 9-35 14-35s11 11 14 35" fill="#6f875e"/></g></svg>`,
+      `<svg viewBox="0 0 720 220" aria-hidden="true"><rect width="720" height="220" rx="24" fill="#e8f1ef"/><g transform="translate(66 52)"><rect width="188" height="120" rx="18" fill="#fff"/><path d="M94 22v72M58 58h72" stroke="#cf5f5e" stroke-width="20" stroke-linecap="round"/><rect x="29" y="102" width="130" height="9" rx="4.5" fill="#c8d6d2"/></g><g transform="translate(332 76)"><rect width="154" height="72" rx="16" fill="#f8fbfa"/><rect x="18" y="16" width="91" height="12" rx="6" fill="#4c927e"/><rect x="18" y="38" width="65" height="9" rx="4.5" fill="#9bc6ba"/><circle cx="128" cy="42" r="17" fill="#e67b69"/></g><g transform="translate(532 69)"><circle cx="44" cy="44" r="42" fill="#d8ece5"/><path d="M20 48h48M44 24v48" stroke="#4c927e" stroke-width="9" stroke-linecap="round"/></g></svg>`,
+      `<svg viewBox="0 0 720 220" aria-hidden="true"><defs><linearGradient id="s7s3" x1="0" x2="1"><stop offset="0" stop-color="#d8eef3"/><stop offset="1" stop-color="#dfead2"/></linearGradient></defs><rect width="720" height="220" rx="24" fill="url(#s7s3)"/><path d="M42 183c76-41 145-25 220-57 78-33 159-32 245 10 55 27 106 28 171 12v72H42z" fill="#8cc9b5"/><g fill="#487b69"><rect x="106" y="83" width="13" height="78" rx="6"/><circle cx="112" cy="70" r="42"/><rect x="185" y="103" width="11" height="63" rx="5"/><circle cx="191" cy="92" r="33"/></g><path d="M406 53c0 0-34 45-34 67a34 34 0 0068 0c0-22-34-67-34-67z" fill="#5db4ca"/><g transform="translate(487 73)"><path d="M0 30h140l-22-30H25z" fill="#f4dfaa"/><rect x="20" y="30" width="8" height="83" rx="4" fill="#8b745d"/><rect x="112" y="30" width="8" height="83" rx="4" fill="#8b745d"/><rect x="40" y="56" width="61" height="10" rx="5" fill="#648d7b"/></g></svg>`,
+      `<svg viewBox="0 0 720 220" aria-hidden="true"><rect width="720" height="220" rx="24" fill="#eee8f3"/><g transform="translate(105 43)"><path d="M65 15c45 0 82 36 82 81 0 28-14 53-36 67v30H55v-31C32 149 17 124 17 96c0-45 37-81 82-81z" fill="#f4c4a8"/><path d="M71 58c15-17 46-18 64 2" fill="none" stroke="#8b5e77" stroke-width="7" stroke-linecap="round"/><circle cx="78" cy="88" r="5" fill="#6d5261"/><circle cx="115" cy="88" r="5" fill="#6d5261"/><path d="M79 116c13 9 27 9 40 0" fill="none" stroke="#6d5261" stroke-width="5" stroke-linecap="round"/></g><g transform="translate(318 53)"><rect width="264" height="112" rx="25" fill="#fff" opacity=".94"/><path d="M29 30h190M29 55h157M29 80h177" stroke="#7e77a4" stroke-width="10" stroke-linecap="round"/><path d="M59 112l-14 28 42-28z" fill="#fff"/></g><g transform="translate(594 74)" fill="#6a9f82"><circle cx="28" cy="28" r="28"/><path d="M12 31l10 10 23-28" fill="none" stroke="#fff" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/></g></svg>`,
+      `<svg viewBox="0 0 720 220" aria-hidden="true"><defs><linearGradient id="s7s5" x1="0" x2="1"><stop offset="0" stop-color="#e0f0e9"/><stop offset=".55" stop-color="#f5ead0"/><stop offset="1" stop-color="#f0b17e"/></linearGradient></defs><rect width="720" height="220" rx="24" fill="url(#s7s5)"/><g transform="translate(64 52)"><rect width="120" height="116" rx="18" fill="#fff"/><path d="M60 22v72M24 58h72" stroke="#cf5f5e" stroke-width="17" stroke-linecap="round"/></g><g transform="translate(226 57)"><circle cx="53" cy="53" r="49" fill="#cfe6dc"/><path d="M17 59c32-30 64-30 72 0" fill="none" stroke="#4f8e79" stroke-width="9" stroke-linecap="round"/><path d="M53 14v78" stroke="#4f8e79" stroke-width="8" stroke-linecap="round"/></g><g transform="translate(374 47)"><path d="M0 51c0 0 34-45 34-67 0 22 34 67 34 67a34 34 0 11-68 0z" fill="#5fb8cb"/></g><g transform="translate(492 47)"><rect width="162" height="122" rx="20" fill="#fff" opacity=".94"/><path d="M23 31h116M23 57h83M23 83h102" stroke="#518c7b" stroke-width="9" stroke-linecap="round"/><circle cx="132" cy="91" r="18" fill="#f0ba68"/></g></svg>`
+    ];
+    return `<figure class="s7-step-illustration" role="img" aria-label="Illustration for this heatwave mission decision">${scenes[stepIndex]||scenes[0]}</figure>`;
+  }
+
+  function s7PitchBuilder(state){
+    const groups=[
+      ['Main health risks',[0,1],'Heat alert + service pressure'],
+      ['Who needs priority protection',[0,2],'Vulnerability + unequal exposure'],
+      ['Environmental + service response',[1,2,4],'Care, water/shade + 48-hour plan'],
+      ['Climate-anxiety message + indicator',[3,4],'Communication + monitoring']
+    ];
+    const times=['≈ 25 sec','≈ 25 sec','≈ 35 sec','≈ 25 sec'];
+    return `<section class="extra-pitch-builder s7-pitch-builder"><span class="eyebrow">Live briefing builder</span><h4>Your final 2:00 briefing is built from all five decisions.</h4><div class="extra-pitch-parts">${groups.map((g,i)=>{const ready=g[1].every(x=>Boolean(optionFor(7,x,state.choices[x])));const labels=g[1].map(x=>optionFor(7,x,state.choices[x])?.[1]).filter(Boolean);return `<div class="extra-pitch-part ${ready?'done':''}"><strong>${i+1} · ${escapeHtml(g[0])} · ${times[i]}</strong><span>${labels.length?'✓ '+escapeHtml(labels.join(' · ')):escapeHtml(g[2])}</span></div>`}).join('')}</div><p class="s2-pitch-rule"><strong>Keep it short:</strong> explain the reason for your choices and one trade-off. Do not read the option titles as a list.</p></section>`;
+  }
+
+  function s7FinalScript(state){
+    const o=i=>optionFor(7,i,state.choices[i]);
+    return `<p><strong>1 · Main health risks:</strong> “The immediate risks are … We responded first by <mark>${escapeHtml(o(0)?.[1]||'—')}</mark> and <mark>${escapeHtml(o(1)?.[1]||'—')}</mark> because …”</p>
+    <p><strong>2 · Priority protection:</strong> “The people we would prioritise are … Our environmental choice was <mark>${escapeHtml(o(2)?.[1]||'—')}</mark> because …”</p>
+    <p><strong>3 · 48-hour response:</strong> “Our final package is <mark>${escapeHtml(o(4)?.[1]||'—')}</mark>. The main trade-off is …”</p>
+    <p><strong>4 · Climate anxiety + monitoring:</strong> “For climate anxiety, we chose <mark>${escapeHtml(o(3)?.[1]||'—')}</mark>. We would monitor … to see whether the plan is working.”</p>`;
   }
 
   let activeSession = null;
@@ -547,6 +631,7 @@
   }
   function pitchBuilder(n,state){
     if(n===2)return s2PitchBuilder(state);
+    if(n===7)return s7PitchBuilder(state);
     const cfg=SESSIONS[n];
     const times=['≈ 25 sec','≈ 30 sec','≈ 30 sec','≈ 25 sec'];
     return `<section class="extra-pitch-builder"><span class="eyebrow">Pitch Builder</span><h4>Your 2:00 whole-team briefing is built as you go.</h4><div class="extra-pitch-parts">${cfg.pitch.map((label,i)=>{const opt=optionFor(n,i,state.choices[i]);return `<div class="extra-pitch-part ${opt?'done':''}"><strong>${i+1} · ${escapeHtml(label)} · ${times[i]||'≈ 25 sec'}</strong><span>${opt?`✓ ${escapeHtml(opt[1])}`:'Waiting for this decision'}</span></div>`}).join('')}</div><p class="s2-pitch-rule"><strong>Time rule:</strong> the whole group shares one 2:00 total. Aim for 1:45–1:55; it is not 2 minutes per student.</p></section>`;
@@ -644,7 +729,7 @@
     stopTimer();
     const cfg=SESSIONS[n],state=loadState(n),ws=q(`#s${n}Workspace`);if(!ws)return;
     const allowed=cfg.teamSizes||[3,4]; if(!allowed.includes(Number(state.teamSize)))state.teamSize=allowed[0]; saveStateExtra(n,state);
-    ws.innerHTML=`<article>${n===2?s2HowToPlay()+s2CaseBoard():n===7?s7MissionBrief():''}<div class="extra-session-overview-grid"><section class="extra-session-panel"><span class="eyebrow">Mission map</span><h4>${cfg.steps.length} decisions → one structured briefing</h4><p>Discuss every option before confirming one shared answer. After each consequence, complete the speaking checkpoint aloud.</p>${missionMap(n)}</section><section class="extra-session-panel"><span class="eyebrow">Team roles</span><h4>Give everyone a job.</h4><div class="extra-role-grid">${cfg.roles.map(r=>`<div class="extra-role-card"><strong>${escapeHtml(r[0])}</strong><small>${escapeHtml(r[1])}</small></div>`).join('')}</div><label>Team size <select id="s${n}TeamSize">${allowed.map(x=>`<option value="${x}" ${Number(state.teamSize)===x?'selected':''}>${x} student${x>1?'s':''}</option>`).join('')}</select></label><button id="s${n}AssignRoles">Assign roles</button><div id="s${n}RoleBox" class="extra-role-assignment" hidden></div></section></div><section class="extra-session-panel"><span class="eyebrow">Your final output</span><h4>${escapeHtml(cfg.output)}</h4><p>${escapeHtml(cfg.finalPrompt)}</p><p><strong>Time rule: 2:00 is the total for the whole group — not 2 minutes per student.</strong> Build it progressively: after every consequence, agree on the checkpoint sentence before continuing.</p><p><strong>Same choices = same scores and same decision code.</strong> There is no random scoring.</p>${n===2?'<p class="s2-fiction-note">The four residents are fictional composite profiles created for learning. The aim is to analyse barriers, not stereotype people or places.</p>':''}<div class="extra-session-actions"><button class="primary-action" id="s${n}Start">${state.completed?'🏁 View final briefing':state.choices.length?'▶ Resume mission':'▶ Start mission'}</button>${state.choices.length?`<button id="s${n}Reset">↻ Reset choices</button>`:''}<button data-extra-back>← Back to sessions</button></div></section>${pitchBuilder(n,state)}</article>`;
+    ws.innerHTML=`<article>${n===2?s2HowToPlay()+s2CaseBoard():n===7?s7MissionBrief():''}<div class="extra-session-overview-grid"><section class="extra-session-panel"><span class="eyebrow">Mission map</span><h4>${cfg.steps.length} decisions → one structured briefing</h4><p>${n===7?'Read the situation, discuss all four options, confirm one team choice, then say the checkpoint before continuing.':'Discuss every option before confirming one shared answer. After each consequence, complete the speaking checkpoint aloud.'}</p>${missionMap(n)}</section><section class="extra-session-panel"><span class="eyebrow">Team roles</span><h4>Give everyone a job.</h4><div class="extra-role-grid">${cfg.roles.map(r=>`<div class="extra-role-card"><strong>${escapeHtml(r[0])}</strong><small>${escapeHtml(r[1])}</small></div>`).join('')}</div><label>Team size <select id="s${n}TeamSize">${allowed.map(x=>`<option value="${x}" ${Number(state.teamSize)===x?'selected':''}>${x} student${x>1?'s':''}</option>`).join('')}</select></label><button id="s${n}AssignRoles">Assign roles</button><div id="s${n}RoleBox" class="extra-role-assignment" hidden></div></section></div><section class="extra-session-panel"><span class="eyebrow">Your final output</span><h4>${escapeHtml(cfg.output)}</h4><p>${escapeHtml(cfg.finalPrompt)}</p><p><strong>Time rule: 2:00 is the total for the whole group — not 2 minutes per student.</strong> Build it progressively: after every consequence, agree on the checkpoint sentence before continuing.</p><p><strong>Same choices = same next screen, same scores and same decision code.</strong> Option order and consequences are fixed; there is no random scoring.</p>${n===2?'<p class="s2-fiction-note">The four residents are fictional composite profiles created for learning. The aim is to analyse barriers, not stereotype people or places.</p>':''}<div class="extra-session-actions"><button class="primary-action" id="s${n}Start">${state.completed?'🏁 View final briefing':state.choices.length?'▶ Resume mission':'▶ Start mission'}</button>${state.choices.length?`<button id="s${n}Reset">↻ Reset choices</button>`:''}<button data-extra-back>← Back to sessions</button></div></section>${pitchBuilder(n,state)}</article>`;
     const team=q(`#s${n}TeamSize`); if(team)team.onchange=()=>{state.teamSize=Number(team.value);saveStateExtra(n,state);const rb=q(`#s${n}RoleBox`);if(rb&&!rb.hidden)paintRoles(n,state)};
     q(`#s${n}AssignRoles`)?.addEventListener('click',()=>{if(n===2)s2Sound('select');paintRoles(n,state)});
     q(`#s${n}Start`)?.addEventListener('click',()=>{if(state.completed)renderFinal(n);else renderStep(n)});
@@ -661,7 +746,7 @@
   function renderStep(n){
     stopTimer();const cfg=SESSIONS[n],state=loadState(n);if(state.completed||state.step>=cfg.steps.length){renderFinal(n);return;}if(state.outcome){renderOutcome(n);return;}
     const step=cfg.steps[state.step],scores=scoresFor(n,state.choices),progress=Math.round(((state.step+1)/cfg.steps.length)*100),ws=q(`#s${n}Workspace`);
-    ws.innerHTML=`<article class="${n===2?'s2-round':''}"><div class="extra-progress"><div><strong>Decision ${state.step+1} of ${cfg.steps.length}</strong><small>${escapeHtml(step.label)}</small></div><div class="extra-progress-count">${state.step+1}/${cfg.steps.length}</div><div class="extra-progress-track" role="progressbar" aria-valuemin="1" aria-valuemax="${cfg.steps.length}" aria-valuenow="${state.step+1}"><div style="width:${progress}%"></div></div></div><aside class="extra-decision-visual ${n===2&&state.step===3?'s2-alert-card':''}"><span class="icon" aria-hidden="true">${step.icon}</span><div><strong>${escapeHtml(step.label)}</strong><small>${escapeHtml(step.note)}</small></div><span class="extra-code">${escapeHtml(decisionCode(n,state))}</span></aside>${n===2?s2CharacterStrip(step.characters||[]):''}<h3 id="s${n}StepHeading" tabindex="-1">${escapeHtml(step.question)}</h3>${scoreBoard(n,scores)}${pitchBuilder(n,state)}<div class="extra-choice-grid ${n===2?'s2-choice-grid':''}">${step.options.map(o=>`<button type="button" class="extra-choice-card" data-extra-choice="${o[0]}" aria-pressed="false"><span class="extra-choice-letter">${o[0]}</span><strong>${escapeHtml(o[1])}</strong><span>${escapeHtml(o[2])}</span></button>`).join('')}</div><div class="extra-step-actions"><button class="primary-action" id="s${n}Confirm" disabled>Confirm this group choice</button><button id="s${n}Overview">Session overview</button><button data-extra-back>← Back to sessions</button></div><p id="s${n}ChoiceHint" class="fiction-note" role="status" aria-live="polite">Discuss all ${step.options.length} options, then select one shared answer.</p></article>`;
+    ws.innerHTML=`<article class="${n===2?'s2-round':''}"><div class="extra-progress"><div><strong>Decision ${state.step+1} of ${cfg.steps.length}</strong><small>${escapeHtml(step.label)}</small></div><div class="extra-progress-count">${state.step+1}/${cfg.steps.length}</div><div class="extra-progress-track" role="progressbar" aria-valuemin="1" aria-valuemax="${cfg.steps.length}" aria-valuenow="${state.step+1}"><div style="width:${progress}%"></div></div></div><aside class="extra-decision-visual ${n===2&&state.step===3?'s2-alert-card':''}"><span class="icon" aria-hidden="true">${step.icon}</span><div><strong>${escapeHtml(step.label)}</strong><small>${escapeHtml(step.note)}</small></div><span class="extra-code">${escapeHtml(decisionCode(n,state))}</span></aside>${n===7?s7StepIllustration(state.step):''}${n===2?s2CharacterStrip(step.characters||[]):''}<h3 id="s${n}StepHeading" tabindex="-1">${escapeHtml(step.question)}</h3>${scoreBoard(n,scores)}${pitchBuilder(n,state)}<div class="extra-choice-grid ${n===2?'s2-choice-grid':''}">${step.options.map(o=>`<button type="button" class="extra-choice-card" data-extra-choice="${o[0]}" aria-pressed="false"><span class="extra-choice-letter">${o[0]}</span><strong>${escapeHtml(o[1])}</strong><span>${escapeHtml(o[2])}</span></button>`).join('')}</div><div class="extra-step-actions"><button class="primary-action" id="s${n}Confirm" disabled>Confirm this group choice</button><button id="s${n}Overview">Session overview</button><button data-extra-back>← Back to sessions</button></div><p id="s${n}ChoiceHint" class="fiction-note" role="status" aria-live="polite">Discuss all ${step.options.length} options, then select one shared answer.</p></article>`;
     let selected=null;qa('[data-extra-choice]',ws).forEach(btn=>btn.onclick=()=>{selected=btn.dataset.extraChoice;if(n===2)s2Sound('select');qa('[data-extra-choice]',ws).forEach(x=>{const on=x===btn;x.classList.toggle('selected',on);x.setAttribute('aria-pressed',String(on))});q(`#s${n}Confirm`).disabled=false;q(`#s${n}ChoiceHint`).textContent=`Selected option ${selected}. Confirm only when the whole team agrees.`});
     q(`#s${n}Confirm`).onclick=()=>{if(!selected)return;if(n===2)s2Sound('tap');state.choices=state.choices.slice(0,state.step);state.choices[state.step]=selected;state.outcome={stepIndex:state.step,choiceId:selected};saveStateExtra(n,state);renderOutcome(n)};
     q(`#s${n}Overview`).onclick=()=>renderOverview(n);
@@ -673,7 +758,7 @@
   function renderOutcome(n){
     const cfg=SESSIONS[n],state=loadState(n),r=state.outcome;if(!r){renderStep(n);return;}const step=cfg.steps[r.stepIndex],opt=optionFor(n,r.stepIndex,r.choiceId);if(!step||!opt){state.outcome=null;saveStateExtra(n,state);renderStep(n);return;}
     const before=scoresFor(n,state.choices.slice(0,r.stepIndex)),after=scoresFor(n,state.choices),impact=impacts(n,r.stepIndex,opt,before),ws=q(`#s${n}Workspace`);
-    ws.innerHTML=`<article class="${n===2?'s2-outcome':''}"><div class="extra-progress"><div><strong>Decision ${r.stepIndex+1} complete</strong><small>Read the consequence, then do the Pitch Checkpoint aloud.</small></div><div class="extra-progress-count">${r.stepIndex+1}/${cfg.steps.length}</div><div class="extra-progress-track" role="progressbar" aria-label="Session progress" aria-valuemin="0" aria-valuemax="100" aria-valuenow="${Math.round(((r.stepIndex+1)/cfg.steps.length)*100)}"><div style="width:${Math.round(((r.stepIndex+1)/cfg.steps.length)*100)}%"></div></div></div><aside class="extra-decision-visual"><span class="icon" aria-hidden="true">${step.icon}</span><div><strong>${escapeHtml(step.label)} · consequence</strong><small>You chose ${escapeHtml(opt[0]+'. '+opt[1])}</small></div><span class="extra-code">${escapeHtml(decisionCode(n,state))}</span></aside>${scoreBoard(n,after)}<div class="extra-consequence ${n===2?'s2-consequence':''}"><strong>What happens next?</strong><p>${escapeHtml(opt[4])}</p><div class="extra-impact-pills">${impact.map(([k,v])=>`<span>${escapeHtml(cfg.scores[k])} ${v>=0?'+':''}${v}</span>`).join('')}</div>${n===2?s2PeopleImpact(opt[5]||{}):''}</div><aside class="extra-checkpoint"><span class="icon" aria-hidden="true">🎙️</span><div><strong>Pitch Checkpoint · say one sentence now</strong><p>${escapeHtml(step.checkpoint)}</p><small>Agree on the idea before continuing. This sentence prepares one part of your final briefing.</small></div></aside>${pitchBuilder(n,state)}<div class="extra-step-actions"><button class="primary-action" id="s${n}Continue">${r.stepIndex===cfg.steps.length-1?'Build final briefing →':'Checkpoint done · next decision →'}</button><button id="s${n}OutcomeOverview">Session overview</button><button data-extra-back>← Back to sessions</button></div></article>`;
+    ws.innerHTML=`<article class="${n===2?'s2-outcome':''}"><div class="extra-progress"><div><strong>Decision ${r.stepIndex+1} complete</strong><small>Read the consequence, then do the Pitch Checkpoint aloud.</small></div><div class="extra-progress-count">${r.stepIndex+1}/${cfg.steps.length}</div><div class="extra-progress-track" role="progressbar" aria-label="Session progress" aria-valuemin="0" aria-valuemax="100" aria-valuenow="${Math.round(((r.stepIndex+1)/cfg.steps.length)*100)}"><div style="width:${Math.round(((r.stepIndex+1)/cfg.steps.length)*100)}%"></div></div></div><aside class="extra-decision-visual"><span class="icon" aria-hidden="true">${step.icon}</span><div><strong>${escapeHtml(step.label)} · consequence</strong><small>You chose ${escapeHtml(opt[0]+'. '+opt[1])}</small></div><span class="extra-code">${escapeHtml(decisionCode(n,state))}</span></aside>${n===7?s7StepIllustration(r.stepIndex):''}${scoreBoard(n,after)}<div class="extra-consequence ${n===2?'s2-consequence':''}"><strong>What happens next?</strong><p>${escapeHtml(opt[4])}</p><div class="extra-impact-pills">${impact.map(([k,v])=>`<span>${escapeHtml(cfg.scores[k])} ${v>=0?'+':''}${v}</span>`).join('')}</div>${n===2?s2PeopleImpact(opt[5]||{}):''}</div><aside class="extra-checkpoint"><span class="icon" aria-hidden="true">🎙️</span><div><strong>Pitch Checkpoint · say one sentence now</strong><p>${escapeHtml(step.checkpoint)}</p><small>Agree on the idea before continuing. This sentence prepares one part of your final briefing.</small></div></aside>${pitchBuilder(n,state)}<div class="extra-step-actions"><button class="primary-action" id="s${n}Continue">${r.stepIndex===cfg.steps.length-1?'Build final briefing →':'Checkpoint done · next decision →'}</button><button id="s${n}OutcomeOverview">Session overview</button><button data-extra-back>← Back to sessions</button></div></article>`;
     q(`#s${n}Continue`).onclick=()=>{if(n===2)s2Sound('tap');state.step=r.stepIndex+1;state.outcome=null;if(state.step>=cfg.steps.length){state.completed=true;markComplete(n)}saveStateExtra(n,state);state.completed?renderFinal(n):renderStep(n)};
     q(`#s${n}OutcomeOverview`).onclick=()=>renderOverview(n);
     qa('[data-extra-back]',ws).forEach(b=>b.onclick=()=>showLibrary(true));
@@ -689,6 +774,7 @@
   }
   function finalScript(n,state){
     if(n===2)return s2FinalScript(state);
+    if(n===7)return s7FinalScript(state);
     const cfg=SESSIONS[n];return cfg.pitch.map((label,i)=>{const opt=optionFor(n,i,state.choices[i]);return `<p><strong>${i+1} · ${escapeHtml(label)}:</strong> “We chose <mark>${escapeHtml(opt?opt[1]:'—')}</mark>. Our reason is … The key consequence/trade-off is …”</p>`}).join('');
   }
 
