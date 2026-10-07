@@ -182,3 +182,26 @@
 @media(max-width:760px){.s2-hero-faces{grid-template-columns:repeat(2,minmax(0,1fr))}.s2-hero-faces>div{height:130px!important}.s2-character-card:not(.compact) .s2-character-portrait{height:220px}}
 @media(max-width:560px){.s2-character-grid.compact .s2-character-card{grid-template-columns:54px 1fr}.s2-character-grid.compact .s2-character-portrait{width:54px;height:54px}.s2-character-card:not(.compact) .s2-character-portrait{height:245px}}
 @media(prefers-reduced-motion:reduce){.s2-portrait-photo{transition:none!important}.s2-character-card:not(.compact):hover .s2-portrait-photo{transform:none!important}}
+
+
+/* Session 7 · Environmental Health & Climate Change · 48-hour heatwave mission */
+.s7-hero-illustration{margin:0;display:block;width:100%;border-radius:22px;overflow:hidden;border:1px solid var(--border);background:var(--surface);box-shadow:0 12px 28px rgba(0,0,0,.08)}
+.s7-hero-illustration svg{display:block;width:100%;height:auto}
+.s7-mission-brief{margin:0 0 1rem;border:1px solid var(--border);border-radius:24px;padding:1rem;background:linear-gradient(135deg,var(--surface),color-mix(in srgb,#ef8354 8%,var(--surface2)));box-shadow:var(--shadow)}
+.s7-brief-head{display:flex;justify-content:space-between;align-items:flex-start;gap:1rem;margin-bottom:.85rem}
+.s7-brief-head h4{margin:.15rem 0 0;font-size:1.2rem}
+.s7-alert-badge{display:inline-flex;align-items:center;padding:.45rem .7rem;border-radius:999px;background:#8f2d2d;color:#fff;font-size:.76rem;font-weight:900;letter-spacing:.04em;white-space:nowrap}
+.s7-brief-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:.7rem}
+.s7-brief-grid article{border:1px solid var(--border);border-radius:18px;padding:.75rem;background:var(--surface);min-width:0}
+.s7-brief-grid strong{display:block;margin:.45rem 0 .25rem}
+.s7-brief-grid p{margin:0;color:var(--muted);font-size:.88rem;line-height:1.35}
+.s7-brief-art{min-height:86px;border-radius:15px;display:grid;place-items:center;font-size:2.25rem;background:linear-gradient(145deg,color-mix(in srgb,var(--accent) 8%,var(--surface2)),var(--surface2));border:1px solid color-mix(in srgb,var(--accent) 15%,var(--border))}
+.s7-brief-art.heat{background:linear-gradient(145deg,#ffe0a6,#f6a46c)}
+.s7-brief-art.care{background:linear-gradient(145deg,#dff1f1,#fff)}
+.s7-brief-art.water{background:linear-gradient(145deg,#d7eef5,#dff1dc)}
+.s7-brief-art.mind{background:linear-gradient(145deg,#eee4f6,#e0f1eb)}
+.s7-how-to{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:.55rem;margin-top:.8rem}
+.s7-how-to span{display:flex;align-items:center;gap:.45rem;padding:.55rem .65rem;border-radius:14px;background:color-mix(in srgb,var(--accent) 6%,var(--surface2));border:1px solid var(--border);font-size:.82rem;font-weight:750}
+.s7-how-to b{display:grid;place-items:center;flex:0 0 24px;height:24px;border-radius:50%;background:var(--accent);color:#fff}
+@media(max-width:900px){.s7-brief-grid{grid-template-columns:repeat(2,1fr)}.s7-how-to{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:560px){.s7-brief-head{display:block}.s7-alert-badge{margin-top:.55rem}.s7-brief-grid,.s7-how-to{grid-template-columns:1fr}}
