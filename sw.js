@@ -1,9 +1,8 @@
-/* EnglishForPublicHealth · V30 · Session 7 environmental-health mission deployment
-   Forces a fresh classroom build so existing PWA/service-worker caches receive
-   the redesigned Session 7 and its mandatory debrief. */
+/* EnglishForPublicHealth · V31 · Session 7 visual, clarity and parity audit
+   Fresh cache for the audited environmental-health mission. */
 
-const CACHE = 'efph-v30-20261007-session7-envhealth';
-const BUILD = '20261007-30';
+const CACHE = 'efph-v31-20261007-session7-audit';
+const BUILD = '20261007-31';
 const PATCH_SCRIPT = `./groupactivity-v29-session4-hardening.js?v=${BUILD}`;
 const APP_SCOPE_PATH = new URL('./', self.location.href).pathname;
 
@@ -29,6 +28,7 @@ const OPTIONAL_ASSETS = [
 ];
 
 const LEGACY_EFPH_CACHES = new Set([
+  'efph-v30-20261007-session7-envhealth',
   'efph-v29-20260915-session4-hardening',
   'ph-english-v24-20260915-groupactivity-parity-lock',
   'ph-english-v25-20260915-groupactivity-deep-audit',
