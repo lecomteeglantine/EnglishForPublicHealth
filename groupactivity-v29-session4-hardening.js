@@ -4,8 +4,8 @@
 (() => {
   'use strict';
 
-  const PATCH_VERSION = 'V29-20260915';
-  const SESSION_COUNTS = {2:6, 3:4, 4:4, 5:4, 6:4, 7:4};
+  const PATCH_VERSION = 'V32-20261007';
+  const SESSION_COUNTS = {2:6, 3:4, 4:4, 5:4, 6:4, 7:5};
 
   function sameArray(a, b) {
     return Array.isArray(a) && Array.isArray(b) && a.length === b.length && a.every((v, i) => v === b[i]);
@@ -19,7 +19,7 @@
 
   function sessionCompletedFromStorage(n) {
     try {
-      const key = n === 2 ? 'pheng_group_session_2_postcode_v2' : n === 4 ? 'pheng_group_session_4_v2' : `pheng_group_session_${n}_v1`;
+      const key = n === 2 ? 'pheng_group_session_2_postcode_v2' : n === 4 ? 'pheng_group_session_4_v2' : n === 7 ? 'pheng_group_session_7_envhealth_v2' : `pheng_group_session_${n}_v1`;
       const raw = JSON.parse(localStorage.getItem(key) || 'null');
       return Boolean(
         raw &&
@@ -162,7 +162,8 @@
   function relevantStorageKey(key) {
     return key === 'pheng_group_session_2_postcode_v2' ||
       key === 'pheng_group_session_4_v2' ||
-      /^pheng_group_session_(?:3|5|6|7)_v1$/.test(String(key || '')) ||
+      key === 'pheng_group_session_7_envhealth_v2' ||
+      /^pheng_group_session_(?:3|5|6)_v1$/.test(String(key || '')) ||
       key === 'pheng_state';
   }
 
@@ -210,7 +211,7 @@
 (() => {
   'use strict';
 
-  const VERSION = 'V29-20260915';
+  const VERSION = 'V32-20261007';
   const GROUP = document.querySelector('#groupactivity');
   if (!GROUP) return;
 
@@ -221,7 +222,7 @@
     4: {short:'Vaccination', title:'Vaccine Confidence Crisis', icon:'💉'},
     5: {short:'Nutrition & environment', title:'The Obesogenic City Lab', icon:'🥗'},
     6: {short:'Mental health', title:'Youth Wellbeing Response', icon:'🧠'},
-    7: {short:'Final campaign', title:'Campaign Rehearsal Lab', icon:'🎯'}
+    7: {short:'Climate & health', title:'Heatwave: 48 Hours to Protect the City', icon:'🌡️'}
   };
 
   const STYLE_ID = 'groupactivity-v29-session-style';
