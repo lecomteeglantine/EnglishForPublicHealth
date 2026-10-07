@@ -1,8 +1,8 @@
-/* EnglishForPublicHealth · V31 · Session 7 visual, clarity and parity audit
-   Fresh cache for the audited environmental-health mission. */
+/* EnglishForPublicHealth · V32 · Group Activity full consistency audit
+   Fresh cache for Session 7 visuals, five-step parity and coherent saved state. */
 
-const CACHE = 'efph-v31-20261007-session7-audit';
-const BUILD = '20261007-31';
+const CACHE = 'efph-v32-20261007-groupactivity-audit';
+const BUILD = '20261007-32';
 const PATCH_SCRIPT = `./groupactivity-v29-session4-hardening.js?v=${BUILD}`;
 const APP_SCOPE_PATH = new URL('./', self.location.href).pathname;
 
@@ -28,6 +28,7 @@ const OPTIONAL_ASSETS = [
 ];
 
 const LEGACY_EFPH_CACHES = new Set([
+  'efph-v31-20261007-session7-audit',
   'efph-v30-20261007-session7-envhealth',
   'efph-v29-20260915-session4-hardening',
   'ph-english-v24-20260915-groupactivity-parity-lock',
@@ -70,11 +71,9 @@ function patchHtmlText(source) {
 }
 
 function patchGroupSessionsText(source) {
-  let text = String(source || '');
-  if (text.includes("pheng_group_session_4_v2")) return text;
-  const original = "const keyFor = n => n===2 ? 'pheng_group_session_2_postcode_v2' : `pheng_group_session_${n}_v1`;";
-  const replacement = "const keyFor = n => n===2 ? 'pheng_group_session_2_postcode_v2' : n===4 ? 'pheng_group_session_4_v2' : `pheng_group_session_${n}_v1`;";
-  return text.replace(original, replacement);
+  // V32: storage keys now live in group-sessions.js itself.
+  // Keep this hook as a no-op for backwards-compatible fetch handling.
+  return String(source || '');
 }
 
 async function patchedGroupSessionsResponse(response) {
