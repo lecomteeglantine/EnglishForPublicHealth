@@ -8,7 +8,7 @@
   const qa = (s, root=document) => [...root.querySelectorAll(s)];
   const clamp = n => Math.max(0, Math.min(100, n));
   const escapeHtml = value => String(value ?? '').replace(/[&<>"']/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
-  const keyFor = n => n===2 ? 'pheng_group_session_2_postcode_v2' : `pheng_group_session_${n}_v1`;
+  const keyFor = n => n===2 ? 'pheng_group_session_2_postcode_v2' : n===7 ? 'pheng_group_session_7_envhealth_v2' : `pheng_group_session_${n}_v1`;
   const LEGACY_S2_KEY = 'pheng_group_session_2_v1';
 
   const SESSIONS = {
@@ -277,52 +277,60 @@
     },
 
     7: {
-      title: 'Campaign Rehearsal Lab',
-      subtitle: 'Final Campaign Workshop · before Session 8',
-      description: 'Stress-test your real public-health campaign before the final presentation: audience, message, evidence, strategy, prevention advice, visual and impact indicator.',
-      icons: ['🎯','📣','🎨','🎤'],
-      team: 'Campaign groups · 1–3', duration: '25–30 min', output: 'Checkpoint pitch · 2:00 total',
-      teamSizes: [1,2,3],
+      title: 'Heatwave: 48 Hours to Protect the City',
+      subtitle: 'Environmental Health & Climate Change',
+      description: 'A severe heatwave is hitting a fictional city. Hospitals are stretched, water demand is rising, vulnerable residents are at risk and climate anxiety is spreading online. Your public-health team has 48 hours to protect people without creating new inequalities.',
+      icons: ['🌡️','🏥','💧','🧠'],
+      team: 'Teams of 3 or 4', duration: '20–25 min', output: 'Emergency public-health briefing · 2:00 total',
+      teamSizes: [3,4],
       roles: [
-        ['Audience & Need Lead','Make the target population precise and justify why it matters.'],
-        ['Message & Visual Lead','Protect clarity, slogan, tone and visual impact.'],
-        ['Evidence & Evaluation Lead','Check evidence, prevention advice and the success indicator.']
+        ['Heat & Health Lead','Track physical health risks, NHS pressure and heat-related illness.'],
+        ['Vulnerability Lead','Protect older people, children, isolated residents and people with chronic conditions.'],
+        ['Mental Health & Communication Lead','Keep climate-anxiety messaging accurate, supportive and action-focused.'],
+        ['Environment & Operations Lead','Connect water, shade, transport, cooling and urban-environment decisions.']
       ],
-      scores: { clarity:'Clarity', audience:'Audience fit', evidence:'Evidence & impact' },
+      scores: { protection:'Health protection', equity:'Equity', feasibility:'Feasibility', trust:'Public trust' },
       language: [
-        ['Problem','“Our campaign addresses … in …”'],
-        ['Evidence','“Research shows/suggests that…”'],
-        ['Advice','“You should…” / “Avoid + -ing…”'],
-        ['Impact','“We will know it worked if…”']
+        ['Give advice','“People should stay hydrated and avoid exercising at midday.”'],
+        ['Cause → effect','“Extreme heat can lead to…” / “This may increase the risk of…”'],
+        ['Use -ing forms','“Providing shade and checking on vulnerable residents can…”'],
+        ['Communicate carefully','“The risk is serious, but practical action can reduce harm.”']
       ],
       steps: [
-        { icon:'🎯', label:'Sharpen the audience', question:'How precise is your target audience?', note:'The final campaign brief requires a specific population, not a vague “general public”.', checkpoint:'“Our exact target audience is … because they are a priority because …”', options:[
-          ['A','Very broad','Use a target such as “young people” or “parents”.',{clarity:-8,audience:-14,evidence:0},'The campaign will struggle to choose the right tone, channel and practical action.'],
-          ['B','Demographic only','Specify age but not context or need.',{clarity:3,audience:2,evidence:1},'The target is clearer, but the team still needs to explain why this group is a priority.'],
-          ['C','Precise audience plus context','Define age/life situation/location and the health barrier or risk.',{clarity:14,audience:16,evidence:8},'The campaign can now tailor message, channel and prevention advice to a real audience.'],
-          ['D','Institution only','Target “students at our university” without identifying which students or why.',{clarity:2,audience:-2,evidence:1},'The setting is clear but the priority population remains vague.']
+        { icon:'🌡️', label:'Red heat-health alert', question:'Temperatures may reach 40°C tomorrow. What is your first city-wide action?', note:'Ambulance calls are already increasing. Older people, young children, outdoor workers and people with chronic conditions face greater risk.', checkpoint:'“Our first priority is protecting … by … because extreme heat can …”', options:[
+          ['A','Post one general warning online','Publish heat advice on the city website and social media, then wait for residents to act.',{protection:3,equity:-7,feasibility:14,trust:3},'The message is fast and cheap, but it may miss isolated residents, people with limited digital access and those who need practical support.'],
+          ['B','Open cooling centres only','Open several air-conditioned public buildings and advertise their locations.',{protection:10,equity:4,feasibility:7,trust:6},'Cooling centres help many residents, but some high-risk people cannot travel safely or may not know they are at risk.'],
+          ['C','Activate targeted outreach plus cooling spaces','Open cooling spaces, organise phone and door-to-door checks, extend pharmacy/community outreach and arrange transport for high-risk residents.',{protection:16,equity:15,feasibility:3,trust:11},'The response combines information with practical access. It needs coordination, but it reaches people who are most likely to be missed.'],
+          ['D','Tell everyone to stay indoors','Issue a simple instruction to remain at home until temperatures fall.',{protection:5,equity:-2,feasibility:12,trust:-3},'Staying out of direct heat may help, but some homes overheat badly and some people cannot stop working or access cool spaces.']
         ]},
-        { icon:'💬', label:'Make the message memorable', question:'Which message strategy should guide your campaign?', note:'You need one key message and a short slogan that the audience can remember.', checkpoint:'“Our one-sentence message is …; our slogan is …; the tone is … because …”', options:[
-          ['A','Several competing messages','Try to communicate every fact from the course.',{clarity:-14,audience:-5,evidence:6},'The campaign contains useful information but lacks one memorable action or takeaway.'],
-          ['B','One clear action-focused message','Choose one main behaviour or awareness goal and a short slogan.',{clarity:16,audience:12,evidence:4},'The campaign becomes easier to understand, repeat and adapt visually.'],
-          ['C','A shocking slogan with little explanation','Prioritise attention above accuracy.',{clarity:7,audience:-4,evidence:-11},'The slogan may be memorable but can mislead or undermine trust.'],
-          ['D','A technical academic message','Use specialist language to sound scientific.',{clarity:-9,audience:-12,evidence:8},'The evidence may be accurate but the target audience may not understand or remember it.']
+        { icon:'🏥', label:'Health services under pressure', question:'Emergency calls rise sharply and hospitals report corridor care. What should your team recommend?', note:'The system needs to protect severe cases while preventing avoidable heat illness in the community.', checkpoint:'“To avoid overstretching services, we would … while making sure that …”', options:[
+          ['A','Send everyone with symptoms to hospital','Use emergency departments as the main response to heat-related symptoms.',{protection:4,equity:2,feasibility:-12,trust:1},'Severe cases need urgent care, but sending everyone to hospital increases pressure and can delay care for the sickest patients.'],
+          ['B','Strengthen community triage and prevention','Use clear symptom guidance, pharmacy/primary-care support, hydration advice and rapid referral for warning signs.',{protection:15,equity:10,feasibility:9,trust:12},'People get help earlier and severe cases can be identified faster, reducing avoidable pressure on ambulances and hospitals.'],
+          ['C','Cancel all routine health care','Stop non-emergency appointments across the city for the full week.',{protection:5,equity:-5,feasibility:5,trust:-6},'Capacity may increase temporarily, but cancelling all routine care can create new health risks, especially for people with ongoing conditions.'],
+          ['D','Focus only on ambulance capacity','Add emergency vehicles but make no change to community prevention or triage.',{protection:8,equity:1,feasibility:4,trust:4},'Extra ambulances help response times, but the city still misses opportunities to prevent heat illness before it becomes an emergency.']
         ]},
-        { icon:'📚', label:'Prove and advise', question:'What must your evidence-and-advice section contain?', note:'The final brief asks for at least one fact/reporting verb and at least two concrete prevention recommendations.', checkpoint:'“Research … that …; therefore our audience should … and avoid …”', options:[
-          ['A','One attributed fact + two concrete recommendations','Use a careful reporting verb and practical advice linked to the campaign goal.',{clarity:12,audience:9,evidence:16},'The campaign connects evidence to action and directly meets the final-task brief.'],
-          ['B','Statistics without a source or reporting verb','Use a striking number with no attribution.',{clarity:5,audience:4,evidence:-12},'The number may attract attention but weakens credibility and course-language reinvestment.'],
-          ['C','Advice only','Give recommendations without explaining why they matter.',{clarity:8,audience:5,evidence:-7},'The campaign is practical but the audience lacks an evidence-based reason to act.'],
-          ['D','Evidence only','Explain the problem but give no behavioural or prevention advice.',{clarity:2,audience:-5,evidence:8},'The campaign informs the audience but does not clearly tell them what to do.']
+        { icon:'💧', label:'Water & urban heat', question:'Water use surges and several neighbourhoods are much hotter because they have little shade. Which environmental response is strongest?', note:'The heatwave is a health event and an environmental event. Your choice must protect health now and reduce unequal exposure.', checkpoint:'“Reducing exposure means …; providing … can help because …”', options:[
+          ['A','Introduce a hosepipe ban only','Restrict non-essential household water use and make no other environmental change.',{protection:5,equity:0,feasibility:12,trust:3},'The restriction may reduce water demand, but it does not directly protect residents living in the hottest streets.'],
+          ['B','Spray city-centre streets with water','Cool the most visible central streets during the hottest hours.',{protection:4,equity:-6,feasibility:2,trust:1},'The measure is visible but uses scarce water and mainly benefits a small central area.'],
+          ['C','Combine water protection with local cooling measures','Restrict non-essential water use, provide drinking-water points, temporary shade and cooling at high-risk sites, and prioritise hotter low-shade neighbourhoods.',{protection:15,equity:15,feasibility:5,trust:11},'The city protects water supply while directing practical cooling to places where environmental exposure is greatest.'],
+          ['D','Do nothing until reservoirs fall further','Avoid restrictions or temporary cooling measures for now.',{protection:-8,equity:-5,feasibility:15,trust:-9},'The city saves money today but risks preventable health harm and a more severe water problem later.']
         ]},
-        { icon:'📈', label:'Design the proof of impact', question:'How will you show that the campaign worked?', note:'The final presentation needs one simple indicator and at least one visual support.', checkpoint:'“Our visual will show …; we will measure …; success would mean …”', options:[
-          ['A','A concrete visual + one measurable indicator','Show a poster/post/mock-up and track one behaviour, reach or service indicator that matches the goal.',{clarity:14,audience:12,evidence:14},'The campaign is presentation-ready and has a plausible way to judge impact.'],
-          ['B','A beautiful visual only','Focus entirely on aesthetics.',{clarity:9,audience:8,evidence:-8},'The presentation may look strong but lacks an evaluation plan.'],
-          ['C','A complex evaluation framework','Use many indicators and technical methods in the presentation.',{clarity:-8,audience:-5,evidence:12},'The plan may be rigorous but is too complicated for a concise campaign presentation.'],
-          ['D','No visual and no indicator','Rely on spoken explanation only.',{clarity:-12,audience:-10,evidence:-10},'The plan does not meet key elements of the final-task brief.']
+        { icon:'🧠', label:'Climate anxiety surge', question:'Young residents are sharing messages such as “Nothing can be done. The future is hopeless.” How should the city respond?', note:'The course article distinguishes action-motivating anxiety from eco-paralysis. The goal is neither to dismiss concern nor to intensify helplessness.', checkpoint:'“We would acknowledge … without …; focusing on practical action can help people …”', options:[
+          ['A','Say people are overreacting','Reassure residents that worrying about climate change is unnecessary.',{protection:0,equity:-2,feasibility:12,trust:-15},'Dismissing concern may reduce trust and can make people who already feel overwhelmed feel even less heard.'],
+          ['B','Use frightening images to force action','Emphasise worst-case outcomes so people understand the seriousness of climate change.',{protection:2,equity:0,feasibility:10,trust:-10},'Fear may attract attention, but messaging that increases helplessness can reinforce eco-paralysis instead of supporting useful action.'],
+          ['C','Acknowledge concern and give specific actions and support','Validate the concern, explain immediate heat-protection actions, point to community support and show where collective action is already happening.',{protection:10,equity:10,feasibility:9,trust:16},'The message takes climate anxiety seriously while directing attention toward concrete, achievable action rather than helplessness.'],
+          ['D','Avoid mentioning climate change','Communicate only about today’s temperature and remove any wider environmental context.',{protection:5,equity:1,feasibility:13,trust:-2},'Short-term advice remains useful, but avoiding the wider issue can appear evasive and misses an opportunity to connect environmental health and public health.']
+        ]},
+        { icon:'🧭', label:'Build the 48-hour plan', question:'You can fund one final package for the next 48 hours. Which plan do you defend?', note:'Your final choice must connect physical health, environmental exposure, mental wellbeing and health equity.', checkpoint:'“Our 48-hour plan combines …, … and …; we will know it is working if …”', options:[
+          ['A','Hospital-first package','Spend most resources on emergency beds and ambulance response.',{protection:8,equity:1,feasibility:5,trust:4},'Clinical capacity improves, but prevention, environmental exposure and outreach remain weak.'],
+          ['B','Information-first package','Run a large public-information campaign with heat advice and climate messages.',{protection:5,equity:-3,feasibility:13,trust:7},'Communication improves, but residents who need transport, cooling, water or direct support may still be unable to act on the advice.'],
+          ['C','Integrated heat-health package','Combine targeted outreach, community triage, cooling and water measures, plus supportive action-focused communication. Track heat-related emergency calls and uptake in high-risk areas.',{protection:16,equity:16,feasibility:4,trust:15},'The plan connects environmental health, service pressure, vulnerable populations and mental wellbeing. It is more complex, but it addresses the crisis as a public-health system problem.'],
+          ['D','Long-term climate strategy only','Use the budget for tree planting and a future heat-adaptation plan, with little emergency spending now.',{protection:-3,equity:4,feasibility:7,trust:2},'Long-term adaptation matters, but it does not protect residents adequately during the current 48-hour emergency.']
         ]}
       ],
-      pitch: ['Audience & problem','Message & slogan','Evidence & advice','Visual & impact'],
-      finalPrompt: 'Deliver a two-minute checkpoint version of your real Session 8 campaign. Every member should contribute where possible. This is a rehearsal: your final Session 8 presentation remains longer and follows the official brief.'
+      pitch: ['Main health risks','Who needs priority protection','Your environmental + service response','Climate-anxiety message + success indicator'],
+      finalPrompt: 'Give a two-minute emergency briefing for the mayor. Explain the main health risks, identify the people most at risk, defend your combined environmental and health-service response, and finish with one action-focused message about climate anxiety plus one indicator you will monitor.'
+
     }
   };
 
@@ -400,6 +408,42 @@
   function s2FinalScript(state){
     const o=i=>optionFor(2,i,state.choices[i]);
     return `<p><strong>1 · What the profiles reveal:</strong> “At first, we chose <mark>${escapeHtml(o(0)?.[1]||'—')}</mark>. The two profiles facing the greatest cumulative barriers were … because …”</p><p><strong>2 · Access & living conditions:</strong> “For access, we chose <mark>${escapeHtml(o(1)?.[1]||'—')}</mark>. For upstream living conditions, we chose <mark>${escapeHtml(o(2)?.[1]||'—')}</mark>. If …, people …”</p><p><strong>3 · Crisis & package:</strong> “During the surprise event, we chose <mark>${escapeHtml(o(3)?.[1]||'—')}</mark>. Our longer-term package was <mark>${escapeHtml(o(4)?.[1]||'—')}</mark>. The main trade-off is …”</p><p><strong>4 · Prove the gap is shrinking:</strong> “We would monitor <mark>${escapeHtml(o(5)?.[1]||'—')}</mark>. If the postcode gap is narrowing, we should see …”</p>`;
+  }
+
+
+  function s7HeroVisual(){
+    return `<figure class="s7-hero-illustration" role="img" aria-label="Illustrated city split between severe heat exposure and public-health protection measures.">
+      <svg viewBox="0 0 620 360" aria-hidden="true" focusable="false">
+        <defs>
+          <linearGradient id="s7sky" x1="0" x2="1"><stop offset="0" stop-color="#f6d38b"/><stop offset="1" stop-color="#f08a5d"/></linearGradient>
+          <linearGradient id="s7cool" x1="0" x2="1"><stop offset="0" stop-color="#7bc8b6"/><stop offset="1" stop-color="#d8f0e8"/></linearGradient>
+        </defs>
+        <rect x="8" y="8" width="604" height="344" rx="26" fill="url(#s7sky)" opacity=".92"/>
+        <circle cx="505" cy="76" r="42" fill="#f6c344"/><g fill="#8b4b3e" opacity=".84"><rect x="420" y="178" width="54" height="104" rx="3"/><rect x="480" y="150" width="65" height="132" rx="3"/><rect x="552" y="192" width="39" height="90" rx="3"/></g>
+        <path d="M0 286h620v74H0z" fill="#d98a55" opacity=".6"/><path d="M390 318l35-30 34 30 33-26 37 28 28-21 41 31" fill="none" stroke="#9a4e3d" stroke-width="6" opacity=".75"/>
+        <path d="M8 258C105 226 165 245 241 222c60-18 95-59 149-76v206H8z" fill="url(#s7cool)" opacity=".95"/>
+        <g fill="#2b6f63"><circle cx="92" cy="205" r="34"/><rect x="86" y="205" width="12" height="73" rx="6"/><circle cx="169" cy="228" r="28"/><rect x="164" y="228" width="10" height="60" rx="5"/></g>
+        <g transform="translate(232 204)"><rect width="116" height="83" rx="12" fill="#f7f4ea"/><path d="M58 14v55M31 41h54" stroke="#d45b52" stroke-width="15" stroke-linecap="round"/></g>
+        <g transform="translate(58 285)"><circle cx="18" cy="18" r="16" fill="#f2b38a"/><path d="M2 66c2-25 10-38 16-38s14 13 16 38" fill="#315b74"/><circle cx="70" cy="18" r="16" fill="#8b5f4a"/><path d="M54 66c2-25 10-38 16-38s14 13 16 38" fill="#5d7f55"/></g>
+        <g transform="translate(365 74)" fill="none" stroke="#fff" stroke-width="8" stroke-linecap="round"><path d="M0 0v92"/><circle cx="0" cy="105" r="22"/><path d="M0 23h21"/></g>
+        <g transform="translate(499 281)"><path d="M0 0h74v45H0z" fill="#f7f4ea"/><path d="M11 11h52M11 22h38M11 33h44" stroke="#2b6f63" stroke-width="5" stroke-linecap="round"/></g>
+      </svg>
+    </figure>`;
+  }
+
+  function s7MissionBrief(){
+    return `<section class="s7-mission-brief" aria-label="Session 7 mission briefing">
+      <div class="s7-brief-head"><div><span class="eyebrow">MISSION BRIEF · FICTIONAL CITY</span><h4>48 hours. One heatwave. Four public-health pressures.</h4></div><span class="s7-alert-badge">RED HEAT-HEALTH ALERT</span></div>
+      <div class="s7-brief-grid">
+        <article><div class="s7-brief-art heat" aria-hidden="true">🌡️☀️</div><strong>Extreme heat</strong><p>Temperatures may reach 40°C. Heat illness and ambulance calls are rising.</p></article>
+        <article><div class="s7-brief-art care" aria-hidden="true">🏥🚑</div><strong>Overstretched care</strong><p>Hospitals report corridor care. Prevention must reduce avoidable emergencies.</p></article>
+        <article><div class="s7-brief-art water" aria-hidden="true">💧🌳</div><strong>Water & unequal exposure</strong><p>Water demand is high, while low-shade neighbourhoods are becoming much hotter.</p></article>
+        <article><div class="s7-brief-art mind" aria-hidden="true">🧠💬</div><strong>Climate anxiety</strong><p>Some young residents feel overwhelmed and hopeless. Your message must turn concern into useful action.</p></article>
+      </div>
+      <div class="s7-how-to">
+        <span><b>1</b> Read the situation.</span><span><b>2</b> Discuss every option.</span><span><b>3</b> Confirm one team choice.</span><span><b>4</b> Say the checkpoint before continuing.</span>
+      </div>
+    </section>`;
   }
 
   let activeSession = null;
@@ -569,7 +613,7 @@
 
   function detailShell(n){
     const c=SESSIONS[n];
-    return `<section id="session${n}Detail" class="session-detail extra-session-detail ${n===2?'s2-postcode-detail':''}" hidden aria-labelledby="session${n}DetailTitle"><div class="session-detail-toolbar"><button type="button" data-extra-back>← Back to sessions</button><span class="badge">Session ${n}</span>${n===2?'<span class="badge s2-version-badge">POSTCODE LOTTERY · V22 AUDITED</span>':''}</div><section class="extra-session-hero ${n===2?'s2-session-hero':''}"><div><span class="eyebrow">Session ${n} · ${escapeHtml(c.subtitle)}</span><h3 id="session${n}DetailTitle" tabindex="-1">${escapeHtml(c.title)}</h3><p>${escapeHtml(c.description)}</p><div class="extra-session-meta"><span>👥 ${escapeHtml(c.team)}</span><span>⏱ ${escapeHtml(c.duration)}</span><span>🎙 ${escapeHtml(c.output)}</span><span>🧭 deterministic choices</span>${n===2?'<span>🎧 short sound cues</span>':''}</div><div class="extra-session-actions"><button class="primary-action" id="s${n}StartHero">▶ Start / resume mission</button><button id="s${n}ResetHero">↻ Reset this session</button>${n===2?'<button type="button" id="s2SoundToggle" class="s2-sound-toggle" aria-pressed="true">🔊 Sound effects: ON</button>':''}</div></div><div class="extra-session-hero-visual ${n===2?'s2-hero-visual':''}">${n===2?s2HeroVisual():c.icons.map(i=>`<div>${i}</div>`).join('')}</div></section><section id="s${n}Workspace" class="extra-session-workspace" aria-live="polite"></section>${languageStrip(n)}</section>`;
+    return `<section id="session${n}Detail" class="session-detail extra-session-detail ${n===2?'s2-postcode-detail':''}" hidden aria-labelledby="session${n}DetailTitle"><div class="session-detail-toolbar"><button type="button" data-extra-back>← Back to sessions</button><span class="badge">Session ${n}</span>${n===2?'<span class="badge s2-version-badge">POSTCODE LOTTERY · V22 AUDITED</span>':''}</div><section class="extra-session-hero ${n===2?'s2-session-hero':''}"><div><span class="eyebrow">Session ${n} · ${escapeHtml(c.subtitle)}</span><h3 id="session${n}DetailTitle" tabindex="-1">${escapeHtml(c.title)}</h3><p>${escapeHtml(c.description)}</p><div class="extra-session-meta"><span>👥 ${escapeHtml(c.team)}</span><span>⏱ ${escapeHtml(c.duration)}</span><span>🎙 ${escapeHtml(c.output)}</span><span>🧭 deterministic choices</span>${n===2?'<span>🎧 short sound cues</span>':''}</div><div class="extra-session-actions"><button class="primary-action" id="s${n}StartHero">▶ Start / resume mission</button><button id="s${n}ResetHero">↻ Reset this session</button>${n===2?'<button type="button" id="s2SoundToggle" class="s2-sound-toggle" aria-pressed="true">🔊 Sound effects: ON</button>':''}</div></div><div class="extra-session-hero-visual ${n===2?'s2-hero-visual':''}">${n===2?s2HeroVisual():n===7?s7HeroVisual():c.icons.map(i=>`<div>${i}</div>`).join('')}</div></section><section id="s${n}Workspace" class="extra-session-workspace" aria-live="polite"></section>${languageStrip(n)}</section>`;
   }
 
   function hideAllDetails(){
@@ -600,7 +644,7 @@
     stopTimer();
     const cfg=SESSIONS[n],state=loadState(n),ws=q(`#s${n}Workspace`);if(!ws)return;
     const allowed=cfg.teamSizes||[3,4]; if(!allowed.includes(Number(state.teamSize)))state.teamSize=allowed[0]; saveStateExtra(n,state);
-    ws.innerHTML=`<article>${n===2?s2HowToPlay()+s2CaseBoard():''}<div class="extra-session-overview-grid"><section class="extra-session-panel"><span class="eyebrow">Mission map</span><h4>${cfg.steps.length} decisions → one structured briefing</h4><p>Discuss every option before confirming one shared answer. After each consequence, complete the speaking checkpoint aloud.</p>${missionMap(n)}</section><section class="extra-session-panel"><span class="eyebrow">Team roles</span><h4>Give everyone a job.</h4><div class="extra-role-grid">${cfg.roles.map(r=>`<div class="extra-role-card"><strong>${escapeHtml(r[0])}</strong><small>${escapeHtml(r[1])}</small></div>`).join('')}</div><label>Team size <select id="s${n}TeamSize">${allowed.map(x=>`<option value="${x}" ${Number(state.teamSize)===x?'selected':''}>${x} student${x>1?'s':''}</option>`).join('')}</select></label><button id="s${n}AssignRoles">Assign roles</button><div id="s${n}RoleBox" class="extra-role-assignment" hidden></div></section></div><section class="extra-session-panel"><span class="eyebrow">Your final output</span><h4>${escapeHtml(cfg.output)}</h4><p>${escapeHtml(cfg.finalPrompt)}</p><p><strong>Time rule: 2:00 is the total for the whole group — not 2 minutes per student.</strong> Build it progressively: after every consequence, agree on the checkpoint sentence before continuing.</p><p><strong>Same choices = same scores and same decision code.</strong> There is no random scoring.</p>${n===2?'<p class="s2-fiction-note">The four residents are fictional composite profiles created for learning. The aim is to analyse barriers, not stereotype people or places.</p>':''}<div class="extra-session-actions"><button class="primary-action" id="s${n}Start">${state.completed?'🏁 View final briefing':state.choices.length?'▶ Resume mission':'▶ Start mission'}</button>${state.choices.length?`<button id="s${n}Reset">↻ Reset choices</button>`:''}<button data-extra-back>← Back to sessions</button></div></section>${pitchBuilder(n,state)}</article>`;
+    ws.innerHTML=`<article>${n===2?s2HowToPlay()+s2CaseBoard():n===7?s7MissionBrief():''}<div class="extra-session-overview-grid"><section class="extra-session-panel"><span class="eyebrow">Mission map</span><h4>${cfg.steps.length} decisions → one structured briefing</h4><p>Discuss every option before confirming one shared answer. After each consequence, complete the speaking checkpoint aloud.</p>${missionMap(n)}</section><section class="extra-session-panel"><span class="eyebrow">Team roles</span><h4>Give everyone a job.</h4><div class="extra-role-grid">${cfg.roles.map(r=>`<div class="extra-role-card"><strong>${escapeHtml(r[0])}</strong><small>${escapeHtml(r[1])}</small></div>`).join('')}</div><label>Team size <select id="s${n}TeamSize">${allowed.map(x=>`<option value="${x}" ${Number(state.teamSize)===x?'selected':''}>${x} student${x>1?'s':''}</option>`).join('')}</select></label><button id="s${n}AssignRoles">Assign roles</button><div id="s${n}RoleBox" class="extra-role-assignment" hidden></div></section></div><section class="extra-session-panel"><span class="eyebrow">Your final output</span><h4>${escapeHtml(cfg.output)}</h4><p>${escapeHtml(cfg.finalPrompt)}</p><p><strong>Time rule: 2:00 is the total for the whole group — not 2 minutes per student.</strong> Build it progressively: after every consequence, agree on the checkpoint sentence before continuing.</p><p><strong>Same choices = same scores and same decision code.</strong> There is no random scoring.</p>${n===2?'<p class="s2-fiction-note">The four residents are fictional composite profiles created for learning. The aim is to analyse barriers, not stereotype people or places.</p>':''}<div class="extra-session-actions"><button class="primary-action" id="s${n}Start">${state.completed?'🏁 View final briefing':state.choices.length?'▶ Resume mission':'▶ Start mission'}</button>${state.choices.length?`<button id="s${n}Reset">↻ Reset choices</button>`:''}<button data-extra-back>← Back to sessions</button></div></section>${pitchBuilder(n,state)}</article>`;
     const team=q(`#s${n}TeamSize`); if(team)team.onchange=()=>{state.teamSize=Number(team.value);saveStateExtra(n,state);const rb=q(`#s${n}RoleBox`);if(rb&&!rb.hidden)paintRoles(n,state)};
     q(`#s${n}AssignRoles`)?.addEventListener('click',()=>{if(n===2)s2Sound('select');paintRoles(n,state)});
     q(`#s${n}Start`)?.addEventListener('click',()=>{if(state.completed)renderFinal(n);else renderStep(n)});
